@@ -1,4 +1,4 @@
-package com.wxz.ebook;
+package com.wxz.ebook.view;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,11 +8,14 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
+import com.wxz.ebook.R;
 import com.wxz.ebook.curlUI.CurlPage;
 import com.wxz.ebook.curlUI.CurlView;
 
-public class MainActivity extends AppCompatActivity{
+public class ReadPageActivity extends AppCompatActivity{
 
     private CurlView curlView;
     private int[] mBitmapIds = { R.drawable.p001, R.drawable.p002,
@@ -21,7 +24,10 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//去除title
+        getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
+                WindowManager.LayoutParams. FLAG_FULLSCREEN);//去掉Activity上面的状态栏
+        setContentView(R.layout.activity_read_page);
 
         curlView = findViewById(R.id.read_curl_page_view);
         curlView.setPageProvider(new PageProvider());

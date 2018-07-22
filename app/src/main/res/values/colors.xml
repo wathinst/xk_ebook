@@ -3,4 +3,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhile">#FFFFFF</color>
+    <color name="blue1">#0000FF</color><!--蓝色 -->
+    <color name="fontBlack">#222222</color>
+    <color name="fontSelect">#303F9F</color>
+    <color name="fontWhite">#aaaaaa</color>
+    <color name="setBackground">#222222</color>
+    <color name="listBackgroundIn">#88222222</color>
+    <color name="listBackgroundOut">#00222222</color>
 </resources>

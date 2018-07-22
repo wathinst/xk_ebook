@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ReadPageActivity">
+    tools:context=".view.acticity.ReadPageActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -14,9 +14,40 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.wxz.ebook.curlUI.CurlView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/read_curl_page_view"/>
+        android:layout_height="match_parent">
+
+        <com.wxz.ebook.ui.curlUI.CurlView
+            android:id="@+id/read_curl_page_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.wxz.ebook.view.view.ReadPageSetView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/read_page_set_view"/>
+
+        <com.wxz.ebook.view.view.ChapterListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/read_page_chapter_list_view"/>
+
+        <TextView
+            android:id="@+id/read_view_book_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBlack"
+            android:padding="8dp"
+            android:text="@string/str_book_loading"
+            android:textColor="@color/colorWhile"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.design.widget.CoordinatorLayout>

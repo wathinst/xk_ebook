@@ -2,4 +2,19 @@
     <string name="app_name">校咖阅读</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="curl_page_btn">仿真翻页</string>
+    <string name="str_book_loading">正在读取图书…</string>
+    <string name="file_type">TXT</string>
+    <string name="imported">已导入</string>
+    <string name="chap_pattern">(^[0123456789零一二三四五六七八九十第])([0123456789零一二三四五六七八九十百千万]{1,9})([章节卷集部篇回])(.*)</string>
+    <string name="fileCreateSql">CREATE TABLE xkr (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,readIndex INTEGER,pageIndex INTEGER, path TEXT, date DATE);</string>
+    <string name="fileUpV2Sql">ALTER TABLE xkr ADD fileType TEXT;</string>
+    <string name="main_but">打开文本</string>
+    <string name="main_but1">插入</string>
+    <string name="action_search">查询</string>
+    <string name="action_add">导入</string>
+    <string name="list_icon">列表图标</string>
+    <string name="font_size_icon">文字调整图标</string>
+    <string name="set_icon">设置图标</string>
+    <string name="up_chapter">上一章</string>
+    <string name="dn_chapter">下一章</string>
 </resources>

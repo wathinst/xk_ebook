@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RecyclerViewBar">
+        <attr name="slider_height" format="dimension"/>
+        <attr name="slider_paddingLeft" format="dimension"/>
+        <attr name="slider_paddingRight" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="ReadView">
+        <attr name="color" format="color"/>
+        <attr name="fontSize" format="dimension"/>
+        <attr name="text" format="string"/>
+        <attr name="background" format="reference"/>
+        <attr name="type" format="enum">
+            <enum name="common" value="1"/>
+            <enum name="material" value="2"/>
+        </attr>
+        <attr name="flag">
+            <flag name="flag1" value="0x01"/>
+            <flag name="flag2" value="0x02"/>
+            <flag name="flag4" value="0x04"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="BookCaseView">
+        <attr name="img" format="reference"/>
+        <attr name="upFlag" format="boolean"/>
+        <attr name="isSelect" format="boolean"/>
+        <attr name="fileType" format="enum">
+            <enum name="TXT" value="0"/>
+            <enum name="DOC" value="1"/>
+            <enum name="DOCX" value="2"/>
+            <enum name="PDF" value="3"/>
+            <enum name="EPUB" value="4"/>
+        </attr>
+    </declare-styleable>
+
+</resources>

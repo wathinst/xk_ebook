@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-package com.wxz.ebook.curlUI;
+package com.wxz.ebook.ui.curlUI;
 
 import android.content.Context;
 import android.graphics.PointF;
@@ -24,6 +24,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.wxz.ebook.view.view.ChapterListView;
 
 /**
  * OpenGL ES View.
@@ -47,10 +49,10 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener,
 	// Shows two pages side by side.
 	public static final int SHOW_TWO_PAGES = 2;
 
-	private boolean mAllowLastPageCurl = true;
+	private boolean mAllowLastPageCurl = false;
 
 	private boolean mAnimate = false;
-	private long mAnimationDurationTime = 300;
+	private long mAnimationDurationTime = 500;
 	private PointF mAnimationSource = new PointF();
 	private long mAnimationStartTime;
 	private PointF mAnimationTarget = new PointF();
@@ -90,6 +92,8 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener,
 
 	private boolean onTouchCenterFlag = false;
 	private float onTouchStartX,onTouchEndX;
+	private final int OnTouchMaxDx = 10;
+	private Listener listener;
 
 	/**
 	 * Default constructor.
@@ -329,7 +333,13 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener,
 			}
 		}
 		case MotionEvent.ACTION_MOVE: {
-			updateCurlPos(mPointerPos);
+			onTouchEndX = me.getX();
+			float dx = onTouchStartX - onTouchEndX;
+			if(dx < -OnTouchMaxDx || dx > OnTouchMaxDx){
+				updateCurlPos(mPointerPos);
+			}
+			//updateCurlPos(mPointerPos);
+
 			break;
 		}
 		case MotionEvent.ACTION_CANCEL:
@@ -344,6 +354,10 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener,
 				// result (which is easier done by altering curl position and/or
 				// direction directly), this is done in a hope it made code a
 				// bit more readable and easier to maintain.
+				// 动画源是动画开始的地方。它的处理方式实际上是模拟触摸事件，
+				// 这意味着输出与用户将页面拖放到另一边完全相同。
+				// 虽然不能产生最好的结果(通过直接改变旋度位置和/或方向更容易实现)，
+				// 但是这样做是为了使代码更易于阅读和维护。
 				mAnimationSource.set(mPointerPos.mPos);
 				mAnimationStartTime = System.currentTimeMillis();
 
@@ -352,40 +366,52 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener,
 				// (mViewMode == SHOW_ONE_PAGE && mPointerPos.mPos.x > (rightRect.left + rightRect.right) / 2)
 				//						|| (mViewMode == SHOW_TWO_PAGES
 				//						&& mPointerPos.mPos.x > rightRect.left)
-				if (dx < -5) {
-					// On right side target is always right page's right border.
-					mAnimationTarget.set(mDragStartPos);
-					mAnimationTarget.x = mRenderer
-							.getPageRect(CurlRenderer.PAGE_RIGHT).right;
-					mAnimationTargetEvent = SET_CURL_TO_RIGHT;
-				} else if(dx > 5){
-					// On left side target depends on visible pages.
-					mAnimationTarget.set(mDragStartPos);
-					if (mCurlState == CURL_RIGHT || mViewMode == SHOW_TWO_PAGES) {
-						mAnimationTarget.x = leftRect.left;
-					} else {
-						mAnimationTarget.x = rightRect.left;
+				if(dx > -OnTouchMaxDx && dx < OnTouchMaxDx){//点击事件
+					if(me.getX()> view.getWidth()/3 && me.getX()< view.getWidth()*2/3
+							&& me.getY()> view.getHeight()/3 && me.getY()< view.getHeight()*2/3 ){
+						listener.setOnClick();
+                        mAnimationTarget.set(mDragStartPos);
+                        mAnimationTarget.x = rightRect.left;
+                        mAnimationTargetEvent = SET_CURL_TO_LEFT;
+						mAnimate = true;
+					}else {
+						if((mViewMode == SHOW_ONE_PAGE && mPointerPos.mPos.x < (rightRect.left + rightRect.right) / 2)
+								|| (mViewMode == SHOW_TWO_PAGES
+								&& mPointerPos.mPos.x < rightRect.left)){
+							mAnimationTarget.set(mDragStartPos);
+							mAnimationTarget.x = mRenderer
+									.getPageRect(CurlRenderer.PAGE_RIGHT).right;
+							mAnimationTargetEvent = SET_CURL_TO_RIGHT;
+						}else {
+							mAnimationTarget.set(mDragStartPos);
+							if ( mViewMode == SHOW_TWO_PAGES) {//mCurlState == CURL_RIGHT ||
+								mAnimationTarget.x = leftRect.left;
+							} else {
+								mAnimationTarget.x = rightRect.left;
+							}
+							mAnimationTargetEvent = SET_CURL_TO_LEFT;
+						}
+						mAnimate = true;
 					}
-					mAnimationTargetEvent = SET_CURL_TO_LEFT;
 				}else {
-					if((mViewMode == SHOW_ONE_PAGE && mPointerPos.mPos.x < (rightRect.left + rightRect.right) / 2)
-											|| (mViewMode == SHOW_TWO_PAGES
-											&& mPointerPos.mPos.x < rightRect.left)){
+					if (dx < 0) {
+						// On right side target is always right page's right border.
 						mAnimationTarget.set(mDragStartPos);
 						mAnimationTarget.x = mRenderer
 								.getPageRect(CurlRenderer.PAGE_RIGHT).right;
 						mAnimationTargetEvent = SET_CURL_TO_RIGHT;
-					}else {
+					} else{
+						// On left side target depends on visible pages.
 						mAnimationTarget.set(mDragStartPos);
-						if (mCurlState == CURL_RIGHT || mViewMode == SHOW_TWO_PAGES) {
+						if (mViewMode == SHOW_TWO_PAGES) {//mCurlState == CURL_RIGHT ||
 							mAnimationTarget.x = leftRect.left;
 						} else {
 							mAnimationTarget.x = rightRect.left;
 						}
 						mAnimationTargetEvent = SET_CURL_TO_LEFT;
 					}
+					mAnimate = true;
 				}
-				mAnimate = true;
 				requestRender();
 			}
 			break;
@@ -856,6 +882,14 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener,
 		 * Called once CurlView size changes.
 		 */
 		public void onSizeChanged(int width, int height);
+	}
+
+	public interface Listener{
+		public void setOnClick();
+	}
+
+	public void setOnClickListener(Listener listener){
+		this.listener = listener;
 	}
 
 }

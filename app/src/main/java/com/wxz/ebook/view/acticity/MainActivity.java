@@ -1,4 +1,4 @@
-package com.wxz.ebook.view;
+package com.wxz.ebook.view.acticity;
 
 import android.content.Intent;
 import android.os.Bundle;

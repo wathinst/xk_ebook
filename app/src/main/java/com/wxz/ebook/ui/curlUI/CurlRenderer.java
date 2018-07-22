@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-package com.wxz.ebook.curlUI;
+package com.wxz.ebook.ui.curlUI;
 
 import android.graphics.Color;
 import android.graphics.PointF;
@@ -108,7 +108,7 @@ public class CurlRenderer implements GLSurfaceView.Renderer {
 		gl.glLoadIdentity();
 
 		if (USE_PERSPECTIVE_PROJECTION) {
-			gl.glTranslatef(0, 0, -6f);
+			gl.glTranslatef(0, 0, -6f);//-6f
 		}
 
 		for (int i = 0; i < mCurlMeshes.size(); ++i) {

@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-package com.wxz.ebook.curlUI;
+package com.wxz.ebook.ui.curlUI;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

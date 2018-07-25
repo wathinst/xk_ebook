@@ -5,31 +5,25 @@ import android.os.AsyncTask;
 import com.wxz.ebook.bean.ChapterListBean;
 import com.wxz.ebook.tool.StrRWBuffer;
 
-public class ReadAsyncTask extends AsyncTask<StrRWBuffer,ChapterListBean,String> {
+public class ReadAsyncTask extends AsyncTask<StrRWBuffer,Void,ChapterListBean> {
 
     private ReadInterface readInterface;
 
     @Override
-    protected String doInBackground(StrRWBuffer... strRWBuffers) {
+    protected ChapterListBean doInBackground(StrRWBuffer... strRWBuffers) {
         StrRWBuffer buffer = strRWBuffers[0];
-        ChapterListBean bean = buffer.getChapterList();
-        publishProgress(bean);
-        return buffer.getChapterStr(bean.listBeans.get(10));
-    }
-
-    @Override
-    protected void onPostExecute(String str) {
-        super.onPostExecute(str);
-        if (str!=null){
-            readInterface.setChapterStr(str);
+        if (buffer!=null){
+            return buffer.getChapterList();
+        }else {
+            return null;
         }
     }
 
     @Override
-    protected void onProgressUpdate(ChapterListBean... values) {
-        super.onProgressUpdate(values);
-        if (values[0] != null){
-            readInterface.setChapterList(values[0]);
+    protected void onPostExecute(ChapterListBean chapterListBean) {
+        super.onPostExecute(chapterListBean);
+        if (chapterListBean!=null){
+            readInterface.setChapterList(chapterListBean);
         }
     }
 
@@ -39,7 +33,5 @@ public class ReadAsyncTask extends AsyncTask<StrRWBuffer,ChapterListBean,String>
 
     public interface ReadInterface{
         public void setChapterList(ChapterListBean chapterListBean);
-
-        public void setChapterStr(String str);
     }
 }

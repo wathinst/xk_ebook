@@ -28,7 +28,8 @@
                 android:gravity="center"
                 android:textSize="16sp"
                 android:text="@string/up_chapter"
-                android:id="@+id/read_set_up_chapter"/>
+                android:id="@+id/read_set_up_chapter"
+                android:background="@drawable/selector_set_but_item"/>
 
             <ProgressBar
                 android:id="@+id/read_set_progressBar"
@@ -45,7 +46,8 @@
                 android:textSize="16sp"
                 android:gravity="center"
                 android:text="@string/dn_chapter"
-                android:id="@+id/read_set_dn_chapter"/>
+                android:id="@+id/read_set_dn_chapter"
+                android:background="@drawable/selector_set_but_item"/>
         </LinearLayout>
 
         <LinearLayout
@@ -61,7 +63,8 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:src="@drawable/ic_list_white_24dp"
-                android:contentDescription="@string/list_icon" />
+                android:contentDescription="@string/list_icon"
+                android:background="@drawable/selector_set_but_item"/>
 
             <ImageView
                 android:id="@+id/read_set_size_bn"
@@ -71,6 +74,7 @@
                 android:contentDescription="@string/font_size_icon"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
+                android:background="@drawable/selector_set_but_item"
                 android:src="@drawable/ic_text_fields_white_24dp" />
 
             <ImageView
@@ -81,6 +85,7 @@
                 android:contentDescription="@string/set_icon"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
+                android:background="@drawable/selector_set_but_item"
                 android:src="@drawable/ic_settings_white_24dp"/>
         </LinearLayout>
 

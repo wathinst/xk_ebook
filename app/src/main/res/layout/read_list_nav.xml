@@ -7,11 +7,6 @@
     android:layout_height="match_parent"
     android:id="@+id/read_book_nav_view">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/read_book_nav_cover" />
-
     <LinearLayout
         android:id="@+id/read_book_nav_part"
         android:layout_width="match_parent"
@@ -21,13 +16,14 @@
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:padding="16dp"
             android:orientation="vertical"
             android:background="@drawable/paper">
 
             <TextView
                 android:paddingTop="8dp"
                 android:paddingBottom="24dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/read_book_name"

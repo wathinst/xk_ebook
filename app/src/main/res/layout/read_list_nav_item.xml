@@ -6,14 +6,13 @@
     android:orientation="vertical">
 
     <TextView
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
+        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/read_book_list_name"
         android:textSize="14sp"
-        android:textColor="@color/fontBlack"
-        android:background="@drawable/selector_read_list_item"/>
+        android:background="@drawable/selector_read_list_item"
+        android:textColor="@color/fontBlack" />
 
     <View
         android:layout_width="match_parent"

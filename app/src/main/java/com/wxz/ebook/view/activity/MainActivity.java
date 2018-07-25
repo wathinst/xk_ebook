@@ -1,4 +1,4 @@
-package com.wxz.ebook.view.acticity;
+package com.wxz.ebook.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,ReadPageActivity.class);
+                Intent intent = new Intent(MainActivity.this,BookShelfActivity.class);
                 startActivity(intent);
             }
         });

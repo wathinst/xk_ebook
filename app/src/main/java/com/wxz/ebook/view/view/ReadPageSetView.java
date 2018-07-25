@@ -10,13 +10,9 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
-import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -83,6 +79,7 @@ public class ReadPageSetView extends FrameLayout {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 set_part.setVisibility(GONE);
+                listener.setDisShowed();
             }
         });
         animator.start();
@@ -96,12 +93,22 @@ public class ReadPageSetView extends FrameLayout {
                 super.onAnimationStart(animation);
                 set_part.setVisibility(VISIBLE);
             }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                listener.setShowed();
+            }
         });
         animator.start();
     }
 
     public interface Listener{
         void setListOnClick(View v);
+
+        void setShowed();
+
+        void setDisShowed();
     }
 
 

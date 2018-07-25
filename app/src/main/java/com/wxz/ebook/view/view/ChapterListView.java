@@ -81,7 +81,7 @@ public class ChapterListView extends FrameLayout {
         other.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                disShow();
+                listener.setOtherOnClick(v);
             }
         });
         readAdapter.setOnItemClickListener(new ReadAdapter.OnItemClickListener() {
@@ -156,7 +156,10 @@ public class ChapterListView extends FrameLayout {
 
 
     public interface Listener{
+
         void setListOnClick(int position);
+
+        void setOtherOnClick(View v);
     }
 
     public void setOnClickListener(Listener listener){

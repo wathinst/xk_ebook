@@ -17,4 +17,6 @@
     <string name="set_icon">设置图标</string>
     <string name="up_chapter">上一章</string>
     <string name="dn_chapter">下一章</string>
+    <string name="title_activity_book_shelf">书架</string>
+    <string name="title_activity_search_file">本地导入</string>
 </resources>

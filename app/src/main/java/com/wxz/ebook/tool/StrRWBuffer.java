@@ -27,6 +27,11 @@ public class StrRWBuffer {
         channel = raf.getChannel();
     }
 
+    public StrRWBuffer(String filePath,String mode) throws IOException {
+        raf =  new RandomAccessFile(filePath,mode);
+        channel = raf.getChannel();
+    }
+
     public StrRWBuffer(String filePath) throws IOException {
         raf =  new RandomAccessFile(filePath,"r");
         channel = raf.getChannel();

@@ -2,9 +2,7 @@ package com.wxz.ebook.tool;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.wxz.ebook.R;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,7 +25,7 @@ public class ReadTXTFile {
     public String readTxt(String path) throws Exception {
         DateUnit dateUnit =new DateUnit();
         String filePath = context.getFilesDir()+ "/"+dateUnit.getRandomFileName()+".xkr";
-        StrRWBuffer buffer = new StrRWBuffer(filePath);
+        StrRWBuffer buffer = new StrRWBuffer(filePath,"rw");
         int dot=path.lastIndexOf("/");
         String name=path.substring(dot+1);
         int dot1=name.lastIndexOf(".");

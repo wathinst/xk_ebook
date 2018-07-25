@@ -3,6 +3,7 @@ package com.wxz.ebook.asyncTask;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.wxz.ebook.bean.BookInfoBean;
 import com.wxz.ebook.tool.ReadTXTFile;
@@ -27,7 +28,9 @@ public class ResolveAsyncTask extends AsyncTask<String,Void,BookInfoBean> {
         name = name.substring(0,dot1);
         ReadTXTFile readTXTFile = new ReadTXTFile(context);
         String filePath = "";
+        Log.e("sd",name);
         try {
+            Log.e("sd1",strings[0]);
             filePath = readTXTFile.readTxt(strings[0]);
         }catch (Exception e) {
             e.printStackTrace();

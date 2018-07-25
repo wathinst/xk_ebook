@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.acticity.ReadPageActivity">
+    tools:context=".view.activity.ReadPageActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,6 +22,11 @@
             android:id="@+id/read_curl_page_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <com.wxz.ebook.view.view.CoverView
+            android:id="@+id/read_page_cover_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <com.wxz.ebook.view.view.ReadPageSetView
             android:layout_width="match_parent"

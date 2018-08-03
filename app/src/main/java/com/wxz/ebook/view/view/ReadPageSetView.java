@@ -68,6 +68,12 @@ public class ReadPageSetView extends FrameLayout {
                 listener.setListOnClick(v);
             }
         });
+        set_size.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.setSizeOnClick(v);
+            }
+        });
         set_part.setVisibility(GONE);
     }
 
@@ -105,6 +111,8 @@ public class ReadPageSetView extends FrameLayout {
 
     public interface Listener{
         void setListOnClick(View v);
+
+        void setSizeOnClick(View v);
 
         void setShowed();
 

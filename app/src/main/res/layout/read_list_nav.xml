@@ -14,6 +14,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/read_book_nav_context"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:orientation="vertical"

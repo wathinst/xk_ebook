@@ -26,6 +26,9 @@ import android.widget.TextView;
 
 import com.wxz.ebook.R;
 import com.wxz.ebook.bean.ChapterListBean;
+import com.wxz.ebook.config.ReadPageConfig;
+import com.wxz.ebook.config.SharedPreferencesUtil;
+import com.wxz.ebook.tool.AppUtils;
 import com.wxz.ebook.view.adapter.ReadAdapter;
 
 import java.util.ArrayList;
@@ -38,9 +41,11 @@ public class ChapterListView extends FrameLayout {
     private RecyclerView nav_list;
     private CoordinatorLayout nav_view;
     private LinearLayout nav_part;
+    private LinearLayout nav_context;
     private ReadAdapter readAdapter;
     private List<ChapterListBean.ListBean> list;
     private Listener listener;
+    private ReadPageConfig readPageConfig;
 
     public ChapterListView(@NonNull Context context) {
         this(context,null);
@@ -64,6 +69,12 @@ public class ChapterListView extends FrameLayout {
     private void init() {
         LayoutInflater.from(getContext()).inflate(R.layout.read_list_nav,this,true);
         initView();
+        AppUtils.init(getContext());
+        SharedPreferencesUtil.init(getContext(),"xkEBookRead",Context.MODE_PRIVATE);
+        readPageConfig = new ReadPageConfig();
+        readPageConfig.setModeIndex(readPageConfig.pageTheme);
+        nav_context.setBackground(readPageConfig.getModeDrawable(readPageConfig.pageTheme));
+        readAdapter.setChapTextColor(readPageConfig.textColor);
         nav_part.setVisibility(GONE);
     }
 
@@ -78,6 +89,7 @@ public class ChapterListView extends FrameLayout {
         nav_list.setAdapter(readAdapter);
         nav_view = findViewById(R.id.read_book_nav_view);
         nav_part = findViewById(R.id.read_book_nav_part);
+        nav_context = findViewById(R.id.read_book_nav_context);
         other.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,8 +125,6 @@ public class ChapterListView extends FrameLayout {
     }
 
     public void show(int durChapter){
-        Log.e("num1",String.valueOf(durChapter));
-        Log.e("num2",String.valueOf(list.size()));
         if(durChapter >= 0 && durChapter < list.size()){
             readAdapter.setCurrentChapter(durChapter);
             ((LinearLayoutManager) nav_list.getLayoutManager()).scrollToPositionWithOffset(durChapter,0);
@@ -151,6 +161,15 @@ public class ChapterListView extends FrameLayout {
 
     public void setName(String name){
         book_name.setText(name);
+    }
+
+    public void upBackground(){
+        AppUtils.init(getContext());
+        SharedPreferencesUtil.init(getContext(),"xkEBookRead",Context.MODE_PRIVATE);
+        readPageConfig = new ReadPageConfig();
+        readPageConfig.setModeIndex(readPageConfig.pageTheme);
+        nav_context.setBackground(readPageConfig.getModeDrawable(readPageConfig.pageTheme));
+        readAdapter.setChapTextColor(readPageConfig.textColor);
     }
 
 

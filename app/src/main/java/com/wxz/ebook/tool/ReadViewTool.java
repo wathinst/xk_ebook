@@ -13,6 +13,7 @@ public class ReadViewTool {
     private List<Integer> strXs;
     private List<Integer> strColors;
     private int lineNum;
+    private float lineHeight;
 
     public void init(){
         pageModels = new ArrayList<>();
@@ -22,6 +23,7 @@ public class ReadViewTool {
         strXs = new ArrayList<>();
         strColors = new ArrayList<>();
         lineNum = 0;
+        lineHeight = 0;
     }
 
     public void lineInit(){
@@ -31,6 +33,7 @@ public class ReadViewTool {
         strXs = new ArrayList<>();
         strColors = new ArrayList<>();
         lineNum = 0;
+        lineHeight = 0;
     }
 
     public void addStrArr(String subStr,int strWidth,int strX,int strColor){
@@ -49,8 +52,8 @@ public class ReadViewTool {
         }
     }
 
-    public void addLine(int strDiff){
-        BookBean.PageModel.LineModel lineModel =new BookBean.PageModel.LineModel(stringList,strWidths,strXs,strDiff,strColors);
+    public void addLine(int strDiff, boolean b){
+        BookBean.PageModel.LineModel lineModel =new BookBean.PageModel.LineModel(stringList,strWidths,strXs,strDiff,strColors,b?2.0f:1.5f);
         lineModels.add(lineModel);
         stringList = new ArrayList<>();
         strWidths = new ArrayList<>();
@@ -58,22 +61,37 @@ public class ReadViewTool {
         strColors = new ArrayList<>();
     }
 
-    public void addPage(int readHeight,int fontSize){
+    private float lastHeight;
+    public boolean addPage(int readHeight, int fontSize, boolean b){
         lineNum++;
-        if(lineNum*fontSize*1.5 > readHeight){
-            BookBean.PageModel pageModel =new BookBean.PageModel(lineModels,0);
+        //lineHeight += fontSize;
+        if(lineHeight + fontSize > readHeight){
+            BookBean.PageModel pageModel =new BookBean.PageModel(lineModels,readHeight-lineHeight+lastHeight);
             pageModels.add(pageModel);
             lineModels = new ArrayList<>();
             lineNum = 1;
+            lineHeight = fontSize* 1.5f;
+            lastHeight = fontSize * 0.5f;
+            return false;
+        }else {
+            if (b){
+                lastHeight = fontSize;
+                lineHeight += fontSize * 2.0f;
+            }else {
+                lastHeight = fontSize * 0.5f;
+                lineHeight += fontSize * 1.5f;
+            }
+            return true;
         }
     }
 
     public void addEnd(int readHeight,int fontSize){
-        addPage(readHeight,fontSize);
-        addLine(0);
+        addPage(readHeight,fontSize,false);
+        addLine(0,false);
         BookBean.PageModel pageModel =new BookBean.PageModel(lineModels,0);
         pageModels.add(pageModel);
         lineNum = 1;
+        lineHeight = fontSize* 1.5f;
     }
 
     public List<BookBean.PageModel> getPageModels() {

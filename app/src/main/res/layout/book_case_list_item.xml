@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.wxz.ebook.ui.bookUI.BookCaseView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/book_case_list_item"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="18dp"
-        android:paddingBottom="18dp"/>
+        android:layout_height="wrap_content">
+
+        <com.wxz.ebook.view.ui.bookUI.BookCaseView
+            android:background="@drawable/selector_read_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/book_case_list_item"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"/>
+
+    </LinearLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>

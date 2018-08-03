@@ -46,7 +46,9 @@ public class SearchFileActivity extends AppCompatActivity implements FileAsyncTa
             public void onClick(int position) {
                 Intent intent = new Intent(SearchFileActivity.this, ReadPageActivity.class);
                 intent.putExtra("docBean", docBeanList.get(position));
-                startActivity(intent);
+                startActivityForResult(intent,1);
+                finish();
+                //startActivity(intent);
             }
         });
 

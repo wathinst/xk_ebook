@@ -6,15 +6,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.wxz.ebook.R;
 import com.wxz.ebook.bean.BookBean;
 import com.wxz.ebook.bean.BookInfoBean;
+import com.wxz.ebook.tool.ComparatorBookInfo;
 import com.wxz.ebook.tool.FileHelper;
 import com.wxz.ebook.view.adapter.BookCaseAdapter;
 
+import java.util.Collections;
 import java.util.List;
 
 public class BookShelfActivity extends AppCompatActivity {
@@ -45,7 +48,7 @@ public class BookShelfActivity extends AppCompatActivity {
             public void onClick(int position) {
                 Intent intent = new Intent(BookShelfActivity.this, ReadPageActivity.class);
                 intent.putExtra("bookInfoBean", bookInfoBeans.get(position));
-                startActivityForResult(intent,1);
+                startActivityForResult(intent,2);
             }
             @Override
             public void onLongClick(int position) {
@@ -74,13 +77,38 @@ public class BookShelfActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add) {
             Intent intent = new Intent(BookShelfActivity.this, SearchFileActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,1);
             return true;
         }else if (id == R.id.action_search) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 2){
+            BookInfoBean book = (BookInfoBean) data.getSerializableExtra("rBookInfoBean");
+            Log.e("name",book.getName());
+            for (int i=0;i<bookInfoBeans.size();i++){
+                if(bookInfoBeans.get(i).getId().equals(book.getId())){
+                    bookInfoBeans.set(i,book);
+                }
+            }
+            ComparatorBookInfo comparatorBookInfo = new ComparatorBookInfo();
+            Collections.sort(bookInfoBeans,comparatorBookInfo);
+            adapter.notifyDataSetChanged();
+        }
+        if(requestCode == 1){
+            BookInfoBean book = (BookInfoBean) data.getSerializableExtra("rBookInfoBean");
+            Log.e("name",book.getName());
+            bookInfoBeans.add(book);
+            ComparatorBookInfo comparatorBookInfo = new ComparatorBookInfo();
+            Collections.sort(bookInfoBeans,comparatorBookInfo);
+            adapter.notifyDataSetChanged();
+        }
     }
 
 }

@@ -8,11 +8,12 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.wxz.ebook.bean.BookBean;
+import com.wxz.ebook.config.ReadPageConfig;
 
 public class ReadFactory {
-    private Context context;
     private Bitmap frontBitmap,backBitmap;
     private Canvas frontCanvas,backCanvas;
     private int phoneWidth, phoneHeight;
@@ -20,17 +21,22 @@ public class ReadFactory {
     private Paint paint;
     private BookBean bookBean;
     private ReadViewTool readViewTool;
-    private int fontSize;
-    private int textColor = Color.BLACK;
+    private int textSize;
+    private int textColor;
     private Matrix matrix;
     private Bitmap bgr;
     private String strBuf;
+    private ReadPageConfig readPageConfig;
 
 
-    public ReadFactory(Context context) {
-        this.context = context;
-        Resources resources = context.getResources();
-        DisplayMetrics dm = resources.getDisplayMetrics();
+    public ReadFactory() {
+        readPageConfig = new ReadPageConfig();
+        textSize = readPageConfig.textSize;
+        readPageConfig.setModeIndex(readPageConfig.pageTheme);
+        textColor = readPageConfig.textColor;
+        bgr = readPageConfig.getModeBitmap(readPageConfig.pageTheme);
+
+        DisplayMetrics dm = AppUtils.getResource().getDisplayMetrics();
         phoneWidth = dm.widthPixels;
         phoneHeight = dm.heightPixels;
         frontBitmap = Bitmap.createBitmap(phoneWidth, phoneHeight, Bitmap.Config.ARGB_8888);
@@ -38,10 +44,10 @@ public class ReadFactory {
         backBitmap = Bitmap.createBitmap(phoneWidth, phoneHeight, Bitmap.Config.ARGB_8888);
         backCanvas = new Canvas(backBitmap);
         paint = new Paint();
-        fontSize = 24;
-        paint.setTextSize(fontSize);
+        paint.setTextSize(textSize);
         paint.setAntiAlias(true);
         bookBean = new BookBean();
+        bookBean.bookName="";
         readViewTool = new ReadViewTool();
         matrix = new Matrix();
         setPadding(phoneWidth/22,phoneWidth/22, phoneHeight /22, phoneHeight /22);
@@ -56,6 +62,13 @@ public class ReadFactory {
     }
 
 
+    public void setPageTheme(int index){
+        readPageConfig.setModeIndex(index);
+        bgr = readPageConfig.getModeBitmap(index);
+        textColor = readPageConfig.textColor;
+        paint.setTextSize(textColor);
+        readPageConfig.saveReadPageConfig();
+    }
 
     public void setBookName(String str){
         bookBean.bookName = str;
@@ -73,8 +86,8 @@ public class ReadFactory {
 
     public void createChapterStr(){
         readViewTool.init();
-        readViewTool.setStrCaptal(fontSize,textColor);
-        int lineWidth = 2*fontSize;
+        readViewTool.setStrCaptal(textSize,textColor);
+        int lineWidth = 2*textSize;
         for(int i=0;i<strBuf.length();i++){
             String subStr;
             if(i < strBuf.length()-1){
@@ -85,20 +98,20 @@ public class ReadFactory {
             int fontWidth = (int)paint.measureText(subStr);
             lineWidth = lineWidth + fontWidth;
             if (subStr.equals("\n")){
-                readViewTool.addPage(phoneHeight -padT-padB,fontSize);
-                readViewTool.addLine(0);
-                readViewTool.setStrCaptal(fontSize,textColor);
-                lineWidth = 2*fontSize;
+                boolean b = readViewTool.addPage(phoneHeight -padT-padB,textSize,true);
+                readViewTool.addLine(0, b);
+                readViewTool.setStrCaptal(textSize,textColor);
+                lineWidth = 2*textSize;
             }else if(lineWidth < phoneWidth - padR -padL){
                 readViewTool.addStrArr(subStr,fontWidth,lineWidth-fontWidth,textColor);
             }else{
-                readViewTool.addPage(phoneHeight -padT-padB,fontSize);
-                readViewTool.addLine(phoneWidth - padR -padL-lineWidth+fontWidth);
+                readViewTool.addPage(phoneHeight -padT-padB,textSize,false);
+                readViewTool.addLine(phoneWidth - padR -padL-lineWidth+fontWidth,false);
                 lineWidth = fontWidth;
                 readViewTool.addStrArr(subStr,lineWidth,0,textColor);
             }
         }
-        readViewTool.addEnd(phoneHeight -padT-padB,fontSize);
+        readViewTool.addEnd(phoneHeight -padT-padB,textSize);
         bookBean.pageModels = readViewTool.getPageModels();
     }
 
@@ -113,18 +126,41 @@ public class ReadFactory {
     }
 
     public void readDraw(){
+        setMatrix();
+        paint.setColor(textColor);
         frontBitmap = Bitmap.createBitmap(phoneWidth, phoneHeight, Bitmap.Config.ARGB_8888);
         frontCanvas = new Canvas(frontBitmap);
         backBitmap = Bitmap.createBitmap(phoneWidth, phoneHeight, Bitmap.Config.ARGB_8888);
         backCanvas = new Canvas(backBitmap);
         frontCanvas.drawBitmap(bgr,matrix,paint);
         backCanvas.drawBitmap(bgr,matrix,paint);
+
+        paint.setTextSize(24);
+        paint.setColor(Color.parseColor("#444444"));
+        frontCanvas.drawText(bookBean.bookName, padL,
+                32, paint);
+        paint.setColor(setColorAlpha(Color.parseColor("#444444")));
+        backCanvas.drawText(bookBean.bookName, padL,
+                32, paint);
+
+        paint.setTextSize(textSize);
         BookBean.PageModel page = bookBean.pageModels.get(bookBean.index);
+        float lineHeight = textSize + padT - 4;
+        float pSpacing;
+        int pNum =page.lineModels.size();
+        if(pNum <= 1){
+            pSpacing = 0;
+        }else {
+            pSpacing = page.lineDiff/(float)(pNum-1);
+        }
         for(int i = 0;i<page.lineModels.size();i++){
             BookBean.PageModel.LineModel line= page.lineModels.get(i);
+            if (i>0){
+                lineHeight += textSize * page.lineModels.get(i-1).scaleH + pSpacing;
+            }
             int num =line.stringList.size();
             float spacing;
-            if(num == 0){
+            if(num <= 1){
                 spacing = 0;
             }else {
                 spacing = line.strDiff/(float)(num-1);
@@ -132,11 +168,10 @@ public class ReadFactory {
             for (int j=0;j<num;j++){
                 paint.setColor(line.strColors.get(j));
                 frontCanvas.drawText(line.stringList.get(j), line.strX.get(j)+ padL+ j*spacing,
-                        (i + 1) * fontSize * 1.5f + padT - 4, paint);
+                        lineHeight, paint);
                 paint.setColor(setColorAlpha(line.strColors.get(j)));
                 backCanvas.drawText(line.stringList.get(j), line.strX.get(j)+ padL+ j*spacing,
-                        (i + 1) * fontSize * 1.5f + padT - 4, paint);
-                paint.setColor(line.strColors.get(j));
+                        lineHeight, paint);
             }
         }
     }
@@ -148,8 +183,10 @@ public class ReadFactory {
     }
 
     public void setFontSize(int size){
-        fontSize = size;
-        paint.setTextSize(fontSize);
+        textSize = size;
+        paint.setTextSize(textSize);
+        readPageConfig.textSize = textSize;
+        readPageConfig.saveReadPageConfig();
         createChapterStr();
     }
 

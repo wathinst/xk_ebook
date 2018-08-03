@@ -1,4 +1,4 @@
-package com.wxz.ebook.ui.bookUI;
+package com.wxz.ebook.view.ui.bookUI;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -108,12 +108,12 @@ public class BookCaseView extends View {
             if(lineWidth < width){
                 readTool.addStrArr(subStr,fontWidth,lineWidth-fontWidth,textColor);
             }else{
-                readTool.addLine(width-lineWidth+fontWidth);
+                readTool.addLine(width-lineWidth+fontWidth,false);
                 lineWidth = fontWidth;
                 readTool.addStrArr(subStr,lineWidth,0,textColor);
             }
         }
-        readTool.addLine(width-lineWidth);
+        readTool.addLine(width-lineWidth,false);
         return readTool.getLineModels();
     }
 

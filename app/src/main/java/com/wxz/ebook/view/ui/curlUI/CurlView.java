@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-package com.wxz.ebook.ui.curlUI;
+package com.wxz.ebook.view.ui.curlUI;
 
 import android.content.Context;
 import android.graphics.PointF;
@@ -131,6 +131,7 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener,
 	public int getCurrentIndex() {
 		return mCurrentIndex;
 	}
+
 
 	/**
 	 * Initialize method.
@@ -547,27 +548,15 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener,
 
     public void setNewCurl() {
         mCurrentIndex = 0;
-		// Remove meshes from renderer.
 		mCurlState = CURL_NONE;
 		updatePages();
-		//mRenderer.removeCurlMesh(mPageLeft);
-		//mRenderer.removeCurlMesh(mPageRight);
-		//mRenderer.removeCurlMesh(mPageCurl);
-
-		/*defaultPage(mPageRight.getTexturePage());
-		mPageRight.setFlipTexture(false);
-		mPageRight.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_RIGHT));
-		mPageRight.reset();
-		mRenderer.addCurlMesh(mPageRight);
-
-		defaultPage(mPageLeft.getTexturePage());
-		mPageLeft.setFlipTexture(true);
-		mPageLeft.setRect(mRenderer.getPageRect(CurlRenderer.PAGE_LEFT));
-		mPageLeft.reset();
-		if (mRenderLeftPage) {
-			mRenderer.addCurlMesh(mPageLeft);
-		}*/
     }
+
+	public void updateCurl() {
+		mCurlState = CURL_NONE;
+		updatePages();
+		requestRender();
+	}
 
 	/**
 	 * If set to true, touch event pressure information is used to adjust curl
@@ -638,6 +627,7 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener,
 			break;
 		}
 	}
+
 
 	/**
 	 * Switches meshes and loads new bitmaps if available. Updated to support 2

@@ -21,11 +21,13 @@ public class ReadAdapter extends RecyclerView.Adapter<ReadAdapter.MyHolder> {
     private int currentChapter;
     private List<ChapterListBean.ListBean> listBeans;
     private OnItemClickListener onItemClickListener;
+    private int textColor;
 
     public ReadAdapter(Context context, List<ChapterListBean.ListBean> listBeans) {
         this.context = context;
         this.listBeans = listBeans;
         currentChapter = 0;
+        textColor = ContextCompat.getColor(context, R.color.fontBlack);
     }
 
     @NonNull
@@ -41,7 +43,7 @@ public class ReadAdapter extends RecyclerView.Adapter<ReadAdapter.MyHolder> {
         if (currentChapter == position) {
             holder.read_text.setTextColor(ContextCompat.getColor(context, R.color.fontSelect));
         }else {
-            holder.read_text.setTextColor(ContextCompat.getColor(context, R.color.fontBlack));
+            holder.read_text.setTextColor(textColor);
         }
         if( onItemClickListener!= null){
             holder.itemView.setOnClickListener( new View.OnClickListener() {
@@ -62,6 +64,10 @@ public class ReadAdapter extends RecyclerView.Adapter<ReadAdapter.MyHolder> {
     public void setCurrentChapter(int chapter) {
         currentChapter = chapter;
         notifyDataSetChanged();
+    }
+
+    public void setChapTextColor(int textColor){
+        this.textColor = textColor;
     }
 
     public int getCurrentChapter(){

@@ -29,11 +29,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button button = findViewById(R.id.main_curl_btn);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button book_shelf = findViewById(R.id.main_book_shelf_btn);
+        book_shelf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,BookShelfActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button book_market = findViewById(R.id.main_book_market_btn);
+        book_market.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,BookMarketActivity.class);
                 startActivity(intent);
             }
         });

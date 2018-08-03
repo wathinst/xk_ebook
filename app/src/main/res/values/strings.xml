@@ -19,4 +19,7 @@
     <string name="dn_chapter">下一章</string>
     <string name="title_activity_book_shelf">书架</string>
     <string name="title_activity_search_file">本地导入</string>
+    <string name="title_activity_book_market">书城</string>
+    <string name="title_activity_book_market_detail">BookMarketDetailActivity</string>
+    <string name="book_more">更多</string>
 </resources>

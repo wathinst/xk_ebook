@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.wxz.ebook.R;
 import com.wxz.ebook.bean.BookInfoBean;
-import com.wxz.ebook.ui.bookUI.BookCaseView;
+import com.wxz.ebook.view.ui.bookUI.BookCaseView;
 
 import java.util.List;
 

@@ -18,12 +18,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_margin="16dp">
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:textColor="@color/fontWhite"
                 android:gravity="center"
                 android:textSize="16sp"
@@ -31,17 +30,22 @@
                 android:id="@+id/read_set_up_chapter"
                 android:background="@drawable/selector_set_but_item"/>
 
-            <ProgressBar
+            <SeekBar
                 android:id="@+id/read_set_progressBar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2" />
+                android:layout_weight="4"
+                android:maxHeight="4dp"
+                android:minHeight="4dp"
+                android:max="100"
+                android:progress="40"
+                android:thumb="@color/colorWhile"
+                android:progressDrawable="@drawable/progressbar"
+                android:layout_gravity="center"/>
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:textColor="@color/fontWhite"
                 android:textSize="16sp"
                 android:gravity="center"

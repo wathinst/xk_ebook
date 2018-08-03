@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/read_book_text_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/read_book_text_part"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:background="@color/setBackground"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/fontWhite"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="@string/up_chapter"
+                android:id="@+id/read_text_up_chapter"
+                android:background="@drawable/selector_set_but_item"/>
+
+            <SeekBar
+                android:id="@+id/read_text_progressBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:maxHeight="4dp"
+                android:minHeight="4dp"
+                android:max="100"
+                android:progress="40"
+                android:thumb="@color/colorWhile"
+                android:progressDrawable="@drawable/progressbar"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/fontWhite"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:text="@string/dn_chapter"
+                android:id="@+id/read_text_dn_chapter"
+                android:background="@drawable/selector_set_but_item"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:id="@+id/read_page_text_paper"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/paper"
+                android:contentDescription="@string/list_icon"
+                android:background="@drawable/selector_set_but_item"/>
+
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="40dp"/>
+
+            <ImageView
+                android:id="@+id/read_page_text_white"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg2"
+                android:contentDescription="@string/list_icon"
+                android:background="@drawable/selector_set_but_item"/>
+
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="40dp"/>
+
+            <ImageView
+                android:id="@+id/read_page_text_purple"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg3"
+                android:contentDescription="@string/list_icon"
+                android:background="@drawable/selector_set_but_item"/>
+
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="40dp"/>
+
+            <ImageView
+                android:id="@+id/read_page_text_michelin"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg5"
+                android:contentDescription="@string/list_icon"
+                android:background="@drawable/selector_set_but_item"/>
+
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="40dp"/>
+
+            <ImageView
+                android:id="@+id/read_page_text_gray"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg4"
+                android:contentDescription="@string/list_icon"
+                android:background="@drawable/selector_set_but_item"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

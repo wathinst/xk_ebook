@@ -8,28 +8,11 @@
     tools:context=".view.activity.BookMarketActivity"
     tools:showIn="@layout/activity_book_market">
 
-    <com.wxz.ebook.view.view.BookMarketClassView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/book_market_class_view_city"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="match_parent"
+        android:id="@+id/book_market_class_recyclerView">
 
-    <com.wxz.ebook.view.view.BookMarketClassView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/book_market_class_view_fantasy"
-        app:layout_constraintTop_toBottomOf="@id/book_market_class_view_city"/>
-
-    <com.wxz.ebook.view.view.BookMarketClassView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/book_market_class_view_xianXia"
-        app:layout_constraintTop_toBottomOf="@id/book_market_class_view_fantasy"/>
-
-    <com.wxz.ebook.view.view.BookMarketClassView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/book_market_class_view_military"
-        app:layout_constraintTop_toBottomOf="@id/book_market_class_view_xianXia"/>
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.constraint.ConstraintLayout>

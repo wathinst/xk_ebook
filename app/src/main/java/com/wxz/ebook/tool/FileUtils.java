@@ -36,6 +36,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -243,10 +244,9 @@ public class FileUtils {
      */
     public static String createRootPath(Context context) {
         String cacheRootPath = "";
-        if (isSdCardAvailable()) {
-            // /sdcard/Android/data/<application package>/cache
-            cacheRootPath = context.getExternalCacheDir().getPath();
-        } else {
+        // /sdcard/Android/data/<application package>/cache
+        if (isSdCardAvailable()) cacheRootPath = Objects.requireNonNull(context.getExternalCacheDir()).getPath();
+        else {
             // /data/data/<application package>/cache
             cacheRootPath = context.getCacheDir().getPath();
         }

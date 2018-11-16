@@ -7,6 +7,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import com.wxz.ebook.bean.DocBean;
+import com.wxz.ebook.config.Constant;
+import com.wxz.ebook.tool.AppUtils;
+import com.wxz.ebook.tool.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,7 @@ public class FileAsyncTask extends AsyncTask<Context,Void,List<DocBean>> {
     }
 
     private List<DocBean> queryFiles(){
+        //String bookpath = FileUtils.createRootPath(AppUtils.getAppContext());
         List<DocBean> docBeanModels = new ArrayList<>();
         String[] projection = new String[] { MediaStore.Files.FileColumns._ID,
                 MediaStore.Files.FileColumns.DATA,
@@ -38,12 +42,27 @@ public class FileAsyncTask extends AsyncTask<Context,Void,List<DocBean>> {
                 MediaStore.Files.FileColumns.DATE_ADDED,
                 MediaStore.Files.FileColumns.DATE_MODIFIED
         };
-        Cursor cursor = context.getContentResolver().query(
+       Cursor cursor = context.getContentResolver().query(
                 Uri.parse("content://media/external/file"),
                 projection,
                 MediaStore.Files.FileColumns.SIZE + " >= 1024 AND "+ MediaStore.Files.FileColumns.DATA + " like ? ",
                 new String[]{"%.txt"},
                 null);
+
+        // 查询后缀名为txt与pdf，并且不位于项目缓存中的文档
+        /*Cursor cursor = context.getContentResolver().query(
+                Uri.parse("content://media/external/file"),
+                projection,
+                MediaStore.Files.FileColumns.DATA + " not like ? and ("
+                        + MediaStore.Files.FileColumns.DATA + " like ? or "
+                        + MediaStore.Files.FileColumns.DATA + " like ? or "
+                        + MediaStore.Files.FileColumns.DATA + " like ? or "
+                        + MediaStore.Files.FileColumns.DATA + " like ? )",
+                new String[]{"%" + bookpath + "%",
+                        "%" + Constant.SUFFIX_TXT,
+                        "%" + Constant.SUFFIX_PDF,
+                        "%" + Constant.SUFFIX_EPUB,
+                        "%" + Constant.SUFFIX_CHM}, null);*/
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {

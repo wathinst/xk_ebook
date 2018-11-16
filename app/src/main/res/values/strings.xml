@@ -22,4 +22,8 @@
     <string name="title_activity_book_market">书城</string>
     <string name="title_activity_book_market_detail">BookMarketDetailActivity</string>
     <string name="book_more">更多</string>
+    <string name="title_activity_main_read">书架</string>
+    <string name="title_activity_main_read_book_shelf">书架</string>
+    <string name="title_activity_main_read_book_market">书城</string>
+    <string name="title_activity_main_read_my">我的</string>
 </resources>

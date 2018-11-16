@@ -25,6 +25,7 @@ import com.wxz.ebook.bean.DocBean;
 import com.wxz.ebook.config.ReadPageTheme;
 import com.wxz.ebook.config.SharedPreferencesUtil;
 import com.wxz.ebook.tool.AppUtils;
+import com.wxz.ebook.tool.DensityUtil;
 import com.wxz.ebook.tool.FileHelper;
 import com.wxz.ebook.view.ui.curlUI.CurlPage;
 import com.wxz.ebook.view.ui.curlUI.CurlView;

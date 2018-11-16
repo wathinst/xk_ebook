@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,7 @@ import com.wxz.ebook.api.BookApi;
 import com.wxz.ebook.bean.BooksByCats;
 import com.wxz.ebook.cache.CacheProviders;
 import com.wxz.ebook.view.adapter.BookMarketSubListAdapter;
-import com.wxz.ebook.view.adapter.ReadAdapter;
+import com.wxz.ebook.view.ui.recyclerUI.BetterRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import io.reactivex.Observable;
@@ -35,7 +34,7 @@ import static android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
 
 public class BookMarketClassView extends FrameLayout {
     private LinearLayout title;
-    private RecyclerView recyclerView;
+    private BetterRecyclerView recyclerView;
     private BookMarketSubListAdapter adapter;
     private List<BooksByCats.BooksBean> booksBeans;
     private TextView title_text;
@@ -68,13 +67,13 @@ public class BookMarketClassView extends FrameLayout {
         recyclerView.setLayoutManager(manager);
         adapter = new BookMarketSubListAdapter(getContext(),booksBeans);
         recyclerView.setAdapter(adapter);
+        setOnClick();
     }
 
     private void initView() {
         title = findViewById(R.id.book_market_class_view_title);
         title_text = findViewById(R.id.book_market_class_view_title_text);
         recyclerView = findViewById(R.id.book_market_view_recycler_view);
-        setOnClick();
     }
 
     public void setOnClick(){
@@ -85,7 +84,7 @@ public class BookMarketClassView extends FrameLayout {
             }
         });
 
-        adapter.setOnItemClickListener(new ReadAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new BookMarketSubListAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
                 listener.setItemOnClick(position);
@@ -129,7 +128,6 @@ public class BookMarketClassView extends FrameLayout {
 
     public interface Listener{
         void setTitleOnClick(View v);
-
         void setItemOnClick(int position);
     }
 

@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.activity.MainActivity"
+            android:name=".view.activity.SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -51,7 +51,15 @@
         <activity
             android:name=".view.activity.BookMarketDetailActivity"
             android:label="@string/title_activity_book_market_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.MainActivity"
+            android:label="@string/title_activity_main_read"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".view.activity.MainActivity"
+            android:label="@string/title_activity_main_read"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

@@ -2,50 +2,121 @@ package com.wxz.ebook.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.wxz.ebook.R;
+import com.wxz.ebook.view.fragment.BookMarketFragment;
+import com.wxz.ebook.view.fragment.BookMineFragment;
+import com.wxz.ebook.view.fragment.BookShelfFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Toolbar toolbar;
+    private BookMarketFragment bookMarketFragment;
+    private BookShelfFragment bookShelfFragment;
+    private BookMineFragment bookMineFragment;
+    private Fragment[] fragments;
+    private int lastfragment;//用于记录上个选择的Fragment
+    private BottomNavigationView navigation;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    if(lastfragment!=0)
+                    {
+                        toolbar.setTitle(R.string.title_activity_main_read_book_shelf);
+                        switchFragment(lastfragment,0);
+                        lastfragment=0;
+                    }
+                    return true;
+                case R.id.navigation_dashboard:
+                    if(lastfragment!=1)
+                    {
+                        toolbar.setTitle(R.string.title_activity_main_read_book_market);
+                        switchFragment(lastfragment,1);
+                        lastfragment=1;
+                    }
+                    return true;
+                case R.id.navigation_notifications:
+                    if(lastfragment!=2)
+                    {
+                        toolbar.setTitle(R.string.title_activity_main_read_my);
+                        switchFragment(lastfragment,2);
+                        lastfragment=2;
+                    }
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        initFragment();
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    private void initFragment()
+    {
+        bookShelfFragment = new BookShelfFragment();
+        bookMarketFragment = new BookMarketFragment();
+        bookMineFragment = new BookMineFragment();
+        fragments = new Fragment[]{bookShelfFragment,bookMarketFragment,bookMineFragment};
+        lastfragment=0;
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_read_view,bookShelfFragment).show(bookShelfFragment).commit();
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
 
-        Button book_shelf = findViewById(R.id.main_book_shelf_btn);
-        book_shelf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,BookShelfActivity.class);
-                startActivity(intent);
-            }
-        });
+    private void switchFragment(int lastfragment,int index)
+    {
+        FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
+        transaction.hide(fragments[lastfragment]);//隐藏上个Fragment
+        if(!fragments[index].isAdded())
+        {
+            transaction.add(R.id.main_read_view,fragments[index]);
+        }
+        transaction.show(fragments[index]).commitAllowingStateLoss();
+    }
 
-        Button book_market = findViewById(R.id.main_book_market_btn);
-        book_market.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,BookMarketActivity.class);
-                startActivity(intent);
-            }
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_add) {
+            Intent intent = new Intent(MainActivity.this, SearchFileActivity.class);
+            startActivityForResult(intent,1);
+            return true;
+        }else if (id == R.id.action_search) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -1,44 +1,56 @@
-package com.wxz.ebook.view.activity;
+package com.wxz.ebook.view.fragment;
 
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.wxz.ebook.R;
-import com.wxz.ebook.bean.BookBean;
 import com.wxz.ebook.bean.BookInfoBean;
 import com.wxz.ebook.tool.ComparatorBookInfo;
 import com.wxz.ebook.tool.FileHelper;
+import com.wxz.ebook.view.activity.ReadPageActivity;
 import com.wxz.ebook.view.adapter.BookCaseAdapter;
 
 import java.util.Collections;
 import java.util.List;
 
-public class BookShelfActivity extends AppCompatActivity {
-
+public class BookShelfFragment extends Fragment {
     FileHelper helper;
     List<BookInfoBean> bookInfoBeans;
     RecyclerView bookCase;
     BookCaseAdapter adapter;
+    Context context;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        //return super.onCreateView(inflater, container, savedInstanceState);
+        View view=inflater.inflate(R.layout.content_book_shelf,container,false);
+        context = view.getContext();
+        return view;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_shelf);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        bookCase = findViewById(R.id.book_case_list);
-        GridLayoutManager manager = new GridLayoutManager(this,3);
+        //Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        //context.setSupportActionBar(toolbar);
+
+        bookCase = getActivity().findViewById(R.id.book_case_list);
+        GridLayoutManager manager = new GridLayoutManager(context,3);
         bookCase.setLayoutManager(manager);
 
-        helper =new FileHelper(this);
+        helper =new FileHelper(context);
         bookInfoBeans = helper.getAll(null,"date DESC");//DESC,ASC
         adapter = new BookCaseAdapter(bookInfoBeans);
         bookCase.setAdapter(adapter);
@@ -46,7 +58,7 @@ public class BookShelfActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new BookCaseAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                Intent intent = new Intent(BookShelfActivity.this, ReadPageActivity.class);
+                Intent intent = new Intent(context, ReadPageActivity.class);
                 intent.putExtra("bookInfoBean", bookInfoBeans.get(position));
                 startActivityForResult(intent,2);
             }
@@ -61,33 +73,7 @@ public class BookShelfActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_add) {
-            Intent intent = new Intent(BookShelfActivity.this, SearchFileActivity.class);
-            startActivityForResult(intent,1);
-            return true;
-        }else if (id == R.id.action_search) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 2){
             BookInfoBean book = (BookInfoBean) data.getSerializableExtra("rBookInfoBean");
@@ -110,5 +96,4 @@ public class BookShelfActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }
     }
-
 }

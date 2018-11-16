@@ -34,7 +34,7 @@ public class BookMarketSubListAdapter extends RecyclerView.Adapter<BookMarketSub
 
     private Context context;
     private List<BooksByCats.BooksBean> booksBeans;
-    private ReadAdapter.OnItemClickListener onItemClickListener;
+    private OnItemClickListener onItemClickListener;
 
     public BookMarketSubListAdapter(Context context, List<BooksByCats.BooksBean> booksBeans) {
         this.context = context;
@@ -105,7 +105,7 @@ public class BookMarketSubListAdapter extends RecyclerView.Adapter<BookMarketSub
     public interface OnItemClickListener{
         void onClick(int position);
     }
-    public void setOnItemClickListener(ReadAdapter.OnItemClickListener onItemClickListener ){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener ){
         this.onItemClickListener = onItemClickListener;
     }
 }

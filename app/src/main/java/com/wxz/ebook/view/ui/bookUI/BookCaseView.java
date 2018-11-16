@@ -14,6 +14,7 @@ import android.view.View;
 
 import com.wxz.ebook.R;
 import com.wxz.ebook.bean.BookBean;
+import com.wxz.ebook.tool.DensityUtil;
 import com.wxz.ebook.tool.ReadViewTool;
 
 import java.util.List;
@@ -67,7 +68,7 @@ public class BookCaseView extends View {
         textColor = getResources().getColor(R.color.fontWhite);
         //textColor = 0xFFFFFFFF;
         mPaint.setColor(textColor);
-        fontSize = 24;
+        fontSize = DensityUtil.sp2px(getContext(),14);
         mPaint.setTextSize(fontSize);
         mPaint.setAntiAlias(true);
         mPaint.setFilterBitmap(true);
@@ -162,18 +163,18 @@ public class BookCaseView extends View {
             height = textHeight;
             drawHeight = imgWidth*4/3;
             setMatrix(imgWidth,drawHeight);
-            mPaint.setTextSize(28);
+            mPaint.setTextSize(DensityUtil.sp2px(getContext(),14));
             nameLines =getStrLine(name,nameTool,imgWidth - 16);
-            mPaint.setTextSize(24);
+            mPaint.setTextSize(DensityUtil.sp2px(getContext(),12));
             typeLines =getStrLine(fileTypeStr[fileType],typeTool,imgWidth - 16);
         } else {
             width = viewWidth;
             height = viewHeight;
             drawHeight = readHeight;
             setMatrix(readWidth,readHeight);
-            mPaint.setTextSize(28);
+            mPaint.setTextSize(DensityUtil.sp2px(getContext(),14));
             nameLines =getStrLine(name,nameTool,readWidth - 16);
-            mPaint.setTextSize(24);
+            mPaint.setTextSize(DensityUtil.sp2px(getContext(),12));
             typeLines =getStrLine(fileTypeStr[fileType],typeTool,readWidth - 16);
         }
 
@@ -185,9 +186,9 @@ public class BookCaseView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawBitmap(bitmap,matrix,mPaint);
-        mPaint.setTextSize(28);
+        mPaint.setTextSize(DensityUtil.sp2px(getContext(),14));
         drawText(canvas,nameLines,8,2);
-        mPaint.setTextSize(24);
+        mPaint.setTextSize(DensityUtil.sp2px(getContext(),12));
         drawText(canvas,typeLines,drawHeight-(int)(fontSize*1.5) - 8,1);
     }
 }

@@ -80,10 +80,10 @@ public class ReadTXTFile {
     }
     private String resolveCode(String path) throws Exception {
         File file = new File(path);
-        RandomAccessFile raf = new RandomAccessFile(file, "rw");
+        RandomAccessFile raf = new RandomAccessFile(file, "r");
         long length = raf.length();
         FileChannel channel = raf.getChannel();
-        MappedByteBuffer out = channel.map(FileChannel.MapMode.READ_WRITE, 0, length);
+        MappedByteBuffer out = channel.map(FileChannel.MapMode.READ_ONLY, 0, length);
         byte[] head = new byte[4];
         for (int i = 0;i<length;i++){
             byte b = out.get();

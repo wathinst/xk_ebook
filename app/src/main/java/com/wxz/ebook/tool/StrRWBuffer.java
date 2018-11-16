@@ -37,7 +37,7 @@ public class StrRWBuffer {
         channel = raf.getChannel();
     }
 
-    private void newMap(int position,int size) throws IOException {
+    public void newMap(int position,int size) throws IOException {
         buffer = channel.map(FileChannel.MapMode.READ_WRITE, position,size);
     }
 
@@ -54,6 +54,12 @@ public class StrRWBuffer {
     public void putStr(String str) throws IOException {
         int len = str.getBytes().length;
         newMap(thisIndex,len);
+        buffer.put(str.getBytes());
+        thisIndex += len;
+    }
+
+    public void putData(String str) throws IOException {
+        int len = str.getBytes().length;
         buffer.put(str.getBytes());
         thisIndex += len;
     }

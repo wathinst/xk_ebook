@@ -44,7 +44,7 @@ public class BookMarketSubListAdapter extends RecyclerView.Adapter<BookMarketSub
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_market_class_sub_item, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book_market_class_sub, parent,false);
         return new MyHolder(view);
     }
 
@@ -97,8 +97,8 @@ public class BookMarketSubListAdapter extends RecyclerView.Adapter<BookMarketSub
         ImageView item_image;
         public MyHolder(View itemView) {
             super(itemView);
-            item_title = itemView.findViewById(R.id.book_market_class_item_title);
-            item_image = itemView.findViewById(R.id.book_market_class_item_image);
+            item_title = itemView.findViewById(R.id.book_details_title);
+            item_image = itemView.findViewById(R.id.book_details_image);
         }
     }
 

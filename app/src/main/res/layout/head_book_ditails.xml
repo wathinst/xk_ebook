@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="?attr/actionBarSize"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingBottom="24dp"
+    android:background="#938a79">
+
+    <ImageView
+        android:id="@+id/book_details_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/book_details_title"
+        app:srcCompat="@drawable/cover_default_new"
+        tools:ignore="ContentDescription,VectorDrawableCompat"
+        android:scaleType="fitXY"
+        app:layout_constraintDimensionRatio="3:4" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1.4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/book_details_image"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="4dp"
+        android:textSize="20sp"
+        android:textColor="@color/colorWhile"
+        android:id="@+id/book_details_title"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/book_details_title"
+        app:layout_constraintLeft_toRightOf="@id/book_details_image"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/colorReadDetailsWhile"
+        android:id="@+id/book_details_author"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/book_details_author"
+        app:layout_constraintLeft_toRightOf="@id/book_details_image"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/colorReadDetailsWhile"
+        android:id="@+id/book_details_word_count"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/book_details_author"
+        app:layout_constraintLeft_toRightOf="@id/book_details_word_count"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/colorReadDetailsWhile"
+        android:text="@string/book_details_separate"
+        android:id="@+id/book_details_separate"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/book_details_author"
+        app:layout_constraintLeft_toRightOf="@id/book_details_separate"
+        android:paddingTop="4dp"
+        android:textColor="@color/colorReadDetailsWhile"
+        android:id="@+id/book_details_updated"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/book_details_word_count"
+        app:layout_constraintLeft_toRightOf="@id/book_details_image"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/colorReadDetailsWhile"
+        android:id="@+id/book_details_lately_follower"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/book_details_word_count"
+        app:layout_constraintLeft_toRightOf="@id/book_details_lately_follower"
+        android:paddingTop="4dp"
+        android:textColor="@color/colorReadDetailsWhile"
+        android:text="@string/book_details_lately_follower_lable"
+        android:id="@+id/book_details_lately_follower_lable"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/book_details_lately_follower"
+        app:layout_constraintLeft_toRightOf="@id/book_details_image"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/colorReadDetailsWhile"
+        android:id="@+id/book_details_retention_ratio"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/book_details_lately_follower"
+        app:layout_constraintLeft_toRightOf="@id/book_details_retention_ratio"
+        android:paddingTop="4dp"
+        android:textColor="@color/colorReadDetailsWhile"
+        android:text="@string/book_details_retention_ratio_lable"
+        android:id="@+id/book_details_retention_ratio_lable"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/book_details_retention_ratio"
+        app:layout_constraintLeft_toRightOf="@id/book_details_image"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/colorReadDetailsWhile"
+        android:id="@+id/book_details_serialize_word_count"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/book_details_retention_ratio"
+        app:layout_constraintLeft_toRightOf="@id/book_details_serialize_word_count"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/colorReadDetailsWhile"
+        android:text="@string/book_details_serialize_word_count_lable"
+        android:id="@+id/book_details_serialize_word_count_lable"/>
+
+</android.support.constraint.ConstraintLayout>

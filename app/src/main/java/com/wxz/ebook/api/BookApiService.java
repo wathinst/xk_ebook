@@ -5,13 +5,23 @@ import com.wxz.ebook.bean.BookDetail;
 import com.wxz.ebook.bean.BookListDetail;
 import com.wxz.ebook.bean.BookListTags;
 import com.wxz.ebook.bean.BookLists;
+import com.wxz.ebook.bean.BookMixAToc;
+import com.wxz.ebook.bean.BookRead;
+import com.wxz.ebook.bean.BookSource;
 import com.wxz.ebook.bean.BooksByCats;
 import com.wxz.ebook.bean.BooksByTag;
 import com.wxz.ebook.bean.CategoryList;
 import com.wxz.ebook.bean.CategoryListLv2;
+import com.wxz.ebook.bean.ChapterRead;
+import com.wxz.ebook.bean.HotReview;
 import com.wxz.ebook.bean.RankingList;
 import com.wxz.ebook.bean.Rankings;
+import com.wxz.ebook.bean.Recommend;
+import com.wxz.ebook.bean.RecommendBookList;
 import com.wxz.ebook.bean.SearchDetail;
+
+import java.util.List;
+
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
@@ -19,6 +29,56 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface BookApiService {
+
+    @GET("/book/recommend")
+    Observable<Recommend> getRecomend(@Query("gender") String gender);
+
+    /**
+     * 获取正版源(若有) 与 盗版源
+     * @param view
+     * @param book
+     * @return
+     */
+    @GET("/atoc")
+    Observable<List<BookSource>> getABookSource(@Query("view") String view, @Query("book") String book);
+
+    /**
+     * 只能获取正版源
+     *
+     * @param view
+     * @param book
+     * @return
+     */
+    @GET("/btoc")
+    Observable<List<BookSource>> getBBookSource(@Query("view") String view, @Query("book") String book);
+
+    @GET("/mix-atoc/{bookId}")
+    Observable<BookMixAToc> getBookMixAToc(@Path("bookId") String bookId, @Query("view") String view);
+
+    @GET("/mix-toc/{bookId}")
+    Observable<BookRead> getBookRead(@Path("bookId") String bookId);
+
+    @GET("/btoc/{bookId}")
+    Observable<BookMixAToc> getBookBToc(@Path("bookId") String bookId, @Query("view") String view);
+
+    @GET("http://chapter2.zhuishushenqi.com/chapter/{url}")
+    Observable<ChapterRead> getChapterRead(@Path("url") String url);
+
+    /**
+     * 热门评论
+     *
+     * @param book
+     * @return
+     */
+    @GET("/post/review/best-by-book")
+    Observable<HotReview> getHotReview(@Query("book") String book);
+
+    @GET("/book-list/{bookId}/recommend")
+    Observable<RecommendBookList> getRecommendBookList(@Path("bookId") String bookId, @Query("limit") String limit);
+
+    @GET("/book/{bookId}/recommend")
+    Observable<Recommend> getRecommendBook(@Path("bookId") String bookId);
+
     /**
      * 获取所有排行榜
      * http://api.zhuishushenqi.com/ranking/gender

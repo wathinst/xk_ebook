@@ -19,4 +19,14 @@ public class SizeUnit {
         }
         return sizeStr;
     }
+
+    public String getWordCountStr(int wordCount){
+        String sizeStr;
+        if (wordCount>1000){
+            sizeStr = String.valueOf(wordCount/1000) + "千字";
+        }else {
+            sizeStr = String.valueOf(wordCount) + "字";
+        }
+        return sizeStr;
+    }
 }

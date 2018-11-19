@@ -28,9 +28,6 @@ import io.rx_cache2.DynamicKey;
 import io.rx_cache2.EvictDynamicKey;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class BookMarketListAdapter extends RecyclerView.Adapter<BookMarketListAdapter.MyHolder> {
 
@@ -46,7 +43,7 @@ public class BookMarketListAdapter extends RecyclerView.Adapter<BookMarketListAd
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_market_class_item, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book_market_class, parent,false);
         return new MyHolder(view);
     }
 
@@ -55,8 +52,9 @@ public class BookMarketListAdapter extends RecyclerView.Adapter<BookMarketListAd
         holder.item_title.setText(booksBeans.get(position).title);
         holder.item_author.setText(booksBeans.get(position).author);
         holder.item_shortIntro.setText(booksBeans.get(position).shortIntro);
+        String titleName = "BookMarkerList"+ booksBeans.get(position)._id;
         Observable<ResponseBody> bookImg = BookImgApi.getInstance(new OkHttpClient()).getImg(booksBeans.get(position).cover);
-        CacheProviders.getUserCache(context).getImg(bookImg,new DynamicKey(booksBeans.get(position).cover),new EvictDynamicKey(true))
+        CacheProviders.getUserCache(context).getImg(bookImg,new DynamicKey(titleName),new EvictDynamicKey(true))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ResponseBody>() {
@@ -101,10 +99,10 @@ public class BookMarketListAdapter extends RecyclerView.Adapter<BookMarketListAd
         ImageView item_image;
         public MyHolder(View itemView) {
             super(itemView);
-            item_title = itemView.findViewById(R.id.book_market_class_item_title);
-            item_author = itemView.findViewById(R.id.book_market_class_item_author);
+            item_title = itemView.findViewById(R.id.book_details_title);
+            item_author = itemView.findViewById(R.id.book_details_author);
             item_shortIntro = itemView.findViewById(R.id.book_market_class_item_shortIntro);
-            item_image = itemView.findViewById(R.id.book_market_class_item_image);
+            item_image = itemView.findViewById(R.id.book_details_image);
         }
     }
 

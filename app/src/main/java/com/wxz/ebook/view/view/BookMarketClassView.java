@@ -2,6 +2,7 @@ package com.wxz.ebook.view.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.wxz.ebook.R;
 import com.wxz.ebook.api.BookApi;
 import com.wxz.ebook.bean.BooksByCats;
 import com.wxz.ebook.cache.CacheProviders;
+import com.wxz.ebook.view.activity.BookDetailsActivity;
 import com.wxz.ebook.view.adapter.BookMarketSubListAdapter;
 import com.wxz.ebook.view.ui.recyclerUI.BetterRecyclerView;
 import java.util.ArrayList;
@@ -38,8 +40,6 @@ public class BookMarketClassView extends FrameLayout {
     private BookMarketSubListAdapter adapter;
     private List<BooksByCats.BooksBean> booksBeans;
     private TextView title_text;
-    private Listener listener;
-
     public BookMarketClassView(@NonNull Context context) {
         this(context,null);
     }
@@ -80,14 +80,17 @@ public class BookMarketClassView extends FrameLayout {
         title.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.setTitleOnClick(v);
             }
         });
 
         adapter.setOnItemClickListener(new BookMarketSubListAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                listener.setItemOnClick(position);
+                Intent intent = new Intent(getContext(), BookDetailsActivity.class);
+                intent.putExtra("book_id",booksBeans.get(position)._id);
+                intent.putExtra("book_img_url",booksBeans.get(position).cover);
+                intent.putExtra("book_title",booksBeans.get(position).title);
+                getContext().startActivity(intent);
             }
         });
     }
@@ -123,16 +126,5 @@ public class BookMarketClassView extends FrameLayout {
 
                     }
                 });
-    }
-
-
-    public interface Listener{
-        void setTitleOnClick(View v);
-        void setItemOnClick(int position);
-    }
-
-
-    public void setClickListener(Listener listener){
-        this.listener = listener;
     }
 }

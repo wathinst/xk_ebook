@@ -5,17 +5,28 @@ import com.wxz.ebook.bean.BookDetail;
 import com.wxz.ebook.bean.BookListDetail;
 import com.wxz.ebook.bean.BookListTags;
 import com.wxz.ebook.bean.BookLists;
+import com.wxz.ebook.bean.BookMixAToc;
+import com.wxz.ebook.bean.BookSource;
 import com.wxz.ebook.bean.BooksByCats;
 import com.wxz.ebook.bean.BooksByTag;
 import com.wxz.ebook.bean.CategoryList;
 import com.wxz.ebook.bean.CategoryListLv2;
+import com.wxz.ebook.bean.ChapterRead;
+import com.wxz.ebook.bean.HotReview;
 import com.wxz.ebook.bean.RankingList;
 import com.wxz.ebook.bean.Rankings;
+import com.wxz.ebook.bean.Recommend;
+import com.wxz.ebook.bean.RecommendBookList;
 import com.wxz.ebook.bean.SearchDetail;
+
+import java.util.List;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import io.reactivex.Observable;
 
@@ -38,6 +49,22 @@ public class BookApi {
         if (instance == null)
             instance = new BookApi(okHttpClient);
         return instance;
+    }
+
+    public Observable<Recommend> getRecommend(String gender) {
+        return service.getRecomend(gender);
+    }
+
+    public Observable<BookMixAToc> getBookMixAToc(String bookId, String view) {
+        return service.getBookMixAToc(bookId, view);
+    }
+
+    public synchronized Observable<ChapterRead> getChapterRead(String url) {
+        return service.getChapterRead(url);
+    }
+
+    public synchronized Observable<List<BookSource>> getBookSource(String view, String book) {
+        return service.getABookSource(view, book);
     }
 
     public Observable<AutoComplete> getAutoComplete(String query) {
@@ -91,4 +118,19 @@ public class BookApi {
     public Observable<BooksByCats> getBooksByCats(String gender, String type, String major, String minor, int start, @Query("limit") int limit) {
         return service.getBooksByCats(gender, type, major, minor, start, limit);
     }
+
+    //获取热门评论
+    public Observable<HotReview> getHotReview(String book){
+        return service.getHotReview(book);
+    };
+
+    //获取推荐书单
+    public Observable<RecommendBookList> getRecommendBookList(String bookId, String limit){
+        return service.getRecommendBookList(bookId,limit);
+    };
+
+    //获取推荐书籍
+    public Observable<Recommend> getRecommendBook(String bookId){
+        return service.getRecommendBook(bookId);
+    };
 }

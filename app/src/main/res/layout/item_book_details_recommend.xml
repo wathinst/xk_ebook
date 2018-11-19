@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/item_book_details_recommend_img"
+        app:layout_constraintDimensionRatio="3:4"
+        android:src="@drawable/cover_default_new"
+        android:scaleType="fitXY"/>
+
+    <TextView
+        android:id="@+id/item_book_details_recommend_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/item_book_details_recommend_img"
+        android:background="#11000000"
+        android:textSize="12sp"/>
+
+</android.support.constraint.ConstraintLayout>

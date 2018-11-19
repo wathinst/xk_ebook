@@ -23,7 +23,7 @@ public class BookCaseAdapter extends RecyclerView.Adapter<BookCaseAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_case_list_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book_case_list,parent,false);
         ViewHolder holder;
         holder = new ViewHolder(view);
         return holder;

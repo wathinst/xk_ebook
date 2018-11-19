@@ -15,6 +15,7 @@ public class BookMarketClassAdapter extends RecyclerView.Adapter<BookMarketClass
 
     private Context context;
     private List<String> stringList;
+    private OnItemClickListener onItemClickListener;
 
     public BookMarketClassAdapter(Context context, List<String> stringList) {
         this.context = context;
@@ -24,13 +25,13 @@ public class BookMarketClassAdapter extends RecyclerView.Adapter<BookMarketClass
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_market_class_view_item, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book_market_class_view, parent,false);
         return new MyHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyHolder holder, @SuppressLint("RecyclerView") final int position) {
-        holder.bookMarketClassView.setData(stringList.get(position));
+    public void onBindViewHolder(@NonNull final MyHolder holder, @SuppressLint("RecyclerView") final int index) {
+        holder.bookMarketClassView.setData(stringList.get(index));
     }
 
     @Override
@@ -44,17 +45,14 @@ public class BookMarketClassAdapter extends RecyclerView.Adapter<BookMarketClass
         public MyHolder(View itemView) {
             super(itemView);
             bookMarketClassView = itemView.findViewById(R.id.book_market_class_view);
-            bookMarketClassView.setClickListener(new BookMarketClassView.Listener() {
-                @Override
-                public void setTitleOnClick(View v) {
-
-                }
-
-                @Override
-                public void setItemOnClick(int position) {
-
-                }
-            });
         }
+    }
+
+    public interface OnItemClickListener{
+        void setTitleOnClick(int index,View v);
+        void setItemOnClick(int index,int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener ){
+        this.onItemClickListener = onItemClickListener;
     }
 }

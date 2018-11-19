@@ -22,6 +22,7 @@ import com.wxz.ebook.view.adapter.BookMarketClassAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BookMarketFragment extends Fragment {
 
@@ -52,10 +53,21 @@ public class BookMarketFragment extends Fragment {
         recyclerView.setLayoutManager(manager);
         adapter = new BookMarketClassAdapter(context,stringList);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new BookMarketClassAdapter.OnItemClickListener() {
+            @Override
+            public void setTitleOnClick(int index, View v) {
+
+            }
+
+            @Override
+            public void setItemOnClick(int index, int position) {
+
+            }
+        });
     }
 
     private void initView(){
-        recyclerView = getActivity().findViewById(R.id.book_market_class_recyclerView);
+        recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.book_market_class_recyclerView);
     }
 
     private void initData(){

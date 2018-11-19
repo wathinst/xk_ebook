@@ -1,8 +1,12 @@
 package com.wxz.ebook.view.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -12,8 +16,8 @@ import android.widget.ImageView;
 import com.wxz.ebook.R;
 
 public class SplashActivity extends AppCompatActivity {
-    long SPLASH_LENGTH = 1000;
-    Handler handler = new Handler();
+    private static long SPLASH_LENGTH = 1000;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,7 @@ public class SplashActivity extends AppCompatActivity {
         imageView.setImageResource(R.drawable.wlecom);
         View view=findViewById(R.id.lead_in);
         view.setVisibility(View.GONE);
+
 
         handler.postDelayed(new Runnable() {
             @Override

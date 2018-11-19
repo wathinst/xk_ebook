@@ -30,7 +30,7 @@ public class SettingManager {
     }
 
     public int getFontSize() {
-        return SharedPreferencesUtil.getInstance().getInt("fontSize", ScreenUtils.dpToPxInt(16));
+        return SharedPreferencesUtil.getInstance().getInt("fontSize", (int)ScreenUtils.spToPx(18));
     }
 
     public void saveFontColor(int fontColor) {

@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.wxz.ebook.R;
-import com.wxz.ebook.tool.DensityUtil;
+import com.wxz.ebook.tool.utils.DensityUtil;
 
 public class RecyclerViewBar extends LinearLayout {
     public static long SLIDE_ANIM_TIME = 800;

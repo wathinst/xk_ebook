@@ -21,7 +21,9 @@
     <color name="listBackgroundOut">#00222222</color>
 
     <color name="colorReadDetailsWhile">#e5e5e5</color>
+    <color name="colorReadDetailsWhileB">#b5b5b5</color>
     <color name="colorReadDetailsBlue">#65a7fe</color>
+    <color name="colorReadDetailsBlueB">#5597ee</color>
 
 
     <color name="red50">#fde0dc</color>

@@ -1,23 +1,16 @@
 package com.wxz.ebook.view.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.wxz.ebook.R;
-import com.wxz.ebook.bean.BookInfoBean;
-import com.wxz.ebook.tool.FileHelper;
-import com.wxz.ebook.view.activity.ReadPageActivity;
-import com.wxz.ebook.view.adapter.BookCaseAdapter;
 import com.wxz.ebook.view.adapter.BookMarketClassAdapter;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.wxz.ebook.tool;
+package com.wxz.ebook.tool.utils;
 
 import android.annotation.SuppressLint;
 
@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-public class DateUnit {
+public class DateUtil {
     public String getDateStr(long time){
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(time*1000);

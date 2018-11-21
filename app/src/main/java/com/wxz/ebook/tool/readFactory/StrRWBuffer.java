@@ -1,4 +1,4 @@
-package com.wxz.ebook.tool;
+package com.wxz.ebook.tool.readFactory;
 
 import android.content.Context;
 

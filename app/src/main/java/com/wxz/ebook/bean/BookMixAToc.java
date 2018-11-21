@@ -34,6 +34,7 @@ public class BookMixAToc extends Base {
         public String _id;
         public String book;
         public String chaptersUpdated;
+        public int chapterId;
         /**
          * title : 第一章 死在万花丛中
          * link : http://vip.zhuishushenqi.com/chapter/577e5290260289ff64a29213?cv=1467896464908

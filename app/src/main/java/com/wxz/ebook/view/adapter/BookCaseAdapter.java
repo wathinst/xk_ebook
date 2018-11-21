@@ -32,7 +32,7 @@ public class BookCaseAdapter extends RecyclerView.Adapter<BookCaseAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         if(bookInfoBeans !=null&& bookInfoBeans.size()>0){
-            holder.bookCaseView.setName(bookInfoBeans.get(position).getName());
+            holder.bookCaseView.setName(bookInfoBeans.get(position).name);
             if( onItemClickListener!= null){
                 holder.itemView.setOnClickListener( new View.OnClickListener() {
                     @Override

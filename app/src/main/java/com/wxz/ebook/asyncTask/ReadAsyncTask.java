@@ -3,7 +3,7 @@ package com.wxz.ebook.asyncTask;
 import android.os.AsyncTask;
 
 import com.wxz.ebook.bean.ChapterListBean;
-import com.wxz.ebook.tool.StrRWBuffer;
+import com.wxz.ebook.tool.readFactory.StrRWBuffer;
 
 public class ReadAsyncTask extends AsyncTask<StrRWBuffer,Void,ChapterListBean> {
 

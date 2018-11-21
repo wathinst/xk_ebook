@@ -19,7 +19,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.v7.app.AppCompatDelegate;
 
-import com.wxz.ebook.tool.AppUtils;
+import com.wxz.ebook.tool.utils.AppUtils;
 
 /**
  * @author yuyh.

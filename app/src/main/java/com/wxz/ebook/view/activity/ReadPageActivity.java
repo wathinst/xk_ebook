@@ -7,10 +7,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -24,35 +22,34 @@ import com.wxz.ebook.bean.ChapterListBean;
 import com.wxz.ebook.bean.DocBean;
 import com.wxz.ebook.config.ReadPageTheme;
 import com.wxz.ebook.config.SharedPreferencesUtil;
-import com.wxz.ebook.tool.AppUtils;
-import com.wxz.ebook.tool.DensityUtil;
-import com.wxz.ebook.tool.FileHelper;
+import com.wxz.ebook.tool.bookFactory.BookConcreteFactory;
+import com.wxz.ebook.tool.bookFactory.BookFactory;
+import com.wxz.ebook.tool.bookFactory.LocalBook;
+import com.wxz.ebook.tool.utils.AppUtils;
+import com.wxz.ebook.tool.utils.FileHelper;
 import com.wxz.ebook.view.ui.curlUI.CurlPage;
 import com.wxz.ebook.view.ui.curlUI.CurlView;
-import com.wxz.ebook.tool.ReadFactory;
-import com.wxz.ebook.tool.StrRWBuffer;
+import com.wxz.ebook.tool.readFactory.ReadFactory;
 import com.wxz.ebook.view.view.ChapterListView;
 import com.wxz.ebook.view.view.CoverView;
 import com.wxz.ebook.view.view.ReadPageSetView;
 import com.wxz.ebook.view.view.ReadPageTextView;
 
-import java.io.File;
-import java.io.IOException;
-
 public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask.ReadInterface{
 
     private CoverView coverView;
     private CurlView curlView;
-    private StrRWBuffer buffer;
     private ChapterListBean bean;
     private ReadFactory nextFactory,lastFactory,readFactory;
     private TextView book_loading;
     private ChapterListView chapterListView;
     private ReadPageSetView readPageSetView;
     private ReadPageTextView readPageTextView;
-    private BookInfoBean mBookInfoBean;
     private FileHelper helper;
     private ReadAsyncTask readAsyncTask;
+
+    private LocalBook localBook;
+    private BookFactory bookFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +62,13 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         SharedPreferencesUtil.init(this,"xkEBookRead",Context.MODE_PRIVATE);
         initView();
         initFactory();
+        bookFactory = new BookConcreteFactory();
 
         Intent intent =getIntent();
         ResolveAsyncTask asyncTask = new ResolveAsyncTask(this);
         helper =new FileHelper(this);
         DocBean docBean= (DocBean) intent.getSerializableExtra("docBean");
-        mBookInfoBean = (BookInfoBean) intent.getSerializableExtra("bookInfoBean");
+        BookInfoBean mBookInfoBean = (BookInfoBean) intent.getSerializableExtra("bookInfoBean");
 
         if(docBean != null){
             asyncTask.execute(docBean.getPath(),docBean.getSize());
@@ -78,8 +76,7 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
                 @Override
                 public void resolveTaskListener(BookInfoBean bookInfoBean) {
                     helper.insert(bookInfoBean);
-                    mBookInfoBean = bookInfoBean;
-                    initPage(mBookInfoBean);
+                    initPage(bookInfoBean);
                 }
             });
         }
@@ -128,7 +125,6 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
             public void setTextOnClick(View v) {
                 switch (v.getId()){
                     case R.id.read_page_text_paper:
-                        Log.e("theme","0");
                         setPageTheme(ReadPageTheme.THEME_PAPER);
                         curlView.updateCurl();
                         break;
@@ -201,53 +197,34 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     }
 
     private void initPage(BookInfoBean bookInfoBean){
-        String fileName = getSDPath() +"/" + "ebook.xkr";
-        if (bookInfoBean != null){
-            fileName = bookInfoBean.getPath();
-        }
-        try {
-            buffer = new StrRWBuffer(fileName);
-            buffer.newReadMap();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        readAsyncTask.execute(buffer);
+        localBook = bookFactory.createRead(LocalBook.class);
+        localBook.init(bookInfoBean);
+        readAsyncTask.execute(localBook.getBuffer());
     }
 
-    private void setDateReadFactory(int index){
-        String str = "";
-        if (buffer != null && bean != null){
-            str = buffer.getChapterStr(bean.listBeans.get(index));
-            readFactory.setBookName(bean.listBeans.get(index).name);
-        }
-        readFactory.setChapterStr(str);
+    private void setDateReadFactory(){
+        readFactory.setBookName(localBook.getThisChapterName());
+        readFactory.setChapterStr(localBook.getThisChapterText());
     }
 
-    private void setDateLastFactory(int index){
+    private void setDateLastFactory(){
         lastFactory = new ReadFactory();
-        String str = "";
-        if(buffer != null && bean!= null && index > 0){
-            str = buffer.getChapterStr(bean.listBeans.get(index-1));
-            lastFactory.setBookName(bean.listBeans.get(index-1).name);
-        }
-        lastFactory.setChapterStr(str);
+        lastFactory.setBookName(localBook.getLastChapterName());
+        lastFactory.setChapterStr(localBook.getLastChapterText());
     }
 
-    private void setDateNextFactory(int index){
+    private void setDateNextFactory(){
         nextFactory = new ReadFactory();
-        String str = "";
-        if(buffer != null && bean!= null && index + 1 < bean.listBeans.size()){
-            str = buffer.getChapterStr(bean.listBeans.get(index+1));
-            nextFactory.setBookName(bean.listBeans.get(index+1).name);
-        }
-        nextFactory.setChapterStr(str);
+        nextFactory.setBookName(localBook.getMestChapterName());
+        nextFactory.setChapterStr(localBook.getMestChapterText());
     }
 
     public void setDataFactory(int index,int readIndex) {
         curlView.setNewCurl();
-        setDateReadFactory(index);
-        setDateLastFactory(index);
-        setDateNextFactory(index);
+        localBook.setChapterIndex(index);
+        setDateReadFactory();
+        setDateLastFactory();
+        setDateNextFactory();
         readFactory.readDraw();
         curlView.setCurrentIndex(readIndex);
     }
@@ -258,15 +235,15 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         if (b){
             lastFactory = readFactory;
             readFactory = nextFactory;
-            mBookInfoBean.setPageIndex(mBookInfoBean.getPageIndex()+1);
-            setDateNextFactory(mBookInfoBean.getPageIndex());
-            helper.update(mBookInfoBean);
+            localBook.setChapterIndex(localBook.getChapterIndex()+1);
+            setDateNextFactory();
+            helper.update(localBook.getBookInfoBean());
         }else {
             nextFactory = readFactory;
             readFactory = lastFactory;
-            mBookInfoBean.setPageIndex(mBookInfoBean.getPageIndex()-1);
-            setDateNextFactory(mBookInfoBean.getPageIndex());
-            helper.update(mBookInfoBean);
+            localBook.setChapterIndex(localBook.getChapterIndex()-1);
+            setDateLastFactory();
+            helper.update(localBook.getBookInfoBean());
         }
     }
 
@@ -285,39 +262,26 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     @Override
     public void onBackPressed() {
         if (curlView.getCurrentIndex() >= readFactory.getPageSize()){
-            mBookInfoBean.setPageIndex(curlView.getCurrentIndex()+1);
-            mBookInfoBean.setReadIndex(0);
+            localBook.setChapterIndex(localBook.getChapterIndex()+1);
+            localBook.setPageIndex(0);
         }else {
-            mBookInfoBean.setReadIndex(curlView.getCurrentIndex());
+            localBook.setPageIndex(curlView.getCurrentIndex());
         }
-        helper.update(mBookInfoBean);
-        Log.e("page",String.valueOf(mBookInfoBean.getPageIndex()));
-        Log.e("read",String.valueOf(mBookInfoBean.getReadIndex()));
-        Intent rIntent = new Intent();
-        rIntent.putExtra("rBookInfoBean",mBookInfoBean);
-        setResult(2,rIntent);
+        helper.update(localBook.getBookInfoBean());
+        Intent intent = new Intent();
+        intent.putExtra("rBookInfoBean",localBook.getBookInfoBean());
+        setResult(2,intent);
         super.onBackPressed();
-    }
-
-    private String getSDPath(){
-        File sdDir = null;
-        boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(android.os.Environment.MEDIA_MOUNTED);//判断sd卡是否存在
-        if(sdCardExist)
-        {
-            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
-        }
-        assert sdDir != null;
-        return sdDir.toString();
     }
 
     @Override
     public void setChapterList(final ChapterListBean chapterListBean) {
         bean = chapterListBean;
+        localBook.setChapterListBean(bean);
         chapterListView.setName(bean.name);
         chapterListView.setDate(bean.listBeans);
-        chapterListView.setDurChapter(mBookInfoBean.getPageIndex());
-        setDataFactory(mBookInfoBean.getPageIndex(),mBookInfoBean.getReadIndex());
+        chapterListView.setDurChapter(localBook.getChapterIndex());
+        setDataFactory(localBook.getChapterIndex(),localBook.getPageIndex());
         book_loading.setVisibility(View.GONE);
         curlView.setOnClickListener(new CurlView.Listener() {
             @Override
@@ -334,8 +298,8 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         chapterListView.setOnClickListener(new ChapterListView.Listener() {
             @Override
             public void setListOnClick(int position) {
-                mBookInfoBean.setPageIndex(position);
-                setDataFactory(mBookInfoBean.getPageIndex(),0);
+                localBook.setChapterIndex(position);
+                setDataFactory(localBook.getChapterIndex(),0);
                 chapterListView.disShow(position);
                 coverView.disShow();
             }
@@ -393,25 +357,25 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         @Override
         public int nextChapter() {
             setDataFactory(true);
-            chapterListView.setDurChapter(mBookInfoBean.getPageIndex());
+            chapterListView.setDurChapter(localBook.getChapterIndex());
             return 0;
         }
 
         @Override
         public int lastChapter() {
             setDataFactory(false);
-            chapterListView.setDurChapter(mBookInfoBean.getPageIndex());
+            chapterListView.setDurChapter(localBook.getChapterIndex());
             return readFactory.getPageSize()-1;
         }
 
         @Override
         public boolean isNextChapter() {
-            return mBookInfoBean.getPageIndex() + 1 >= bean.listBeans.size();
+            return localBook.getChapterIndex() + 1 >= bean.listBeans.size();
         }
 
         @Override
         public boolean isLastChapter() {
-            return mBookInfoBean.getPageIndex() <= 0;
+            return localBook.getChapterIndex() <= 0;
         }
 
         @Override

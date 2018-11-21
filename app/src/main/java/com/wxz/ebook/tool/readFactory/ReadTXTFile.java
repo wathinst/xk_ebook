@@ -1,8 +1,11 @@
-package com.wxz.ebook.tool;
+package com.wxz.ebook.tool.readFactory;
 
 import android.content.Context;
 import android.util.Log;
 import com.wxz.ebook.R;
+import com.wxz.ebook.tool.utils.DateUtil;
+import com.wxz.ebook.tool.utils.StringUtil;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,7 +26,7 @@ public class ReadTXTFile {
     }
 
     public String readTxt(String path) throws Exception {
-        DateUnit dateUnit =new DateUnit();
+        DateUtil dateUnit =new DateUtil();
         String filePath = context.getFilesDir()+ "/"+dateUnit.getRandomFileName()+".xkr";
         StrRWBuffer buffer = new StrRWBuffer(filePath,"rw");
         int dot=path.lastIndexOf("/");
@@ -33,7 +36,7 @@ public class ReadTXTFile {
         buffer.putHead(name);
         Log.e("name",name);
         Log.e("start","start");
-        StringUnit unit = new StringUnit();
+        StringUtil unit = new StringUtil();
         int chapNum=0;
         try {
             Pattern pattern = Pattern.compile(context.getString(R.string.chap_pattern));

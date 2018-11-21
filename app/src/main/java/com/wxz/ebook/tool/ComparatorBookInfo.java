@@ -8,6 +8,6 @@ public class ComparatorBookInfo implements Comparator<BookInfoBean> {
 
     @Override
     public int compare(BookInfoBean o1, BookInfoBean o2) {
-        return  Long.compare(o2.getDate(),o1.getDate());
+        return  Long.compare(o2.date,o1.date);
     }
 }

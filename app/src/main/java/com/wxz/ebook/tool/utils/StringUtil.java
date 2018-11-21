@@ -1,6 +1,6 @@
-package com.wxz.ebook.tool;
+package com.wxz.ebook.tool.utils;
 
-public class StringUnit {
+public class StringUtil {
 
     /**
      * 去除字符串中所包含的空格（包括:空格(全角，半角)、制表符、换页符等）

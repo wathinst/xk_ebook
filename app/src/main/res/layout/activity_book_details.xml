@@ -41,4 +41,51 @@
 
     <include layout="@layout/content_book_details" />
 
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/book_details_line4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorReadDetailsWhile"
+            app:layout_constraintBottom_toTopOf="@id/book_details_add_shelf"
+            android:layout_marginBottom="12dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/colorWhile"
+            app:layout_constraintTop_toBottomOf="@id/book_details_line4"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_margin="12dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="加入书架"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/book_details_start_read"
+            android:background="@drawable/ripple_bg"
+            android:id="@+id/book_details_add_shelf"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_margin="12dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="开始阅读"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/book_details_add_shelf"
+            android:background="@drawable/ripple_bg1"
+            android:id="@+id/book_details_start_read"/>
+
+    </android.support.constraint.ConstraintLayout>
+
 </android.support.design.widget.CoordinatorLayout>

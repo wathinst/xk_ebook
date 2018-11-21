@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.wxz.ebook.R;
 import com.wxz.ebook.bean.DocBean;
-import com.wxz.ebook.tool.DateUnit;
-import com.wxz.ebook.tool.SizeUnit;
+import com.wxz.ebook.tool.utils.DateUtil;
+import com.wxz.ebook.tool.utils.SizeUtil;
 
 import java.util.List;
 
@@ -39,9 +39,9 @@ public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.ViewHo
             holder.text.setVisibility(View.GONE);
             holder.item.setVisibility(View.VISIBLE);
             holder.name.setText(docBeans.get(position).getName());
-            SizeUnit sizeUnit = new SizeUnit();
+            SizeUtil sizeUnit = new SizeUtil();
             holder.size.setText(sizeUnit.getSizeStr(docBeans.get(position).getSize()));
-            DateUnit dateUnit = new DateUnit();
+            DateUtil dateUnit = new DateUtil();
             holder.date.setText(dateUnit.getDateStr(docBeans.get(position).getDateModified()));
             if( onItemClickListener!= null){
                 holder.itemView.setOnClickListener( new View.OnClickListener() {

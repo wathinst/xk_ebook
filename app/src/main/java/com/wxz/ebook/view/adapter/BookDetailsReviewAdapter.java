@@ -60,8 +60,9 @@ public class BookDetailsReviewAdapter extends RecyclerView.Adapter<BookDetailsRe
                 onItemClickListener.onClick(position);
             }
         });
+        String titleName = "UserImage"+ reviews.get(position).author._id;
         Observable<ResponseBody> bookImg = BookImgApi.getInstance(new OkHttpClient()).getImg(reviews.get(position).author.avatar);
-        CacheProviders.getUserCache(holder.context).getImg(bookImg,new DynamicKey(reviews.get(position).author.avatar),new EvictDynamicKey(true))
+        CacheProviders.getUserCache(holder.context).getImg(bookImg,new DynamicKey(titleName),new EvictDynamicKey(true))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ResponseBody>() {
@@ -73,7 +74,9 @@ public class BookDetailsReviewAdapter extends RecyclerView.Adapter<BookDetailsRe
                     public void onNext(ResponseBody responseBody) {
                         InputStream inputStream = responseBody.byteStream();
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                        holder.user_img.setImageBitmap(bitmap);
+                        if (bitmap!=null){
+                            holder.user_img.setImageBitmap(bitmap);
+                        }
                     }
 
                     @Override

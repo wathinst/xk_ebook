@@ -40,6 +40,7 @@
                 android:lines="1"
                 android:ellipsize="end"
                 android:id="@+id/book_details_title"
+                android:text="@string/app_name"
                 android:background="#11000000"/>
         </android.support.constraint.ConstraintLayout>
 

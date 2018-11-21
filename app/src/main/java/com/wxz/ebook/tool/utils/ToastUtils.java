@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.wxz.ebook.tool;
+package com.wxz.ebook.tool.utils;
 
 import android.content.Context;
 import android.widget.Toast;
+
+import com.wxz.ebook.tool.utils.AppUtils;
 
 /**
  * Toast工具类，解决多个Toast同时出现的问题

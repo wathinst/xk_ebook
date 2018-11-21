@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.wxz.ebook.tool;
+package com.wxz.ebook.tool.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

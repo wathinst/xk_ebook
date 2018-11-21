@@ -52,7 +52,7 @@ public class BookMarketListAdapter extends RecyclerView.Adapter<BookMarketListAd
         holder.item_title.setText(booksBeans.get(position).title);
         holder.item_author.setText(booksBeans.get(position).author);
         holder.item_shortIntro.setText(booksBeans.get(position).shortIntro);
-        String titleName = "BookMarkerList"+ booksBeans.get(position)._id;
+        String titleName = "BookImage"+ booksBeans.get(position)._id;
         Observable<ResponseBody> bookImg = BookImgApi.getInstance(new OkHttpClient()).getImg(booksBeans.get(position).cover);
         CacheProviders.getUserCache(context).getImg(bookImg,new DynamicKey(titleName),new EvictDynamicKey(true))
                 .subscribeOn(Schedulers.newThread())

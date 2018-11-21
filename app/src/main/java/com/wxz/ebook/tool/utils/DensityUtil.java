@@ -1,5 +1,5 @@
 //Copyright (c) 2017. 章钦豪. All rights reserved.
-package com.wxz.ebook.tool;
+package com.wxz.ebook.tool.utils;
 
 import android.app.Activity;
 import android.content.Context;

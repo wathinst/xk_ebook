@@ -87,6 +87,7 @@ public class BookDetailsSummaryFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext(),HORIZONTAL,false);
         tagRecyclerView.setLayoutManager(manager);
         tagRecyclerView.setAdapter(tagAdapter);
+        tagRecyclerView.setNestedScrollingEnabled(false);
 
         reviewsList = new ArrayList<>();
         reviewAdapter = new BookDetailsReviewAdapter(reviewsList);

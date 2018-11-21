@@ -14,8 +14,8 @@ import android.view.View;
 
 import com.wxz.ebook.R;
 import com.wxz.ebook.bean.BookBean;
-import com.wxz.ebook.tool.DensityUtil;
-import com.wxz.ebook.tool.ReadViewTool;
+import com.wxz.ebook.tool.utils.DensityUtil;
+import com.wxz.ebook.tool.readFactory.ReadViewTool;
 
 import java.util.List;
 

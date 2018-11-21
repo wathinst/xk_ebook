@@ -1,8 +1,8 @@
-package com.wxz.ebook.tool;
+package com.wxz.ebook.tool.utils;
 
 import java.text.DecimalFormat;
 
-public class SizeUnit {
+public class SizeUtil {
     public String getSizeStr(String size){
         String sizeStr;
         DecimalFormat df = new DecimalFormat("0.0");

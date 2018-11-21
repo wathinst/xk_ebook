@@ -1,17 +1,15 @@
-package com.wxz.ebook.tool;
+package com.wxz.ebook.tool.readFactory;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.wxz.ebook.bean.BookBean;
 import com.wxz.ebook.config.ReadPageConfig;
+import com.wxz.ebook.tool.utils.AppUtils;
 
 public class ReadFactory {
     private Bitmap frontBitmap,backBitmap;

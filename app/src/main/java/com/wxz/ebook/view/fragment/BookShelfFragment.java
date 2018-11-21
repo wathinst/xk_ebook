@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import com.wxz.ebook.R;
 import com.wxz.ebook.bean.BookInfoBean;
 import com.wxz.ebook.tool.ComparatorBookInfo;
-import com.wxz.ebook.tool.FileHelper;
+import com.wxz.ebook.tool.utils.FileHelper;
 import com.wxz.ebook.view.activity.ReadPageActivity;
 import com.wxz.ebook.view.adapter.BookCaseAdapter;
 
@@ -77,9 +77,8 @@ public class BookShelfFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 2){
             BookInfoBean book = (BookInfoBean) data.getSerializableExtra("rBookInfoBean");
-            Log.e("name",book.getName());
             for (int i=0;i<bookInfoBeans.size();i++){
-                if(bookInfoBeans.get(i).getId().equals(book.getId())){
+                if(bookInfoBeans.get(i).id.equals(book.id)){
                     bookInfoBeans.set(i,book);
                 }
             }
@@ -89,7 +88,6 @@ public class BookShelfFragment extends Fragment {
         }
         if(requestCode == 1){
             BookInfoBean book = (BookInfoBean) data.getSerializableExtra("rBookInfoBean");
-            Log.e("name",book.getName());
             bookInfoBeans.add(book);
             ComparatorBookInfo comparatorBookInfo = new ComparatorBookInfo();
             Collections.sort(bookInfoBeans,comparatorBookInfo);

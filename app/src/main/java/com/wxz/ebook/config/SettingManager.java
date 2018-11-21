@@ -4,9 +4,9 @@
 package com.wxz.ebook.config;
 
 import com.wxz.ebook.R;
-import com.wxz.ebook.tool.AppUtils;
-import com.wxz.ebook.tool.ScreenUtils;
-import com.wxz.ebook.tool.ToastUtils;
+import com.wxz.ebook.tool.utils.AppUtils;
+import com.wxz.ebook.tool.utils.ScreenUtils;
+import com.wxz.ebook.tool.utils.ToastUtils;
 
 /**
  * @author 韦行志

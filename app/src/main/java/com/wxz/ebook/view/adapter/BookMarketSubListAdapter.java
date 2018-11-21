@@ -50,45 +50,43 @@ public class BookMarketSubListAdapter extends RecyclerView.Adapter<BookMarketSub
 
     @Override
     public void onBindViewHolder(@NonNull final MyHolder holder, @SuppressLint("RecyclerView") final int position) {
-        holder.item_title.setText(booksBeans.get(position).title);
-        Observable<ResponseBody> bookImg = BookImgApi.getInstance(new OkHttpClient()).getImg(booksBeans.get(position).cover);
-        CacheProviders.getUserCache(context).getImg(bookImg,new DynamicKey(booksBeans.get(position).cover),new EvictDynamicKey(true))
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ResponseBody>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        InputStream inputStream = responseBody.byteStream();
-                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                        holder.item_image.setImageBitmap(bitmap);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.onClick(position);
-            }
-        });
+        if(booksBeans!=null){
+            holder.item_title.setText(booksBeans.get(position).title);
+            String titleName = "BookImage"+ booksBeans.get(position)._id;
+            Observable<ResponseBody> bookImg = BookImgApi.getInstance(new OkHttpClient()).getImg(booksBeans.get(position).cover);
+            CacheProviders.getUserCache(context).getImg(bookImg,new DynamicKey(titleName),new EvictDynamicKey(true))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<ResponseBody>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {}
+                        @Override
+                        public void onNext(ResponseBody responseBody) {
+                            InputStream inputStream = responseBody.byteStream();
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            holder.item_image.setImageBitmap(bitmap);
+                        }
+                        @Override
+                        public void onError(Throwable e) {}
+                        @Override
+                        public void onComplete() {}
+                    });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onClick(position);
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return booksBeans.size();
+        if (booksBeans==null){
+            return 10;
+        }else {
+            return booksBeans.size();
+        }
     }
 
     class MyHolder extends RecyclerView.ViewHolder{

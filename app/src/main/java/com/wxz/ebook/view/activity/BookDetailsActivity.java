@@ -18,8 +18,8 @@ import com.wxz.ebook.api.BookApi;
 import com.wxz.ebook.api.BookImgApi;
 import com.wxz.ebook.bean.BookDetail;
 import com.wxz.ebook.cache.CacheProviders;
-import com.wxz.ebook.tool.DateUnit;
-import com.wxz.ebook.tool.SizeUnit;
+import com.wxz.ebook.tool.utils.DateUtil;
+import com.wxz.ebook.tool.utils.SizeUtil;
 import com.wxz.ebook.view.adapter.SectionsPagerAdapter;
 import java.io.InputStream;
 import java.util.Objects;
@@ -48,8 +48,8 @@ public class BookDetailsActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    private SizeUnit sizeUnit;
-    private DateUnit dateUnit;
+    private SizeUtil sizeUnit;
+    private DateUtil dateUnit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +91,8 @@ public class BookDetailsActivity extends AppCompatActivity {
     }
 
     private void initData(){
-        sizeUnit = new SizeUnit();
-        dateUnit = new DateUnit();
+        sizeUnit = new SizeUtil();
+        dateUnit = new DateUtil();
         if (!book_id.isEmpty()){
             String titleName = "bookDetails" + book_id;
             Observable<BookDetail> bookDetailObservable = BookApi.getInstance(new OkHttpClient())
@@ -135,8 +135,14 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         }
         if (!book_img_url.isEmpty()){
+            String titleName;
+            if(book_id.isEmpty()){
+                titleName = "BookImage"+ book_img_url;
+            }else {
+                titleName = "BookImage"+ book_id;
+            }
             Observable<ResponseBody> bookImg = BookImgApi.getInstance(new OkHttpClient()).getImg(book_img_url);
-            CacheProviders.getUserCache(this).getImg(bookImg,new DynamicKey(book_img_url),new EvictDynamicKey(true))
+            CacheProviders.getUserCache(this).getImg(bookImg,new DynamicKey(titleName),new EvictDynamicKey(true))
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<ResponseBody>() {

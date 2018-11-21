@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.wxz.ebook.bean.BookInfoBean;
-import com.wxz.ebook.tool.ReadTXTFile;
+import com.wxz.ebook.tool.readFactory.ReadTXTFile;
 
 import java.util.Date;
 
@@ -28,19 +28,17 @@ public class ResolveAsyncTask extends AsyncTask<String,Void,BookInfoBean> {
         name = name.substring(0,dot1);
         ReadTXTFile readTXTFile = new ReadTXTFile(context);
         String filePath = "";
-        Log.e("sd",name);
         try {
-            Log.e("sd1",strings[0]);
             filePath = readTXTFile.readTxt(strings[0]);
         }catch (Exception e) {
             e.printStackTrace();
         }
-        bookInfoBean.setPageIndex(0);
-        bookInfoBean.setReadIndex(0);
-        bookInfoBean.setName(name);
-        bookInfoBean.setPath(filePath);
+        bookInfoBean.pageIndex = 0;
+        bookInfoBean.readIndex = 0;
+        bookInfoBean.name = name;
+        bookInfoBean.path = filePath;
         Date date = new Date();
-        bookInfoBean.setDate(date.getTime());
+        bookInfoBean.date = date.getTime();
         return bookInfoBean;
     }
 

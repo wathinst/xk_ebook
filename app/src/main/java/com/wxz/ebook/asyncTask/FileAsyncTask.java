@@ -7,9 +7,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import com.wxz.ebook.bean.DocBean;
-import com.wxz.ebook.config.Constant;
-import com.wxz.ebook.tool.AppUtils;
-import com.wxz.ebook.tool.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;

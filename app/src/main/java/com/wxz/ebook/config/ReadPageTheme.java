@@ -1,7 +1,7 @@
 package com.wxz.ebook.config;
 
-import com.wxz.ebook.tool.AppUtils;
-import com.wxz.ebook.tool.FileUtils;
+import com.wxz.ebook.tool.utils.AppUtils;
+import com.wxz.ebook.tool.utils.FileUtils;
 
 public class ReadPageTheme {
     public static final int THEME_PAPER = 0;//纸张

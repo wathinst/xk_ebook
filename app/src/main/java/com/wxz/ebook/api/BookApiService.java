@@ -24,6 +24,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -63,6 +64,9 @@ public interface BookApiService {
 
     @GET("http://chapter2.zhuishushenqi.com/chapter/{url}")
     Observable<ChapterRead> getChapterRead(@Path("url") String url);
+
+    @GET("http://chapter2.zhuishushenqi.com/chapter/{url}")
+    Call<ChapterRead> getChapterRead1(@Path("url") String url);
 
     /**
      * 热门评论

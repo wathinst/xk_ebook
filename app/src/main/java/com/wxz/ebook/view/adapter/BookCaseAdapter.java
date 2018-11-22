@@ -1,8 +1,11 @@
 package com.wxz.ebook.view.adapter;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,8 @@ import com.wxz.ebook.R;
 import com.wxz.ebook.bean.BookInfoBean;
 import com.wxz.ebook.view.ui.bookUI.BookCaseView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class BookCaseAdapter extends RecyclerView.Adapter<BookCaseAdapter.ViewHolder> {
@@ -32,7 +37,23 @@ public class BookCaseAdapter extends RecyclerView.Adapter<BookCaseAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         if(bookInfoBeans !=null&& bookInfoBeans.size()>0){
-            holder.bookCaseView.setName(bookInfoBeans.get(position).name);
+            if (bookInfoBeans.get(position).bookTybe == 1){
+                FileInputStream fis = null;
+                try {
+                    fis = new FileInputStream(bookInfoBeans.get(position).imgPath);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                //Log.e("imgpath",bookInfoBeans.get(position).imgPath);
+                //Log.e("imgpathsize",bookInfoBeans.get(position).imgPath);
+                Bitmap bitmap  = BitmapFactory.decodeStream(fis);
+                //holder.bookCaseView.setName(bookInfoBeans.get(position).name);
+                //holder.bookCaseView.setFileType(bookInfoBeans.get(position).fileTybe);
+                 holder.bookCaseView.setCaseData(bitmap,"",bookInfoBeans.get(position).fileTybe);
+            }else {
+                holder.bookCaseView.setName(bookInfoBeans.get(position).name);
+                holder.bookCaseView.setFileType(bookInfoBeans.get(position).fileTybe);
+            }
             if( onItemClickListener!= null){
                 holder.itemView.setOnClickListener( new View.OnClickListener() {
                     @Override

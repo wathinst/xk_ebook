@@ -1,5 +1,6 @@
 package com.wxz.ebook.tool.bookFactory;
 
+import android.content.Context;
 import android.os.Environment;
 import com.wxz.ebook.bean.BookInfoBean;
 import com.wxz.ebook.bean.ChapterListBean;
@@ -12,7 +13,7 @@ public class LocalBook extends Book {
     private BookInfoBean bookInfoBean;
     private ChapterListBean bean;
 
-    public void init(BookInfoBean bookInfoBean){
+    public void init(Context context, BookInfoBean bookInfoBean){
         this.bookInfoBean = bookInfoBean;
         initPage(bookInfoBean);
     }
@@ -85,7 +86,7 @@ public class LocalBook extends Book {
      * @return 章节名称
      */
     @Override
-    public String getMestChapterName() {
+    public String getMextChapterName() {
         String str = "";
         if (buffer != null && bean!= null && bookInfoBean.pageIndex + 1 < bean.listBeans.size()){
             str = bean.listBeans.get(bookInfoBean.pageIndex+1).name;
@@ -125,7 +126,7 @@ public class LocalBook extends Book {
      * @return 文本内容
      */
     @Override
-    public String getMestChapterText() {
+    public String getMextChapterText() {
         String str = "";
         if (buffer != null && bean!= null && bookInfoBean.pageIndex + 1 < bean.listBeans.size()){
             str = buffer.getChapterStr(bean.listBeans.get(bookInfoBean.pageIndex+1));
@@ -151,5 +152,15 @@ public class LocalBook extends Book {
     @Override
     public void setPageIndex(int index) {
         bookInfoBean.readIndex = index;
+    }
+
+    @Override
+    public int getBookType() {
+        return bookInfoBean.bookTybe;
+    }
+
+    @Override
+    public int getChapterNum() {
+        return bean.listBeans.size();
     }
 }

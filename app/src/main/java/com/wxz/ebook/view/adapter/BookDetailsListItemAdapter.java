@@ -10,13 +10,10 @@ import com.wxz.ebook.R;
 import com.wxz.ebook.bean.BookMixAToc;
 import com.wxz.ebook.view.fragment.BookDetailsListFragment.OnListFragmentInteractionListener;
 
+import java.io.IOException;
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class BookDetailsListItemAdapter extends RecyclerView.Adapter<BookDetailsListItemAdapter.ViewHolder> {
 
     private List<BookMixAToc.mixToc.Chapters> chaptersList;
@@ -48,7 +45,11 @@ public class BookDetailsListItemAdapter extends RecyclerView.Adapter<BookDetails
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    try {
+                        mListener.onListFragmentInteraction(holder.mItem);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

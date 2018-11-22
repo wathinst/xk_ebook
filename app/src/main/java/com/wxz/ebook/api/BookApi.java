@@ -22,6 +22,7 @@ import com.wxz.ebook.bean.SearchDetail;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -61,6 +62,10 @@ public class BookApi {
 
     public synchronized Observable<ChapterRead> getChapterRead(String url) {
         return service.getChapterRead(url);
+    }
+
+    public synchronized Call<ChapterRead> getChapterRead1(String url) {
+        return service.getChapterRead1(url);
     }
 
     public synchronized Observable<List<BookSource>> getBookSource(String view, String book) {

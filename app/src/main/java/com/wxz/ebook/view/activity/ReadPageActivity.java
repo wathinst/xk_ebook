@@ -22,9 +22,12 @@ import com.wxz.ebook.bean.ChapterListBean;
 import com.wxz.ebook.bean.DocBean;
 import com.wxz.ebook.config.ReadPageTheme;
 import com.wxz.ebook.config.SharedPreferencesUtil;
+import com.wxz.ebook.tool.bookFactory.Book;
 import com.wxz.ebook.tool.bookFactory.BookConcreteFactory;
 import com.wxz.ebook.tool.bookFactory.BookFactory;
 import com.wxz.ebook.tool.bookFactory.LocalBook;
+import com.wxz.ebook.tool.bookFactory.OnlineBook;
+import com.wxz.ebook.tool.bookFactory.OnlineBookListener;
 import com.wxz.ebook.tool.utils.AppUtils;
 import com.wxz.ebook.tool.utils.FileHelper;
 import com.wxz.ebook.view.ui.curlUI.CurlPage;
@@ -35,11 +38,10 @@ import com.wxz.ebook.view.view.CoverView;
 import com.wxz.ebook.view.view.ReadPageSetView;
 import com.wxz.ebook.view.view.ReadPageTextView;
 
-public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask.ReadInterface{
+public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask.ReadInterface ,OnlineBookListener{
 
     private CoverView coverView;
     private CurlView curlView;
-    private ChapterListBean bean;
     private ReadFactory nextFactory,lastFactory,readFactory;
     private TextView book_loading;
     private ChapterListView chapterListView;
@@ -47,8 +49,7 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     private ReadPageTextView readPageTextView;
     private FileHelper helper;
     private ReadAsyncTask readAsyncTask;
-
-    private LocalBook localBook;
+    private Book book;
     private BookFactory bookFactory;
 
     @Override
@@ -197,31 +198,52 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     }
 
     private void initPage(BookInfoBean bookInfoBean){
-        localBook = bookFactory.createRead(LocalBook.class);
-        localBook.init(bookInfoBean);
-        readAsyncTask.execute(localBook.getBuffer());
+        if (bookInfoBean.bookTybe==0){
+            LocalBook localBook  = bookFactory.createRead(LocalBook.class);
+            localBook.init(this,bookInfoBean);
+            readAsyncTask.execute(localBook.getBuffer());
+            book = localBook;
+        }else {
+            OnlineBook onlineBook = bookFactory.createRead(OnlineBook.class);
+            onlineBook.init(this,bookInfoBean);
+            onlineBook.setOnlineBookListener(this);
+            book = onlineBook;
+        }
+
     }
 
     private void setDateReadFactory(){
-        readFactory.setBookName(localBook.getThisChapterName());
-        readFactory.setChapterStr(localBook.getThisChapterText());
+        readFactory.setBookName(book.getThisChapterName());
+        if (book.getBookType()==0){
+            readFactory.setChapterStr(book.getThisChapterText());
+        }else {
+            book.getThisChapterText();
+        }
     }
 
     private void setDateLastFactory(){
         lastFactory = new ReadFactory();
-        lastFactory.setBookName(localBook.getLastChapterName());
-        lastFactory.setChapterStr(localBook.getLastChapterText());
+        lastFactory.setBookName(book.getLastChapterName());
+        if (book.getBookType()==0){
+            lastFactory.setChapterStr(book.getLastChapterText());
+        }else {
+            book.getLastChapterText();
+        }
     }
 
     private void setDateNextFactory(){
         nextFactory = new ReadFactory();
-        nextFactory.setBookName(localBook.getMestChapterName());
-        nextFactory.setChapterStr(localBook.getMestChapterText());
+        nextFactory.setBookName(book.getMextChapterName());
+        if (book.getBookType()==0){
+            nextFactory.setChapterStr(book.getMextChapterText());
+        }else {
+            book.getMextChapterText();
+        }
     }
 
     public void setDataFactory(int index,int readIndex) {
         curlView.setNewCurl();
-        localBook.setChapterIndex(index);
+        book.setChapterIndex(index);
         setDateReadFactory();
         setDateLastFactory();
         setDateNextFactory();
@@ -229,22 +251,55 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         curlView.setCurrentIndex(readIndex);
     }
 
-
-
     public void setDataFactory(boolean b) {//true +1 false -1
         if (b){
             lastFactory = readFactory;
             readFactory = nextFactory;
-            localBook.setChapterIndex(localBook.getChapterIndex()+1);
+            book.setChapterIndex(book.getChapterIndex()+1);
             setDateNextFactory();
-            helper.update(localBook.getBookInfoBean());
+            helper.update(book.getBookInfoBean());
         }else {
             nextFactory = readFactory;
             readFactory = lastFactory;
-            localBook.setChapterIndex(localBook.getChapterIndex()-1);
+            book.setChapterIndex(book.getChapterIndex()-1);
             setDateLastFactory();
-            helper.update(localBook.getBookInfoBean());
+            helper.update(book.getBookInfoBean());
         }
+    }
+
+    private void setChapterListData(ChapterListBean bean){
+        chapterListView.setName(bean.name);
+        chapterListView.setDate(bean.listBeans);
+        chapterListView.setDurChapter(book.getChapterIndex());
+        setDataFactory(book.getChapterIndex(), book.getPageIndex());
+        book_loading.setVisibility(View.GONE);
+        curlView.setOnClickListener(new CurlView.Listener() {
+            @Override
+            public void setOnClick() {
+                readPageSetView.show();
+            }
+
+            @Override
+            public void setOnSettingClick() {
+                readPageSetView.disShow();
+                readPageTextView.disShow();
+            }
+        });
+        chapterListView.setOnClickListener(new ChapterListView.Listener() {
+            @Override
+            public void setListOnClick(int position) {
+                book.setChapterIndex(position);
+                setDataFactory(book.getChapterIndex(),0);
+                chapterListView.disShow(position);
+                coverView.disShow();
+            }
+
+            @Override
+            public void setOtherOnClick(View v) {
+                chapterListView.disShow();
+                coverView.disShow();
+            }
+        });
     }
 
     @Override
@@ -262,54 +317,48 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     @Override
     public void onBackPressed() {
         if (curlView.getCurrentIndex() >= readFactory.getPageSize()){
-            localBook.setChapterIndex(localBook.getChapterIndex()+1);
-            localBook.setPageIndex(0);
+            book.setChapterIndex(book.getChapterIndex()+1);
+            book.setPageIndex(0);
         }else {
-            localBook.setPageIndex(curlView.getCurrentIndex());
+            book.setPageIndex(curlView.getCurrentIndex());
         }
-        helper.update(localBook.getBookInfoBean());
+        helper.update(book.getBookInfoBean());
         Intent intent = new Intent();
-        intent.putExtra("rBookInfoBean",localBook.getBookInfoBean());
+        intent.putExtra("rBookInfoBean", book.getBookInfoBean());
         setResult(2,intent);
         super.onBackPressed();
     }
 
     @Override
     public void setChapterList(final ChapterListBean chapterListBean) {
-        bean = chapterListBean;
-        localBook.setChapterListBean(bean);
-        chapterListView.setName(bean.name);
-        chapterListView.setDate(bean.listBeans);
-        chapterListView.setDurChapter(localBook.getChapterIndex());
-        setDataFactory(localBook.getChapterIndex(),localBook.getPageIndex());
-        book_loading.setVisibility(View.GONE);
-        curlView.setOnClickListener(new CurlView.Listener() {
-            @Override
-            public void setOnClick() {
-                readPageSetView.show();
-            }
+        LocalBook localBook = (LocalBook) book;
+        localBook.setChapterListBean(chapterListBean);
+        book = localBook;
+        setChapterListData(chapterListBean);
+    }
 
-            @Override
-            public void setOnSettingClick() {
-                readPageSetView.disShow();
-                readPageTextView.disShow();
-            }
-        });
-        chapterListView.setOnClickListener(new ChapterListView.Listener() {
-            @Override
-            public void setListOnClick(int position) {
-                localBook.setChapterIndex(position);
-                setDataFactory(localBook.getChapterIndex(),0);
-                chapterListView.disShow(position);
-                coverView.disShow();
-            }
+    @Override
+    public void getThisChapterText(String text) {
+        readFactory.setChapterStr(text);
+        readFactory.readDraw();
+        curlView.updateCurl();
+    }
 
-            @Override
-            public void setOtherOnClick(View v) {
-                chapterListView.disShow();
-                coverView.disShow();
-            }
-        });
+    @Override
+    public void getLastChapterText(String text) {
+        lastFactory.setChapterStr(text);
+        lastFactory.readDraw();
+    }
+
+    @Override
+    public void getMestChapterText(String text) {
+        nextFactory.setChapterStr(text);
+        nextFactory.readDraw();
+    }
+
+    @Override
+    public void getChapterList(ChapterListBean bean) {
+        setChapterListData(bean);
     }
 
 
@@ -357,25 +406,25 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         @Override
         public int nextChapter() {
             setDataFactory(true);
-            chapterListView.setDurChapter(localBook.getChapterIndex());
+            chapterListView.setDurChapter(book.getChapterIndex());
             return 0;
         }
 
         @Override
         public int lastChapter() {
             setDataFactory(false);
-            chapterListView.setDurChapter(localBook.getChapterIndex());
+            chapterListView.setDurChapter(book.getChapterIndex());
             return readFactory.getPageSize()-1;
         }
 
         @Override
         public boolean isNextChapter() {
-            return localBook.getChapterIndex() + 1 >= bean.listBeans.size();
+            return book.getChapterIndex() + 1 >= book.getChapterNum();
         }
 
         @Override
         public boolean isLastChapter() {
-            return localBook.getChapterIndex() <= 0;
+            return book.getChapterIndex() <= 0;
         }
 
         @Override

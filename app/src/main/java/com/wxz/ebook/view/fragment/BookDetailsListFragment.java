@@ -20,8 +20,10 @@ import com.wxz.ebook.bean.ChapterRead;
 import com.wxz.ebook.cache.CacheProviders;
 import com.wxz.ebook.view.adapter.BookDetailsListItemAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -31,6 +33,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.rx_cache2.DynamicKey;
 import io.rx_cache2.EvictDynamicKey;
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
 
 /**
  * A fragment representing a list of Items.
@@ -99,7 +102,7 @@ public class BookDetailsListFragment extends Fragment {
                         itemAdapter.notifyDataSetChanged();
                         mListener = new OnListFragmentInteractionListener() {
                             @Override
-                            public void onListFragmentInteraction(BookMixAToc.mixToc.Chapters item) {
+                            public void onListFragmentInteraction(BookMixAToc.mixToc.Chapters item) throws IOException {
                                 String titleName1 = "ChapterRead"+ book_id + "no" + item.id;
                                 Observable<ChapterRead> chapterReadObservable = BookApi.getInstance(new OkHttpClient())
                                         .getChapterRead(item.link);
@@ -136,6 +139,6 @@ public class BookDetailsListFragment extends Fragment {
 
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(BookMixAToc.mixToc.Chapters item);
+        void onListFragmentInteraction(BookMixAToc.mixToc.Chapters item) throws IOException;
     }
 }

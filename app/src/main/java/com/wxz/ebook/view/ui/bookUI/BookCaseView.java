@@ -27,7 +27,7 @@ public class BookCaseView extends View {
     boolean upFlag,isSelect;
     private int fontSize;
     private String name;
-    private String fileTypeStr[] = {"TXT","DOC","DOCX","PDF","EPUB"};
+    private String fileTypeStr[] = {"TXT","DOC","DOCX","PDF","EPUB",""};
     private Paint mPaint;
     private Bitmap bitmap;
     private Matrix matrix;
@@ -66,7 +66,6 @@ public class BookCaseView extends View {
     private void init() {
         mPaint = new Paint();
         textColor = getResources().getColor(R.color.fontWhite);
-        //textColor = 0xFFFFFFFF;
         mPaint.setColor(textColor);
         fontSize = DensityUtil.sp2px(getContext(),14);
         mPaint.setTextSize(fontSize);
@@ -80,6 +79,32 @@ public class BookCaseView extends View {
     }
     public void setName(String name){
         this.name = name;
+        requestLayout();
+        invalidate();
+    }
+
+    public void setImage(Bitmap bitmap){
+        this.bitmap = bitmap;
+        requestLayout();
+        invalidate();
+    }
+
+    public void setFileType(int fileType){
+        this.fileType = fileType;
+        requestLayout();
+        invalidate();
+    }
+
+    public void setCaseData(Bitmap bitmap,String name,int fileType){
+        if(bitmap!=null){
+            this.bitmap = bitmap;
+        }
+        if(name!=null){
+            this.name = name;
+        }
+        if(fileType>5){
+            this.fileType = fileType;
+        }
         requestLayout();
         invalidate();
     }

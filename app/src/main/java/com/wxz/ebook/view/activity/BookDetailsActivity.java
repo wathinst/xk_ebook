@@ -17,11 +17,19 @@ import com.wxz.ebook.R;
 import com.wxz.ebook.api.BookApi;
 import com.wxz.ebook.api.BookImgApi;
 import com.wxz.ebook.bean.BookDetail;
+import com.wxz.ebook.bean.BookInfoBean;
 import com.wxz.ebook.cache.CacheProviders;
 import com.wxz.ebook.tool.utils.DateUtil;
+import com.wxz.ebook.tool.utils.FileHelper;
 import com.wxz.ebook.tool.utils.SizeUtil;
 import com.wxz.ebook.view.adapter.SectionsPagerAdapter;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.Objects;
 import okhttp3.ResponseBody;
 import io.reactivex.Observable;
@@ -43,6 +51,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     private ImageView book_image;
     private TextView book_name,book_author,book_updated,lately_follower;
     private TextView retention_ratio,word_count,serialize_word_count;
+    private TextView add_shelf,start_read;
 
     private TabLayout tabLayout = null;
     private ViewPager viewPager;
@@ -50,6 +59,7 @@ public class BookDetailsActivity extends AppCompatActivity {
 
     private SizeUtil sizeUnit;
     private DateUtil dateUnit;
+    private Bitmap mBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +84,76 @@ public class BookDetailsActivity extends AppCompatActivity {
         }
         initView();
         initData();
+        final String path;
+        final String titleName;
+        if(book_id.isEmpty()){
+            path = this.getFilesDir()+ "/bookImg/" + book_title + ".jpg";
+            titleName = "BookImage"+ book_img_url;
+        }else {
+            path = this.getFilesDir()+ "/bookImg/" + book_id + ".jpg";
+            titleName = "BookImage"+ book_id;
+        }
+        add_shelf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final BookInfoBean bean = new BookInfoBean();
+                final FileHelper helper = new FileHelper(getBaseContext());
+                if (mBitmap == null){
+                    if (!book_img_url.isEmpty()){
+                        Observable<ResponseBody> bookImg = BookImgApi.getInstance(new OkHttpClient()).getImg(book_img_url);
+                        CacheProviders.getUserCache(getBaseContext()).getImg(bookImg,new DynamicKey(titleName),new EvictDynamicKey(true))
+                                .subscribeOn(Schedulers.newThread())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Observer<ResponseBody>() {
+                                    @Override
+                                    public void onSubscribe(Disposable d) { }
+                                    @Override
+                                    public void onNext(ResponseBody responseBody) {
+                                        InputStream inputStream = responseBody.byteStream();
+                                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                        try {
+                                            saveFile(bitmap,path);
+                                            bean.pageIndex = 0;
+                                            bean.readIndex = 0;
+                                            bean.bookId = book_id;
+                                            bean.name = book_title;
+                                            bean.imgPath = path;
+                                            Date date = new Date();
+                                            bean.date = date.getTime();
+                                            bean.bookTybe = 1;
+                                            bean.fileTybe = 0;
+                                            bean.path = "";
+                                            helper.insert(bean);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    @Override
+                                    public void onError(Throwable e) { }
+                                    @Override
+                                    public void onComplete() { }
+                                });
+                    }
+                }else {
+                    try {
+                        saveFile(mBitmap,path);
+                        bean.pageIndex = 0;
+                        bean.readIndex = 0;
+                        bean.bookId = book_id;
+                        bean.name = book_title;
+                        bean.imgPath = path;
+                        Date date = new Date();
+                        bean.date = date.getTime();
+                        bean.bookTybe = 1;
+                        bean.fileTybe = 0;
+                        bean.path = "";
+                        helper.insert(bean);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     private void initView(){
@@ -85,6 +165,9 @@ public class BookDetailsActivity extends AppCompatActivity {
         retention_ratio = (TextView)findViewById(R.id.book_details_retention_ratio);
         word_count = (TextView)findViewById(R.id.book_details_word_count);
         serialize_word_count = (TextView)findViewById(R.id.book_details_serialize_word_count);
+
+        add_shelf = (TextView)findViewById(R.id.book_details_add_shelf);
+        start_read = (TextView)findViewById(R.id.book_details_start_read);
 
         tabLayout = (TabLayout) findViewById(R.id.book_details_tablayout);
         viewPager = (ViewPager) findViewById(R.id.book_details_tab_viewpager);
@@ -103,9 +186,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<BookDetail>() {
                         @Override
-                        public void onSubscribe(Disposable d) {
-                        }
-
+                        public void onSubscribe(Disposable d) { }
                         @Override
                         public void onNext(BookDetail mBookDetail) {
                             bookDetail = mBookDetail;
@@ -123,14 +204,10 @@ public class BookDetailsActivity extends AppCompatActivity {
                             word_count.setText(sizeUnit.getWordCountStr(bookDetail.wordCount));
                             serialize_word_count.setText(String.valueOf(bookDetail.serializeWordCount));
                         }
-
                         @Override
-                        public void onError(Throwable e) {
-                        }
-
+                        public void onError(Throwable e) { }
                         @Override
-                        public void onComplete() {
-                        }
+                        public void onComplete() { }
                     });
 
         }
@@ -147,24 +224,36 @@ public class BookDetailsActivity extends AppCompatActivity {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<ResponseBody>() {
                         @Override
-                        public void onSubscribe(Disposable d) {
-                        }
-
+                        public void onSubscribe(Disposable d) { }
                         @Override
                         public void onNext(ResponseBody responseBody) {
                             InputStream inputStream = responseBody.byteStream();
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            mBitmap = bitmap;
                             book_image.setImageBitmap(bitmap);
                         }
-
                         @Override
-                        public void onError(Throwable e) {
-                        }
-
+                        public void onError(Throwable e) { }
                         @Override
-                        public void onComplete() {
-                        }
+                        public void onComplete() { }
                     });
+        }
+    }
+
+    private void saveFile(Bitmap bm, String path) throws IOException {
+        File filePic;
+        try {
+            filePic = new File(path);
+            if (!filePic.exists()) {
+                filePic.getParentFile().mkdirs();
+                filePic.createNewFile();
+            }
+            FileOutputStream fos = new FileOutputStream(filePic);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

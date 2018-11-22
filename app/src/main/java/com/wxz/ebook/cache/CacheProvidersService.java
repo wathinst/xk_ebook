@@ -13,6 +13,7 @@ import io.rx_cache2.DynamicKey;
 import io.rx_cache2.EvictDynamicKey;
 import io.rx_cache2.LifeCache;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 
 public interface CacheProvidersService {
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
@@ -32,6 +33,9 @@ public interface CacheProvidersService {
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     Observable<ChapterRead> getChapterRead(Observable<ChapterRead> chapterReadObservable, DynamicKey userName, EvictDynamicKey evictDynamicKey);
+
+    @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
+    Call<ChapterRead> getChapterRead1(Call<ChapterRead> chapterReadCall, DynamicKey userName, EvictDynamicKey evictDynamicKey);
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     Observable<ResponseBody> getImg(Observable<ResponseBody> responseBodyObservable, DynamicKey userName, EvictDynamicKey evictDynamicKey);

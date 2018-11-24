@@ -250,7 +250,11 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         curlView.setNewCurl();
         book.setChapterIndex(index);
         isgetThisText = false;
-        isgetLastText = false;
+        if(index <= 0){
+            isgetLastText = true;
+        }else {
+            isgetLastText = false;
+        }
         pageIndex = readIndex;
         setDateReadFactory();
         setDateLastFactory();

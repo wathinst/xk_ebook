@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -51,6 +52,9 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     private ReadAsyncTask readAsyncTask;
     private Book book;
     private BookFactory bookFactory;
+    //private final
+    private boolean isgetThisText = false,isgetLastText = false;
+    private int pageIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,6 +217,7 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     }
 
     private void setDateReadFactory(){
+        readFactory = new ReadFactory();
         readFactory.setBookName(book.getThisChapterName());
         if (book.getBookType()==0){
             readFactory.setChapterStr(book.getThisChapterText());
@@ -244,11 +249,16 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     public void setDataFactory(int index,int readIndex) {
         curlView.setNewCurl();
         book.setChapterIndex(index);
+        isgetThisText = false;
+        isgetLastText = false;
+        pageIndex = readIndex;
         setDateReadFactory();
         setDateLastFactory();
         setDateNextFactory();
-        readFactory.readDraw();
-        curlView.setCurrentIndex(readIndex);
+        if (book.getBookType() == 0){
+            readFactory.readDraw();
+            curlView.setCurrentIndex(pageIndex);
+        }
     }
 
     public void setDataFactory(boolean b) {//true +1 false -1
@@ -341,19 +351,28 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     public void getThisChapterText(String text) {
         readFactory.setChapterStr(text);
         readFactory.readDraw();
-        curlView.updateCurl();
+        if (!isgetThisText){
+            isgetThisText = true;
+            if (isgetLastText){
+                curlView.setCurrentIndex(pageIndex);
+            }
+        }
     }
 
     @Override
     public void getLastChapterText(String text) {
         lastFactory.setChapterStr(text);
-        lastFactory.readDraw();
+        if (!isgetLastText){
+            isgetLastText = true;
+            if (isgetThisText){
+                curlView.setCurrentIndex(pageIndex);
+            }
+        }
     }
 
     @Override
     public void getMestChapterText(String text) {
         nextFactory.setChapterStr(text);
-        nextFactory.readDraw();
     }
 
     @Override

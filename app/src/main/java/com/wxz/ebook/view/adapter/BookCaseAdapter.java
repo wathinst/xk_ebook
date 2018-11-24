@@ -49,7 +49,7 @@ public class BookCaseAdapter extends RecyclerView.Adapter<BookCaseAdapter.ViewHo
                 Bitmap bitmap  = BitmapFactory.decodeStream(fis);
                 //holder.bookCaseView.setName(bookInfoBeans.get(position).name);
                 //holder.bookCaseView.setFileType(bookInfoBeans.get(position).fileTybe);
-                 holder.bookCaseView.setCaseData(bitmap,"",bookInfoBeans.get(position).fileTybe);
+                holder.bookCaseView.setCaseData(bitmap,"",bookInfoBeans.get(position).fileTybe);
             }else {
                 holder.bookCaseView.setName(bookInfoBeans.get(position).name);
                 holder.bookCaseView.setFileType(bookInfoBeans.get(position).fileTybe);

@@ -100,8 +100,9 @@ public class OnlineBook extends Book {
     public String getThisChapterText() {
         String str = "";
         if (mBookMixAToc != null){
-            String titleName1 = "ChapterRead"+ bookInfoBean.bookId + "no" +
-                    mBookMixAToc.mixToc.chapters.get(bookInfoBean.pageIndex).id;
+            //String titleName1 = "ChapterRead"+ bookInfoBean.bookId + "no" +
+                  //  mBookMixAToc.mixToc.chapters.get(bookInfoBean.pageIndex).id;
+            String titleName1 = mBookMixAToc.mixToc.chapters.get(bookInfoBean.pageIndex).link;
             Observable<ChapterRead> chapterReadObservable = BookApi.getInstance(new OkHttpClient())
                     .getChapterRead(mBookMixAToc.mixToc.chapters.get(bookInfoBean.pageIndex).link);
             CacheProviders.getUserCache(context)
@@ -129,9 +130,10 @@ public class OnlineBook extends Book {
     public String getLastChapterText() {
         String str = "";
         if(mBookMixAToc!= null && bookInfoBean.pageIndex > 0){
-            String titleName1 = "ChapterRead"+ bookInfoBean.bookId + "no" +
-                    mBookMixAToc.mixToc.chapters.get(bookInfoBean.pageIndex - 1).id;
-            Observable<ChapterRead> chapterReadObservable = BookApi.getInstance(new OkHttpClient())
+            //String titleName1 = "ChapterRead"+ bookInfoBean.bookId + "no" +
+                    //mBookMixAToc.mixToc.chapters.get(bookInfoBean.pageIndex - 1).id;
+            String titleName1 = mBookMixAToc.mixToc.chapters.get(bookInfoBean.pageIndex - 1).link;
+                    Observable<ChapterRead> chapterReadObservable = BookApi.getInstance(new OkHttpClient())
                     .getChapterRead(mBookMixAToc.mixToc.chapters.get(bookInfoBean.pageIndex  - 1).link);
             CacheProviders.getUserCache(context)
                     .getChapterRead(chapterReadObservable,new DynamicKey(titleName1),new EvictDynamicKey(false))
@@ -158,8 +160,9 @@ public class OnlineBook extends Book {
     public String getMextChapterText() {
         String str = "";
         if (mBookMixAToc!= null && bookInfoBean.pageIndex + 1 < mBookMixAToc.mixToc.chapters.size()){
-            String titleName1 = "ChapterRead"+ bookInfoBean.bookId + "no" +
-                    mBookMixAToc.mixToc.chapters.get(bookInfoBean.pageIndex + 1).id;
+            //String titleName1 = "ChapterRead"+ bookInfoBean.bookId + "no" +
+                   // mBookMixAToc.mixToc.chapters.get(bookInfoBean.pageIndex + 1).id;
+            String titleName1 = mBookMixAToc.mixToc.chapters.get(bookInfoBean.pageIndex + 1).link;
             Observable<ChapterRead> chapterReadObservable = BookApi.getInstance(new OkHttpClient())
                     .getChapterRead(mBookMixAToc.mixToc.chapters.get(bookInfoBean.pageIndex + 1).link);
             CacheProviders.getUserCache(context)

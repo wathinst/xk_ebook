@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import okhttp3.ResponseBody;
 import io.reactivex.Observable;
@@ -60,6 +61,9 @@ public class BookDetailsActivity extends AppCompatActivity {
     private SizeUtil sizeUnit;
     private DateUtil dateUnit;
     private Bitmap mBitmap;
+    private FileHelper helper;
+    private String path;
+    private String titleName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,12 +88,16 @@ public class BookDetailsActivity extends AppCompatActivity {
         }
         initView();
         initData();
-        final String path;
-        final String titleName;
+        helper = new FileHelper(getBaseContext());
         if(book_id.isEmpty()){
             path = this.getFilesDir()+ "/bookImg/" + book_title + ".jpg";
             titleName = "BookImage"+ book_img_url;
         }else {
+            List<BookInfoBean> beans = helper.getWhere("  `_id` = \""+ book_id + "\"" , null);
+            if (beans.size() > 0){
+                add_shelf.setText("已加入书架");
+                add_shelf.setEnabled(false);
+            }
             path = this.getFilesDir()+ "/bookImg/" + book_id + ".jpg";
             titleName = "BookImage"+ book_id;
         }
@@ -97,7 +105,6 @@ public class BookDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final BookInfoBean bean = new BookInfoBean();
-                final FileHelper helper = new FileHelper(getBaseContext());
                 if (mBitmap == null){
                     if (!book_img_url.isEmpty()){
                         Observable<ResponseBody> bookImg = BookImgApi.getInstance(new OkHttpClient()).getImg(book_img_url);
@@ -121,9 +128,11 @@ public class BookDetailsActivity extends AppCompatActivity {
                                             Date date = new Date();
                                             bean.date = date.getTime();
                                             bean.bookTybe = 1;
-                                            bean.fileTybe = 0;
+                                            bean.fileTybe = 5;
                                             bean.path = "";
                                             helper.insert(bean);
+                                            add_shelf.setText("已加入书架");
+                                            add_shelf.setEnabled(false);
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
@@ -145,9 +154,11 @@ public class BookDetailsActivity extends AppCompatActivity {
                         Date date = new Date();
                         bean.date = date.getTime();
                         bean.bookTybe = 1;
-                        bean.fileTybe = 0;
+                        bean.fileTybe = 5;
                         bean.path = "";
                         helper.insert(bean);
+                        add_shelf.setText("已加入书架");
+                        add_shelf.setEnabled(false);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

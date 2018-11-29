@@ -13,4 +13,5 @@ public class BookInfoBean implements Serializable {
     public String bookId;
     public String imgPath;
     public int fileTybe;
+    public int pageSize;
 }

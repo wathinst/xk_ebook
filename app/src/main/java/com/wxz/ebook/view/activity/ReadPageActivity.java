@@ -30,6 +30,7 @@ import com.wxz.ebook.tool.bookFactory.LocalBook;
 import com.wxz.ebook.tool.bookFactory.OnlineBook;
 import com.wxz.ebook.tool.bookFactory.OnlineBookListener;
 import com.wxz.ebook.tool.utils.AppUtils;
+import com.wxz.ebook.tool.utils.DensityUtil;
 import com.wxz.ebook.tool.utils.FileHelper;
 import com.wxz.ebook.view.ui.curlUI.CurlPage;
 import com.wxz.ebook.view.ui.curlUI.CurlView;
@@ -52,7 +53,6 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     private ReadAsyncTask readAsyncTask;
     private Book book;
     private BookFactory bookFactory;
-    //private final
     private boolean isgetThisText = false,isgetLastText = false;
     private int pageIndex;
 
@@ -66,6 +66,7 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         AppUtils.init(this);
         SharedPreferencesUtil.init(this,"xkEBookRead",Context.MODE_PRIVATE);
         initView();
+        setOnClick();
         initFactory();
         bookFactory = new BookConcreteFactory();
 
@@ -94,8 +95,6 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         curlView.setSizeChangedObserver(new SizeChangedObserver());
         curlView.setCurrentIndex(0);
         curlView.setBackgroundColor(0xFF202830);
-
-        setOnClick();
     }
 
 
@@ -164,6 +163,14 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
             public void setDisShowed() {
                 curlView.setOnTouchSettingFlag(false);
             }
+
+            @Override
+            public void setTextSize(int progress) {
+                setReadTextSize(DensityUtil.sp2px(getBaseContext(),progress*2+10));
+                setDataFactory(book.getChapterIndex(),book.getPageIndex());
+                //Log.e("TextSize",String.valueOf(progress*2+10));
+                //Log.e("pageSize",String.valueOf(book.getPageNum()));
+            }
         });
     }
 
@@ -171,9 +178,12 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         readFactory = new ReadFactory();
         nextFactory = new ReadFactory();
         lastFactory = new ReadFactory();
+        float size = readFactory.getFontSize();
+        int progress = ((int)DensityUtil.px2sp(this,size)-10)/2;
+        readPageTextView.setProgress(progress);
     }
 
-    private void setTextSize(int textSize){
+    private void setReadTextSize(int textSize){
         AppUtils.init(this);
         SharedPreferencesUtil.init(this,"xkEBookRead",Context.MODE_PRIVATE);
         readFactory.setFontSize(textSize);
@@ -261,7 +271,12 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         setDateNextFactory();
         if (book.getBookType() == 0){
             readFactory.readDraw();
-            curlView.setCurrentIndex(pageIndex);
+            if (book.getPageNum()==0 || readFactory.getPageSize() == book.getPageNum()){
+                curlView.setCurrentIndex(pageIndex);
+            }else {
+                int newPageIndex = (pageIndex * readFactory.getPageSize())/book.getPageNum();
+                curlView.setCurrentIndex(newPageIndex);
+            }
         }
     }
 
@@ -333,8 +348,10 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         if (curlView.getCurrentIndex() >= readFactory.getPageSize()){
             book.setChapterIndex(book.getChapterIndex()+1);
             book.setPageIndex(0);
+            book.setPageNum(nextFactory.getPageSize());
         }else {
             book.setPageIndex(curlView.getCurrentIndex());
+            book.setPageNum(readFactory.getPageSize());
         }
         helper.update(book.getBookInfoBean());
         Intent intent = new Intent();
@@ -358,7 +375,14 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         if (!isgetThisText){
             isgetThisText = true;
             if (isgetLastText){
-                curlView.setCurrentIndex(pageIndex);
+                if (book.getPageNum()==0 || readFactory.getPageSize() == book.getPageNum()){
+                    curlView.setCurrentIndex(pageIndex);
+                    Log.e("pageIndex","pageIndex");
+                }else {
+                    int newPageIndex = (pageIndex * readFactory.getPageSize())/book.getPageNum();
+                    curlView.setCurrentIndex(newPageIndex);
+                    Log.e("pageIndex","newPageIndex");
+                }
             }
         }
     }
@@ -369,7 +393,14 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         if (!isgetLastText){
             isgetLastText = true;
             if (isgetThisText){
-                curlView.setCurrentIndex(pageIndex);
+                if (book.getPageNum()==0 || readFactory.getPageSize() == book.getPageNum()){
+                    curlView.setCurrentIndex(pageIndex);
+                    Log.e("pageIndex","pageIndex");
+                }else {
+                    int newPageIndex = (pageIndex * readFactory.getPageSize())/book.getPageNum();
+                    curlView.setCurrentIndex(newPageIndex);
+                    Log.e("pageIndex","newPageIndex");
+                }
             }
         }
     }

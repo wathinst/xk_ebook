@@ -217,6 +217,16 @@ public class OnlineBook extends Book {
     }
 
     @Override
+    public int getPageNum() {
+        return bookInfoBean.pageSize;
+    }
+
+    @Override
+    public void setPageNum(int num) {
+        bookInfoBean.pageSize = num;
+    }
+
+    @Override
     public BookInfoBean getBookInfoBean() {
         return bookInfoBean;
     }

@@ -39,7 +39,7 @@
                 android:minHeight="4dp"
                 android:max="100"
                 android:progress="40"
-                android:thumb="@color/colorWhile"
+                android:thumb="@drawable/ic_account_circle_white_24dp"
                 android:progressDrawable="@drawable/progressbar"
                 android:layout_gravity="center"/>
 
@@ -66,7 +66,7 @@
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:src="@drawable/ic_list_white_24dp"
+                app:srcCompat="@drawable/ic_list_white_24dp"
                 android:contentDescription="@string/list_icon"
                 android:background="@drawable/selector_set_but_item"/>
 
@@ -79,7 +79,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:background="@drawable/selector_set_but_item"
-                android:src="@drawable/ic_text_fields_white_24dp" />
+                app:srcCompat="@drawable/ic_text_fields_white_24dp" />
 
             <ImageView
                 android:id="@+id/read_set_set_bn"
@@ -90,7 +90,7 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:background="@drawable/selector_set_but_item"
-                android:src="@drawable/ic_settings_white_24dp"/>
+                app:srcCompat="@drawable/ic_settings_white_24dp"/>
         </LinearLayout>
 
     </LinearLayout>

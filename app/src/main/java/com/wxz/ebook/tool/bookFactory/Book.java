@@ -32,5 +32,9 @@ public abstract class Book {
 
     public abstract int getChapterNum();
 
+    public abstract int getPageNum();
+
+    public abstract void setPageNum(int num);
+
     public abstract BookInfoBean getBookInfoBean();
 }

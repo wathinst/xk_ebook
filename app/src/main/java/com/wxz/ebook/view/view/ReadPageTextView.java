@@ -17,7 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.SeekBar;
 
 import com.wxz.ebook.R;
 
@@ -25,8 +25,8 @@ public class ReadPageTextView extends FrameLayout {
 
     private ImageView text_paper,text_white,text_purple,text_michelin,text_gray;
     private LinearLayout text_view,text_part;
-    private ProgressBar text_progressBar;
-    private TextView text_up_chapter,text_dn_chapter;
+    private SeekBar text_size_seekbar;
+    private ImageView text_size_up, text_size_dn;
     private Listener listener;
 
     public ReadPageTextView(@NonNull Context context) {
@@ -61,10 +61,22 @@ public class ReadPageTextView extends FrameLayout {
         text_gray= findViewById(R.id.read_page_text_gray);
         text_view = findViewById(R.id.read_book_text_view);
         text_part = findViewById(R.id.read_book_text_part);
-        text_progressBar = findViewById(R.id.read_text_progressBar);
-        text_up_chapter = findViewById(R.id.read_text_up_chapter);
-        text_dn_chapter = findViewById(R.id.read_text_dn_chapter);
+        text_size_seekbar = findViewById(R.id.read_text_size_seekbar);
+        text_size_up = findViewById(R.id.read_text_size_up);
+        text_size_dn = findViewById(R.id.read_text_size_dn);
         setOnClick();
+        text_size_seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser){
+                    listener.setTextSize(progress);
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) { }
+        });
         text_part.setVisibility(GONE);
     }
 
@@ -74,6 +86,18 @@ public class ReadPageTextView extends FrameLayout {
         text_purple.setOnClickListener(new ReadPageTextClick());
         text_michelin.setOnClickListener(new ReadPageTextClick());
         text_gray.setOnClickListener(new ReadPageTextClick());
+        text_size_up.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setUpTextSize();
+            }
+        });
+        text_size_dn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDnTextSize();
+            }
+        });
     }
 
     public void disShow(){
@@ -108,12 +132,36 @@ public class ReadPageTextView extends FrameLayout {
         animator.start();
     }
 
+    private void setUpTextSize(){
+        int progress = text_size_seekbar.getProgress();
+        if (progress >= 0 && progress < text_size_seekbar.getMax()){
+            text_size_seekbar.setProgress(progress + 1);
+            listener.setTextSize(progress + 1);
+        }
+    }
+
+    private void setDnTextSize(){
+        int progress = text_size_seekbar.getProgress();
+        if (progress > 0 && progress <= text_size_seekbar.getMax()){
+            text_size_seekbar.setProgress(progress - 1);
+            listener.setTextSize(progress - 1);
+        }
+    }
+
+    public void setProgress(int progress){
+        if (progress >= 0 && progress <= text_size_seekbar.getMax()){
+            text_size_seekbar.setProgress(progress);
+        }
+    }
+
     public interface Listener{
         void setTextOnClick(View v);
 
         void setShowed();
 
         void setDisShowed();
+
+        void setTextSize(int progress);
     }
 
 

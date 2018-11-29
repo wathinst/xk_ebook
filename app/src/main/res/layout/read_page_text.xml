@@ -20,39 +20,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp">
-            <TextView
+            <ImageView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
-                android:textColor="@color/fontWhite"
-                android:gravity="center"
-                android:textSize="16sp"
-                android:text="@string/up_chapter"
-                android:id="@+id/read_text_up_chapter"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                app:srcCompat="@drawable/ic_title_white_24dp"
+                android:contentDescription="@string/list_icon"
+                android:id="@+id/read_text_size_dn"
                 android:background="@drawable/selector_set_but_item"/>
 
             <SeekBar
-                android:id="@+id/read_text_progressBar"
+                android:id="@+id/read_text_size_seekbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="5"
                 android:maxHeight="4dp"
                 android:minHeight="4dp"
-                android:max="100"
-                android:progress="40"
-                android:thumb="@color/colorWhile"
+                android:max="10"
+                android:thumb="@drawable/ic_account_circle_white_24dp"
                 android:progressDrawable="@drawable/progressbar"
                 android:layout_gravity="center"/>
 
-            <TextView
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/fontWhite"
-                android:textSize="16sp"
-                android:gravity="center"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                app:srcCompat="@drawable/ic_title_white_24dp"
+                android:contentDescription="@string/list_icon"
                 android:text="@string/dn_chapter"
-                android:id="@+id/read_text_dn_chapter"
+                android:id="@+id/read_text_size_up"
                 android:background="@drawable/selector_set_but_item"/>
         </LinearLayout>
 

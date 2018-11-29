@@ -66,6 +66,7 @@ public class ReadFactory {
         textColor = readPageConfig.textColor;
         paint.setTextSize(textColor);
         readPageConfig.saveReadPageConfig();
+        createChapterStr();
     }
 
     public void setBookName(String str){
@@ -186,6 +187,10 @@ public class ReadFactory {
         readPageConfig.textSize = textSize;
         readPageConfig.saveReadPageConfig();
         createChapterStr();
+    }
+
+    public int getFontSize(){
+        return textSize;
     }
 
     public void setPageIndex(int index){

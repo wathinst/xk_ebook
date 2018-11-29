@@ -80,6 +80,7 @@ public class FileHelper extends SQLiteOpenHelper {
         cv.put("fileTybe", bookInfoBean.fileTybe);
         cv.put("bookId", bookInfoBean.bookId);
         cv.put("imgPath", bookInfoBean.imgPath);
+        cv.put("pageSize", bookInfoBean.pageSize);
 
         long id = getWritableDatabase().insert("xkr", "name", cv);
         bookInfoBean.id = String.valueOf(id);
@@ -100,6 +101,7 @@ public class FileHelper extends SQLiteOpenHelper {
         cv.put("fileTybe", bookInfoBean.fileTybe);
         cv.put("bookId", bookInfoBean.bookId);
         cv.put("imgPath", bookInfoBean.imgPath);
+        cv.put("pageSize", bookInfoBean.pageSize);
 
         getWritableDatabase().update("xkr", cv, "_id=?", args);
     }
@@ -125,6 +127,7 @@ public class FileHelper extends SQLiteOpenHelper {
                 int fileTybeIndex = cursor.getColumnIndex("fileTybe");
                 int bookIdIndex = cursor.getColumnIndex("bookId");
                 int imgPathIndex = cursor.getColumnIndex("imgPath");
+                int pageSizeIndex = cursor.getColumnIndex("pageSize");
                 do {
                     BookInfoBean bookInfoBean = new BookInfoBean();
                     bookInfoBean.id = cursor.getString(idIndex);
@@ -137,6 +140,7 @@ public class FileHelper extends SQLiteOpenHelper {
                     bookInfoBean.fileTybe = cursor.getInt(fileTybeIndex);
                     bookInfoBean.bookId = cursor.getString(bookIdIndex);
                     bookInfoBean.imgPath = cursor.getString(imgPathIndex);
+                    bookInfoBean.pageSize = cursor.getInt(pageSizeIndex);
                     bookInfoBeans.add(bookInfoBean);
                 } while (cursor.moveToNext());
             }

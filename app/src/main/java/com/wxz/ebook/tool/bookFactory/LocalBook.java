@@ -163,4 +163,14 @@ public class LocalBook extends Book {
     public int getChapterNum() {
         return bean.listBeans.size();
     }
+
+    @Override
+    public void setPageNum(int num) {
+        bookInfoBean.pageSize = num;
+    }
+
+    @Override
+    public int getPageNum() {
+        return bookInfoBean.pageSize;
+    }
 }

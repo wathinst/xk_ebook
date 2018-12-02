@@ -1,18 +1,25 @@
 package com.wxz.ebook.view.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.os.BatteryManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.wxz.ebook.R;
@@ -40,6 +47,8 @@ import com.wxz.ebook.view.view.CoverView;
 import com.wxz.ebook.view.view.ReadPageSetView;
 import com.wxz.ebook.view.view.ReadPageTextView;
 
+import java.util.Date;
+
 public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask.ReadInterface ,OnlineBookListener{
 
     private CoverView coverView;
@@ -55,6 +64,9 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     private BookFactory bookFactory;
     private boolean isgetThisText = false,isgetLastText = false;
     private int pageIndex;
+    private Receiver receiver = new Receiver();
+    private IntentFilter intentFilter = new IntentFilter();
+    private int battery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +74,15 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         requestWindowFeature(Window.FEATURE_NO_TITLE);//去除title
         getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
                 WindowManager.LayoutParams. FLAG_FULLSCREEN);//去掉Activity上面的状态栏
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setNavigationBarColor(Color.BLACK);
+        }
         setContentView(R.layout.activity_read_page);
         AppUtils.init(this);
         SharedPreferencesUtil.init(this,"xkEBookRead",Context.MODE_PRIVATE);
+        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        intentFilter.addAction(Intent.ACTION_TIME_TICK);
+        registerReceiver(receiver,intentFilter);
         initView();
         setOnClick();
         initFactory();
@@ -103,6 +121,8 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
             @Override
             public void setListOnClick(View v) {
                 readPageSetView.disShow();
+                getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
+                        WindowManager.LayoutParams. FLAG_FULLSCREEN);//去掉Activity上面的状态栏
                 chapterListView.show();
                 coverView.show();
             }
@@ -110,6 +130,8 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
             @Override
             public void setSizeOnClick(View v) {
                 readPageSetView.disShow();
+                getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
+                        WindowManager.LayoutParams. FLAG_FULLSCREEN);//去掉Activity上面的状态栏
                 readPageTextView.show();
             }
 
@@ -168,16 +190,14 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
             public void setTextSize(int progress) {
                 setReadTextSize(DensityUtil.sp2px(getBaseContext(),progress*2+10));
                 setDataFactory(book.getChapterIndex(),book.getPageIndex());
-                //Log.e("TextSize",String.valueOf(progress*2+10));
-                //Log.e("pageSize",String.valueOf(book.getPageNum()));
             }
         });
     }
 
     private void initFactory(){
-        readFactory = new ReadFactory();
-        nextFactory = new ReadFactory();
-        lastFactory = new ReadFactory();
+        readFactory = new ReadFactory(this);
+        nextFactory = new ReadFactory(this);
+        lastFactory = new ReadFactory(this);
         float size = readFactory.getFontSize();
         int progress = ((int)DensityUtil.px2sp(this,size)-10)/2;
         readPageTextView.setProgress(progress);
@@ -198,6 +218,18 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         nextFactory.setPageTheme(pageTheme);
         lastFactory.setPageTheme(pageTheme);
         chapterListView.upBackground();
+    }
+
+    private void setBattery(int battery){
+        readFactory.setBattery(battery);
+        nextFactory.setBattery(battery);
+        lastFactory.setBattery(battery);
+    }
+
+    private void recycle(){
+        readFactory.recycle();
+        lastFactory.recycle();
+        nextFactory.recycle();
     }
 
     private void initView(){
@@ -227,33 +259,39 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     }
 
     private void setDateReadFactory(){
-        readFactory = new ReadFactory();
+        readFactory = new ReadFactory(this);
         readFactory.setBookName(book.getThisChapterName());
         if (book.getBookType()==0){
             readFactory.setChapterStr(book.getThisChapterText());
         }else {
             book.getThisChapterText();
         }
+        readFactory.setPercent(book.getThisPercent());
+        readFactory.setBattery(battery);
     }
 
     private void setDateLastFactory(){
-        lastFactory = new ReadFactory();
+        lastFactory = new ReadFactory(this);
         lastFactory.setBookName(book.getLastChapterName());
         if (book.getBookType()==0){
             lastFactory.setChapterStr(book.getLastChapterText());
         }else {
             book.getLastChapterText();
         }
+        lastFactory.setPercent(book.getLastPercent());
+        lastFactory.setBattery(battery);
     }
 
     private void setDateNextFactory(){
-        nextFactory = new ReadFactory();
+        nextFactory = new ReadFactory(this);
         nextFactory.setBookName(book.getMextChapterName());
         if (book.getBookType()==0){
             nextFactory.setChapterStr(book.getMextChapterText());
         }else {
             book.getMextChapterText();
         }
+        nextFactory.setPercent(book.getMextPercent());
+        nextFactory.setBattery(battery);
     }
 
     public void setDataFactory(int index,int readIndex) {
@@ -266,6 +304,11 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
             isgetLastText = false;
         }
         pageIndex = readIndex;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            BatteryManager batteryManager = (BatteryManager)getSystemService(BATTERY_SERVICE);
+            assert batteryManager != null;
+            battery =batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+        }
         setDateReadFactory();
         setDateLastFactory();
         setDateNextFactory();
@@ -306,11 +349,14 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
             @Override
             public void setOnClick() {
                 readPageSetView.show();
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//显示Activity上面的状态栏
             }
 
             @Override
             public void setOnSettingClick() {
                 readPageSetView.disShow();
+                getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
+                        WindowManager.LayoutParams. FLAG_FULLSCREEN);//去掉Activity上面的状态栏
                 readPageTextView.disShow();
             }
         });
@@ -341,6 +387,17 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     public void onResume() {
         super.onResume();
         curlView.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        recycle();
+        try {
+            unregisterReceiver(receiver);
+        } catch (Exception e) {
+            Log.e("XkRead","Receiver not registered");
+        }
     }
 
     @Override
@@ -512,5 +569,20 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         }
     }
 
+    class Receiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (curlView != null && readFactory != null) {
+                if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
+                    battery = intent.getIntExtra("level", 0);
+                    setBattery(battery);
+                    curlView.updateCurl();
+                } else if (Intent.ACTION_TIME_TICK.equals(intent.getAction())) {
+                    curlView.updateCurl();
+                }
+            }
+        }
+    }
 
 }

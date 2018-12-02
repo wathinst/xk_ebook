@@ -94,6 +94,34 @@ public class LocalBook extends Book {
         return str;
     }
 
+    @Override
+    public float getThisPercent() {
+        float percent = 0.00f;
+        if (buffer != null && bean != null){
+            percent = (float)bookInfoBean.pageIndex*100/bean.listBeans.size();
+        }
+        return percent;
+    }
+
+    @Override
+    public float getLastPercent() {
+        float percent = 0.00f;
+        if(buffer != null && bean!= null && bookInfoBean.pageIndex > 0){
+            percent = (float) (bookInfoBean.pageIndex-1)*100/bean.listBeans.size();
+        }
+        return percent;
+    }
+
+    @Override
+    public float getMextPercent() {
+        float percent = 0.00f;
+        if (buffer != null && bean!= null && bookInfoBean.pageIndex + 1 < bean.listBeans.size()){
+            percent = (float)(bookInfoBean.pageIndex+1)*100/bean.listBeans.size();
+        }
+        return percent;
+    }
+
+
     /**
      * 获取本章的文本内容
      * @return 文本内容

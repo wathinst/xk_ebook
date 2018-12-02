@@ -14,6 +14,12 @@ public abstract class Book {
 
     public abstract String getMextChapterName();
 
+    public abstract float getThisPercent();
+
+    public abstract float getLastPercent();
+
+    public abstract float getMextPercent();
+
     public abstract String getThisChapterText();
 
     public abstract String getLastChapterText();

@@ -28,27 +28,18 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".view.activity.ReadPageActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.activity.BookShelfActivity"
-            android:label="@string/title_activity_book_shelf"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
+            android:theme="@style/AppReadTheme.NoActionBar" />
+       <activity
             android:name=".view.activity.SearchFileActivity"
             android:label="@string/title_activity_search_file"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.activity.BookMarketActivity"
-            android:label="@string/title_activity_book_market"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
+       <activity
             android:name=".view.activity.BookMarketDetailActivity"
             android:label="@string/title_activity_book_market_detail"
             android:theme="@style/AppTheme.NoActionBar" />

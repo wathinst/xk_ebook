@@ -97,6 +97,33 @@ public class OnlineBook extends Book {
     }
 
     @Override
+    public float getThisPercent() {
+        float percent = 0.00f;
+        if (mBookMixAToc != null){
+            percent = (float)bookInfoBean.pageIndex*100/mBookMixAToc.mixToc.chapters.size();
+        }
+        return percent;
+    }
+
+    @Override
+    public float getLastPercent() {
+        float percent = 0.00f;
+        if(mBookMixAToc!= null && bookInfoBean.pageIndex > 0){
+            percent = (float)(bookInfoBean.pageIndex-1)*100/mBookMixAToc.mixToc.chapters.size();
+        }
+        return percent;
+    }
+
+    @Override
+    public float getMextPercent() {
+        float percent = 0.00f;
+        if (mBookMixAToc!= null && bookInfoBean.pageIndex + 1 < mBookMixAToc.mixToc.chapters.size()){
+            percent = (float)(bookInfoBean.pageIndex+1)*100/mBookMixAToc.mixToc.chapters.size();
+        }
+        return percent;
+    }
+
+    @Override
     public String getThisChapterText() {
         String str = "";
         if (mBookMixAToc != null){

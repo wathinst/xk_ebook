@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +18,11 @@ import com.wxz.ebook.tool.ComparatorBookInfo;
 import com.wxz.ebook.tool.utils.FileHelper;
 import com.wxz.ebook.view.activity.ReadPageActivity;
 import com.wxz.ebook.view.adapter.BookCaseAdapter;
+import com.wxz.ebook.view.adapter.BookCaseViewAdapter;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class BookShelfFragment extends Fragment {
     FileHelper helper;
@@ -46,7 +47,7 @@ public class BookShelfFragment extends Fragment {
         //Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         //context.setSupportActionBar(toolbar);
 
-        bookCase = getActivity().findViewById(R.id.book_case_list);
+        bookCase = Objects.requireNonNull(getActivity()).findViewById(R.id.book_case_list);
         GridLayoutManager manager = new GridLayoutManager(context,3);
         bookCase.setLayoutManager(manager);
 

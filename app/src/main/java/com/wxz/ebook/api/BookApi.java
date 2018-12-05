@@ -13,6 +13,7 @@ import com.wxz.ebook.bean.CategoryList;
 import com.wxz.ebook.bean.CategoryListLv2;
 import com.wxz.ebook.bean.ChapterRead;
 import com.wxz.ebook.bean.HotReview;
+import com.wxz.ebook.bean.HotWord;
 import com.wxz.ebook.bean.RankingList;
 import com.wxz.ebook.bean.Rankings;
 import com.wxz.ebook.bean.Recommend;
@@ -138,4 +139,8 @@ public class BookApi {
     public Observable<Recommend> getRecommendBook(String bookId){
         return service.getRecommendBook(bookId);
     };
+
+    public Observable<HotWord> getHotWord() {
+        return service.getHotWord();
+    }
 }

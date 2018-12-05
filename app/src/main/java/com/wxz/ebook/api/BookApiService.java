@@ -14,6 +14,7 @@ import com.wxz.ebook.bean.CategoryList;
 import com.wxz.ebook.bean.CategoryListLv2;
 import com.wxz.ebook.bean.ChapterRead;
 import com.wxz.ebook.bean.HotReview;
+import com.wxz.ebook.bean.HotWord;
 import com.wxz.ebook.bean.RankingList;
 import com.wxz.ebook.bean.Rankings;
 import com.wxz.ebook.bean.Recommend;
@@ -193,6 +194,9 @@ public interface BookApiService {
 
     @GET("/book/by-tags")
     Observable<BooksByTag> getBooksByTag(@Query("tags") String tags, @Query("start") String start, @Query("limit") String limit);
+
+    @GET("/book/hot-word")
+    Observable<HotWord> getHotWord();
 
     @GET("/{imgUrl}")
     Observable<ResponseBody> getImg(@Path("imgUrl") String imgUrl);

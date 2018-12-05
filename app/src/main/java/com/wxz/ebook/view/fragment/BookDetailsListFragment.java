@@ -2,6 +2,7 @@ package com.wxz.ebook.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -47,6 +48,7 @@ public class BookDetailsListFragment extends Fragment {
     private String book_id;
     private List<BookMixAToc.mixToc.Chapters> chaptersList;
     private BookDetailsListItemAdapter itemAdapter;
+    private RecyclerView recyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,7 +56,6 @@ public class BookDetailsListFragment extends Fragment {
      */
     @SuppressLint("ValidFragment")
     public BookDetailsListFragment(String book_id) {
-        chaptersList = new ArrayList<>();
         this.book_id = book_id;
     }
 
@@ -68,22 +69,19 @@ public class BookDetailsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.book_details_list_fragment_item_list, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            itemAdapter = new BookDetailsListItemAdapter(chaptersList);
-            recyclerView.setAdapter(itemAdapter);
-        }
-        return view;
+        return inflater.inflate(R.layout.book_details_list_fragment_item_list, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.book_details_list);
+        }
+        chaptersList = new ArrayList<>();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        itemAdapter = new BookDetailsListItemAdapter(chaptersList);
+        recyclerView.setAdapter(itemAdapter);
         String titleName = "bookDetailsList" + book_id;
         Observable<BookMixAToc> bookMixATocObservable = BookApi.getInstance(new OkHttpClient())
                 .getBookMixAToc(book_id,"chapter");
@@ -93,47 +91,24 @@ public class BookDetailsListFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookMixAToc>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
+                    public void onSubscribe(Disposable d) { }
                     @Override
                     public void onNext(BookMixAToc bookMixAToc) {
-                        chaptersList.addAll(bookMixAToc.mixToc.chapters);
-                        itemAdapter.notifyDataSetChanged();
-                        mListener = new OnListFragmentInteractionListener() {
-                            @Override
-                            public void onListFragmentInteraction(BookMixAToc.mixToc.Chapters item) throws IOException {
-                                String titleName1 = "ChapterRead"+ book_id + "no" + item.id;
-                                Observable<ChapterRead> chapterReadObservable = BookApi.getInstance(new OkHttpClient())
-                                        .getChapterRead(item.link);
-                                CacheProviders.getUserCache(getContext())
-                                        .getChapterRead(chapterReadObservable,new DynamicKey(titleName1),new EvictDynamicKey(false))
-                                        .subscribeOn(Schedulers.newThread())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(new Observer<ChapterRead>() {
-                                            @Override
-                                            public void onSubscribe(Disposable d) { }
-                                            @Override
-                                            public void onNext(ChapterRead chapterRead) {
-                                                Log.e("test",chapterRead.chapter.body);
-                                            }
-                                            @Override
-                                            public void onError(Throwable e) {}
-                                            @Override
-                                            public void onComplete() {}
-                                        });
-                            }
-                        };
-                        itemAdapter.setOnListFragmentInteractionListener(mListener);
-                    }
+                        if(bookMixAToc.mixToc != null){
+                            chaptersList.addAll(bookMixAToc.mixToc.chapters);
+                            itemAdapter.notifyDataSetChanged();
+                            itemAdapter.setOnListFragmentInteractionListener(new OnListFragmentInteractionListener() {
+                                @Override
+                                public void onListFragmentInteraction(BookMixAToc.mixToc.Chapters item) throws IOException {
 
-                    @Override
-                    public void onError(Throwable e) {
+                                }
+                            });
+                        }
                     }
-
                     @Override
-                    public void onComplete() {
-                    }
+                    public void onError(Throwable e) { }
+                    @Override
+                    public void onComplete() { }
                 });
     }
 

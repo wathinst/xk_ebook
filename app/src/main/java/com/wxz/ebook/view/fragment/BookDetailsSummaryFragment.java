@@ -2,6 +2,7 @@ package com.wxz.ebook.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -77,10 +78,12 @@ public class BookDetailsSummaryFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        book_summary = Objects.requireNonNull(getActivity()).findViewById(R.id.book_details_summary);
-        tagRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.book_details_tag);
-        reviewRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.book_details_review);
-        recommendRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.book_details_recommend);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            book_summary = Objects.requireNonNull(getActivity()).findViewById(R.id.book_details_summary);
+            tagRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.book_details_tag);
+            reviewRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.book_details_review);
+            recommendRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.book_details_recommend);
+        }
         book_summary.setText(bookDetail.longIntro);
 
         tagAdapter = new BookDetailsTagAdapter(bookDetail.tags);
@@ -119,23 +122,17 @@ public class BookDetailsSummaryFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<HotReview>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
+                    public void onSubscribe(Disposable d) { }
                     @Override
                     public void onNext(HotReview hotReview) {
                         reviewsList.clear();
                         reviewsList.addAll(hotReview.reviews);
                         reviewAdapter.notifyDataSetChanged();
                     }
-
                     @Override
-                    public void onError(Throwable e) {
-                    }
-
+                    public void onError(Throwable e) { }
                     @Override
-                    public void onComplete() {
-                    }
+                    public void onComplete() { }
                 });
         String title2Name = "bookDetailsReView" + bookDetail._id;
         Observable<Recommend> recommendObservable = BookApi.getInstance(new OkHttpClient())

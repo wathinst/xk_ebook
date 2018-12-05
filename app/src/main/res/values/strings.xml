@@ -6,9 +6,15 @@
     <string name="file_type">TXT</string>
     <string name="imported">已导入</string>
     <string name="chap_pattern">(^[0123456789零一二三四五六七八九十第])([0123456789零一二三四五六七八九十百千万]{1,9})([章节卷集部篇回])(.*)</string>
-    <string name="fileCreateSql">CREATE TABLE xkr (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, readIndex INTEGER,
+    <string name="fileCreateSql">CREATE TABLE xkBookInfo (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, readIndex INTEGER,
         pageIndex INTEGER, path TEXT, date DATE, bookTybe INTEGER, fileTybe INTEGER, bookId TEXT,imgPath TEXT,pageSize INTEGER);</string>
-    <string name="fileUpV2Sql">ALTER TABLE xkr ADD pageSize INTEGER;</string>
+    <string name="fileUpV2Sql">ALTER TABLE xkBookInfo ADD pageSize INTEGER;</string>
+    <string name="fileSelectStr">SELECT * FROM xkBookInfo </string>
+    <string name="fileSelectAllStr">SELECT * FROM xkBookInfo</string>
+    <string name="searchCreateSql">CREATE TABLE xkSearchHistory (_id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT,  date DATE);</string>
+    <string name="searchSelectStr">SELECT * FROM xkSearchHistory </string>
+    <string name="searchHotCreateSql">CREATE TABLE xkSearchHot (id INTEGER, title TEXT,  date DATE);</string>
+    <string name="searchHotSelectStr">SELECT * FROM xkSearchHot </string>
     <string name="main_but">打开文本</string>
     <string name="main_but1">插入</string>
     <string name="action_search">查询</string>
@@ -49,6 +55,8 @@
     <string name="item_book_details_user_lv_lable">lv.</string>
     <string name="book_details_recommend_lable">猜你喜欢</string>
     <string name="book_details_more_recommend_lable">更多</string>
-    <string name="fileSelectStr">SELECT * FROM xkr</string>
-    <string name="fileSelectAllStr">SELECT * FROM xkr</string>
+    <string name="title_activity_book_search">BookSearchActivity</string>
+    <string name="action_search_view">搜索</string>
+    <string name="book_search_hot_tab">热门搜索</string>
+    <string name="search_history_tab">历史搜索</string>
 </resources>

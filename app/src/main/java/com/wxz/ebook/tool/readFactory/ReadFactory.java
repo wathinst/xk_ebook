@@ -8,22 +8,12 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ProgressBar;
-
-import com.wxz.ebook.R;
 import com.wxz.ebook.bean.BookBean;
 import com.wxz.ebook.config.ReadPageConfig;
-import com.wxz.ebook.config.ReadPageTheme;
-import com.wxz.ebook.config.SettingManager;
 import com.wxz.ebook.tool.utils.AppUtils;
 import com.wxz.ebook.tool.utils.DensityUtil;
 import com.wxz.ebook.tool.utils.ScreenUtils;
-import com.wxz.ebook.view.view.BatteryView;
-
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,12 +36,15 @@ public class ReadFactory {
     private ReadPageConfig readPageConfig;
     private DecimalFormat decimalFormat;
     private SimpleDateFormat dateFormat;
-    //private ProgressBar batteryView;
-    private BatteryView batteryView;
-    private Bitmap batteryBitmap;
     private int timeLen;
     private int battery;
     private float percent = 0.00f;
+
+    private int battery_width;
+    private int battery_height;
+    private int battery_head_width;
+    private int battery_head_height;
+    private int battery_inside_margin;
 
 
     @SuppressLint("SimpleDateFormat")
@@ -67,6 +60,7 @@ public class ReadFactory {
         dateFormat = new SimpleDateFormat("HH:mm");
 
         initPaint();
+        batteryInit();
 
         timeLen = (int) frontTitlePaint.measureText("00:00");
 
@@ -131,11 +125,6 @@ public class ReadFactory {
 
     public void setBookName(String str){
         bookBean.bookName = str;
-    }
-
-    public void setBg(Bitmap bg){
-        bgr = bg;
-        setMatrix();
     }
 
     public void setChapterStr(String str){
@@ -225,23 +214,21 @@ public class ReadFactory {
             }
         }
         // 绘制提示内容
-        if (batteryBitmap != null) {
-            frontCanvas.drawBitmap(batteryBitmap, phoneWidth-padR-batteryBitmap.getWidth(),
-                    phoneHeight - ScreenUtils.dpToPxInt(19), frontTitlePaint);
-            backCanvas.drawBitmap(batteryBitmap, phoneWidth-padR-batteryBitmap.getWidth(),
-                    phoneHeight - ScreenUtils.dpToPxInt(19), backTitlePaint);
+        drawBattery(frontCanvas,frontTitlePaint,phoneWidth-padR-battery_width-battery_head_width,
+                phoneHeight - ScreenUtils.dpToPxInt(19));
+        drawBattery(backCanvas,backTitlePaint,phoneWidth-padR-battery_width-battery_head_width,
+                phoneHeight - ScreenUtils.dpToPxInt(19));
 
-            String mTime = dateFormat.format(new Date());
-            frontCanvas.drawText(mTime, phoneWidth-padR-batteryBitmap.getWidth() - timeLen - ScreenUtils.dpToPxInt(4),
-                    phoneHeight - ScreenUtils.dpToPxInt(10), frontTitlePaint);
-            backCanvas.drawText(mTime, phoneWidth-padR-batteryBitmap.getWidth() - timeLen- ScreenUtils.dpToPxInt(4),
-                    phoneHeight - ScreenUtils.dpToPxInt(10), backTitlePaint);
+        String mTime = dateFormat.format(new Date());
+        frontCanvas.drawText(mTime, phoneWidth-padR-battery_width-battery_head_width - timeLen - ScreenUtils.dpToPxInt(4),
+                phoneHeight - ScreenUtils.dpToPxInt(10), frontTitlePaint);
+        backCanvas.drawText(mTime, phoneWidth-padR-battery_width-battery_head_width - timeLen- ScreenUtils.dpToPxInt(4),
+                phoneHeight - ScreenUtils.dpToPxInt(10), backTitlePaint);
 
-            frontCanvas.drawText(decimalFormat.format(percent) + "%", padL,
-                    phoneHeight - ScreenUtils.dpToPxInt(10), frontTitlePaint);
-            backCanvas.drawText(decimalFormat.format(percent) + "%", padL,
-                    phoneHeight - ScreenUtils.dpToPxInt(10), backTitlePaint);
-        }
+        frontCanvas.drawText(decimalFormat.format(percent) + "%", padL,
+                phoneHeight - ScreenUtils.dpToPxInt(10), frontTitlePaint);
+        backCanvas.drawText(decimalFormat.format(percent) + "%", padL,
+                phoneHeight - ScreenUtils.dpToPxInt(10), backTitlePaint);
     }
 
     private int setColorAlpha(int color){
@@ -283,26 +270,50 @@ public class ReadFactory {
 
     public void setBattery(int battery) {
         this.battery = battery;
-        convertBetteryBitmap();
+    }
+
+    private void batteryInit(){
+        battery_width = ScreenUtils.dpToPxInt(18);
+        battery_height = ScreenUtils.dpToPxInt(9);
+        battery_head_width = ScreenUtils.dpToPxInt(3);
+        battery_head_height = ScreenUtils.dpToPxInt(2);
+        battery_inside_margin = ScreenUtils.dpToPxInt(2);
+    }
+
+    private void drawBattery(Canvas canvas,Paint paint,int batteryX,int batteryY){
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(ScreenUtils.dpToPxInt(1));
+        @SuppressLint("DrawAllocation") Rect rect = new Rect(batteryX, batteryY,
+                batteryX + battery_width - battery_head_width, batteryY + battery_height);
+        canvas.drawRect(rect, paint);
+
+        float power_percent = battery / 100.0f;
+        paint.setStyle(Paint.Style.FILL);
+        //画电量
+        if(power_percent != 0) {
+            int p_left = batteryX + battery_inside_margin;
+            int p_top = batteryY + battery_inside_margin;
+            int p_right = batteryX + battery_inside_margin + (int)((battery_width - 2*battery_inside_margin - battery_head_width) * power_percent);
+            int p_bottom = batteryY + battery_height - battery_inside_margin;
+            @SuppressLint("DrawAllocation") Rect rect2 = new Rect(p_left, p_top, p_right , p_bottom);
+            canvas.drawRect(rect2, paint);
+        }
+
+        //画电池头
+        int h_left = batteryX + battery_width - battery_head_width;
+        int h_top = batteryY + battery_head_height;
+        int h_right = batteryX + battery_width;
+        int h_bottom = batteryY + battery_height - battery_head_height;
+        @SuppressLint("DrawAllocation") Rect rect3 = new Rect(h_left, h_top, h_right, h_bottom);
+        canvas.drawRect(rect3, paint);
+
+        paint.setStrokeWidth(0);
     }
 
     public void setPercent(float percent) {
         this.percent = percent;
     }
 
-    private void convertBetteryBitmap() {
-        batteryView = (BatteryView) LayoutInflater.from(context).inflate(R.layout.layout_battery_progress, null);
-        batteryView.setColor(Color.parseColor("#444444"));
-        batteryView.setPower(battery);
-        batteryView.setDrawingCacheEnabled(true);
-        batteryView.measure(View.MeasureSpec.makeMeasureSpec(ScreenUtils.dpToPxInt(18), View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(ScreenUtils.dpToPxInt(9), View.MeasureSpec.EXACTLY));
-        batteryView.layout(0, 0, batteryView.getMeasuredWidth(), batteryView.getMeasuredHeight());
-        batteryView.buildDrawingCache();
-        batteryBitmap = Bitmap.createBitmap(batteryView.getDrawingCache());
-        batteryView.setDrawingCacheEnabled(false);
-        batteryView.destroyDrawingCache();
-    }
 
     public void recycle() {
         if (backBitmap != null && !backBitmap.isRecycled()) {
@@ -313,11 +324,6 @@ public class ReadFactory {
         if (frontBitmap != null && !frontBitmap.isRecycled()) {
             frontBitmap.recycle();
             frontBitmap = null;
-        }
-
-        if (batteryBitmap != null && !batteryBitmap.isRecycled()) {
-            batteryBitmap.recycle();
-            batteryBitmap = null;
         }
     }
 }

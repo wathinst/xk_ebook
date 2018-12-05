@@ -1,6 +1,7 @@
 package com.wxz.ebook.view.fragment;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -60,7 +61,9 @@ public class BookMarketFragment extends Fragment {
     }
 
     private void initView(){
-        recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.book_market_class_recyclerView);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.book_market_class_recyclerView);
+        }
     }
 
     private void initData(){

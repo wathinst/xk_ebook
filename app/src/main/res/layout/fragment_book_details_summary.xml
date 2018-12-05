@@ -22,7 +22,7 @@
             android:paddingEnd="24dp"
             android:lineSpacingMultiplier="1.5"
             android:ellipsize="end"
-            android:lines="5"/>
+            android:maxLines="5"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/book_details_tag"

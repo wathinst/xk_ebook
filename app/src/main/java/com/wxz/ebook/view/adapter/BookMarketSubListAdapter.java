@@ -95,8 +95,8 @@ public class BookMarketSubListAdapter extends RecyclerView.Adapter<BookMarketSub
         ImageView item_image;
         public MyHolder(View itemView) {
             super(itemView);
-            item_title = itemView.findViewById(R.id.book_details_title);
-            item_image = itemView.findViewById(R.id.book_details_image);
+            item_title = itemView.findViewById(R.id.item_book_search_result_title);
+            item_image = itemView.findViewById(R.id.item_book_search_result_image);
         }
     }
 

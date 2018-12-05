@@ -1,4 +1,4 @@
-package com.wxz.ebook.tool.utils;
+package com.wxz.ebook.tool.sql;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 public class FileHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME="file.db";//数据库名称
+    private static final String DATABASE_NAME="xkBookInfo.db";//数据库名称
     private static final int SCHEMA_VERSION=1;//版本号,则是升级之后的,升级方法请看onUpgrade方法里面的判断
     private Context context;
 
@@ -82,7 +82,7 @@ public class FileHelper extends SQLiteOpenHelper {
         cv.put("imgPath", bookInfoBean.imgPath);
         cv.put("pageSize", bookInfoBean.pageSize);
 
-        long id = getWritableDatabase().insert("xkr", "name", cv);
+        long id = getWritableDatabase().insert("xkBookInfo", "name", cv);
         bookInfoBean.id = String.valueOf(id);
     }
 
@@ -103,13 +103,13 @@ public class FileHelper extends SQLiteOpenHelper {
         cv.put("imgPath", bookInfoBean.imgPath);
         cv.put("pageSize", bookInfoBean.pageSize);
 
-        getWritableDatabase().update("xkr", cv, "_id=?", args);
+        getWritableDatabase().update("xkBookInfo", cv, "_id=?", args);
     }
 
     public void delete(BookInfoBean bookInfoBean) {
         ContentValues cv=new ContentValues();
         String[] args={bookInfoBean.id};
-        getWritableDatabase().delete("xkr","_id=?", args);
+        getWritableDatabase().delete("xkBookInfo","_id=?", args);
     }
 
     private List<BookInfoBean> getListBooks(Cursor cursor){

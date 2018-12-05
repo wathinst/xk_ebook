@@ -126,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent,1);
             return true;
         }else if (id == R.id.action_search) {
+            Intent intent = new Intent(MainActivity.this, BookSearchActivity.class);
+            startActivity(intent);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

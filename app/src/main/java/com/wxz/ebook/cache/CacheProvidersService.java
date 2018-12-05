@@ -1,11 +1,14 @@
 package com.wxz.ebook.cache;
 
+import com.wxz.ebook.bean.AutoComplete;
 import com.wxz.ebook.bean.BookDetail;
 import com.wxz.ebook.bean.BookMixAToc;
 import com.wxz.ebook.bean.BooksByCats;
 import com.wxz.ebook.bean.ChapterRead;
 import com.wxz.ebook.bean.HotReview;
+import com.wxz.ebook.bean.HotWord;
 import com.wxz.ebook.bean.Recommend;
+import com.wxz.ebook.bean.SearchDetail;
 
 import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
@@ -35,7 +38,13 @@ public interface CacheProvidersService {
     Observable<ChapterRead> getChapterRead(Observable<ChapterRead> chapterReadObservable, DynamicKey userName, EvictDynamicKey evictDynamicKey);
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
-    Call<ChapterRead> getChapterRead1(Call<ChapterRead> chapterReadCall, DynamicKey userName, EvictDynamicKey evictDynamicKey);
+    Observable<HotWord> getHotWord(Observable<HotWord> hotWordObservable, DynamicKey userName, EvictDynamicKey evictDynamicKey);
+
+    @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
+    Observable<AutoComplete> getAutoComplete(Observable<AutoComplete> autoCompleteObservable, DynamicKey userName, EvictDynamicKey evictDynamicKey);
+
+    @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
+    Observable<SearchDetail> getSearchResult(Observable<SearchDetail> searchDetailObservable, DynamicKey userName, EvictDynamicKey evictDynamicKey);
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     Observable<ResponseBody> getImg(Observable<ResponseBody> responseBodyObservable, DynamicKey userName, EvictDynamicKey evictDynamicKey);

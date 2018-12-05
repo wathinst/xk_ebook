@@ -3,6 +3,7 @@ package com.wxz.ebook.view.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -20,11 +21,10 @@ import com.wxz.ebook.bean.BookDetail;
 import com.wxz.ebook.bean.BookInfoBean;
 import com.wxz.ebook.cache.CacheProviders;
 import com.wxz.ebook.tool.utils.DateUtil;
-import com.wxz.ebook.tool.utils.FileHelper;
+import com.wxz.ebook.tool.sql.FileHelper;
 import com.wxz.ebook.tool.utils.SizeUtil;
 import com.wxz.ebook.view.adapter.SectionsPagerAdapter;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -71,7 +71,9 @@ public class BookDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_book_details);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            (Objects.requireNonNull(getSupportActionBar())).setDisplayHomeAsUpEnabled(true);
+        }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +86,9 @@ public class BookDetailsActivity extends AppCompatActivity {
         book_img_url = intent.getStringExtra("book_img_url");
         book_title = intent.getStringExtra("book_title");
         if (!book_title.isEmpty()){
-            Objects.requireNonNull(getSupportActionBar()).setTitle(book_title);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                Objects.requireNonNull(getSupportActionBar()).setTitle(book_title);
+            }
         }
         initView();
         initData();
@@ -93,7 +97,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             path = this.getFilesDir()+ "/bookImg/" + book_title + ".jpg";
             titleName = "BookImage"+ book_img_url;
         }else {
-            List<BookInfoBean> beans = helper.getWhere("  `_id` = \""+ book_id + "\"" , null);
+            List<BookInfoBean> beans = helper.getWhere("  `bookId` = \""+ book_id + "\"" , null);
             if (beans.size() > 0){
                 add_shelf.setText("已加入书架");
                 add_shelf.setEnabled(false);
@@ -104,7 +108,6 @@ public class BookDetailsActivity extends AppCompatActivity {
         add_shelf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final BookInfoBean bean = new BookInfoBean();
                 if (mBitmap == null){
                     if (!book_img_url.isEmpty()){
                         Observable<ResponseBody> bookImg = BookImgApi.getInstance(new OkHttpClient()).getImg(book_img_url);
@@ -118,24 +121,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                                     public void onNext(ResponseBody responseBody) {
                                         InputStream inputStream = responseBody.byteStream();
                                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                                        try {
-                                            saveFile(bitmap,path);
-                                            bean.pageIndex = 0;
-                                            bean.readIndex = 0;
-                                            bean.bookId = book_id;
-                                            bean.name = book_title;
-                                            bean.imgPath = path;
-                                            Date date = new Date();
-                                            bean.date = date.getTime();
-                                            bean.bookTybe = 1;
-                                            bean.fileTybe = 5;
-                                            bean.path = "";
-                                            helper.insert(bean);
-                                            add_shelf.setText("已加入书架");
-                                            add_shelf.setEnabled(false);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
+                                        addBookInfo(book_id,book_title,path);
                                     }
                                     @Override
                                     public void onError(Throwable e) { }
@@ -144,33 +130,38 @@ public class BookDetailsActivity extends AppCompatActivity {
                                 });
                     }
                 }else {
-                    try {
-                        saveFile(mBitmap,path);
-                        bean.pageIndex = 0;
-                        bean.readIndex = 0;
-                        bean.bookId = book_id;
-                        bean.name = book_title;
-                        bean.imgPath = path;
-                        Date date = new Date();
-                        bean.date = date.getTime();
-                        bean.bookTybe = 1;
-                        bean.fileTybe = 5;
-                        bean.path = "";
-                        helper.insert(bean);
-                        add_shelf.setText("已加入书架");
-                        add_shelf.setEnabled(false);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    addBookInfo(book_id,book_title,path);
                 }
             }
         });
     }
 
+    private void addBookInfo(String book_id,String book_title,String path){
+        try {
+            BookInfoBean bean = new BookInfoBean();
+            saveFile(mBitmap,path);
+            bean.pageIndex = 0;
+            bean.readIndex = 0;
+            bean.bookId = book_id;
+            bean.name = book_title;
+            bean.imgPath = path;
+            Date date = new Date();
+            bean.date = date.getTime();
+            bean.bookTybe = 1;
+            bean.fileTybe = 5;
+            bean.path = "";
+            helper.insert(bean);
+            add_shelf.setText("已加入书架");
+            add_shelf.setEnabled(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initView(){
-        book_image = (ImageView)findViewById(R.id.book_details_image);
-        book_name = (TextView)findViewById(R.id.book_details_title);
-        book_author = (TextView)findViewById(R.id.book_details_author);
+        book_image = (ImageView)findViewById(R.id.item_book_search_result_image);
+        book_name = (TextView)findViewById(R.id.item_book_search_result_title);
+        book_author = (TextView)findViewById(R.id.item_book_search_result_author);
         book_updated = (TextView)findViewById(R.id.book_details_updated);
         lately_follower = (TextView)findViewById(R.id.book_details_lately_follower);
         retention_ratio = (TextView)findViewById(R.id.book_details_retention_ratio);
@@ -201,7 +192,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                         @Override
                         public void onNext(BookDetail mBookDetail) {
                             bookDetail = mBookDetail;
-                            //tabLayout.setTabMode(TabLayout.MODE_FIXED);
+                            tabLayout.setTabMode(TabLayout.MODE_FIXED);
                             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),bookDetail);
                             viewPager.setAdapter(mSectionsPagerAdapter);
                             tabLayout.setupWithViewPager(viewPager);

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
+
+    <ImageView
+    android:id="@+id/item_book_search_history_head_icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_history_black_24dp"
+    android:contentDescription="@string/list_icon"/>
+
+    <TextView
+        android:id="@+id/item_book_search_history_title"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        app:layout_constraintStart_toEndOf="@id/item_book_search_history_head_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/fontBlack"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:gravity="center"/>
+
+    <ImageView
+        android:id="@+id/item_book_search_history_clear_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_clear_black_24dp"
+        android:contentDescription="@string/list_icon"/>
+
+</android.support.constraint.ConstraintLayout>

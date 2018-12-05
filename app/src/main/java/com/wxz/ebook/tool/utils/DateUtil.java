@@ -102,4 +102,14 @@ public class DateUtil {
         long nowTime=calendar.getTimeInMillis();
         return String.valueOf(nowTime);
     }
+
+    public boolean isToday(long time){
+        Calendar calendar = Calendar.getInstance();//获取当前日历对象
+        long nowTime=calendar.getTimeInMillis();
+        if (nowTime - time > 86400000){
+            return  false;
+        }else {
+            return true;
+        }
+    }
 }

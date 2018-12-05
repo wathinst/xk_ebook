@@ -12,7 +12,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:paddingBottom="16dp"
-        android:text="@string/string_gratis"
         android:textColor="@color/fontBlack"/>
 
     <TextView
@@ -20,7 +19,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:text="@string/string_gratis"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

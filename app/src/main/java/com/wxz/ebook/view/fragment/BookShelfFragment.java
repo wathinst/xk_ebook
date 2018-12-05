@@ -3,6 +3,7 @@ package com.wxz.ebook.view.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,10 +16,9 @@ import android.view.ViewGroup;
 import com.wxz.ebook.R;
 import com.wxz.ebook.bean.BookInfoBean;
 import com.wxz.ebook.tool.ComparatorBookInfo;
-import com.wxz.ebook.tool.utils.FileHelper;
+import com.wxz.ebook.tool.sql.FileHelper;
 import com.wxz.ebook.view.activity.ReadPageActivity;
 import com.wxz.ebook.view.adapter.BookCaseAdapter;
-import com.wxz.ebook.view.adapter.BookCaseViewAdapter;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,7 +47,9 @@ public class BookShelfFragment extends Fragment {
         //Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         //context.setSupportActionBar(toolbar);
 
-        bookCase = Objects.requireNonNull(getActivity()).findViewById(R.id.book_case_list);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            bookCase = Objects.requireNonNull(getActivity()).findViewById(R.id.book_case_list);
+        }
         GridLayoutManager manager = new GridLayoutManager(context,3);
         bookCase.setLayoutManager(manager);
 

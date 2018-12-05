@@ -10,7 +10,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +18,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.wxz.ebook.R;
@@ -38,7 +36,7 @@ import com.wxz.ebook.tool.bookFactory.OnlineBook;
 import com.wxz.ebook.tool.bookFactory.OnlineBookListener;
 import com.wxz.ebook.tool.utils.AppUtils;
 import com.wxz.ebook.tool.utils.DensityUtil;
-import com.wxz.ebook.tool.utils.FileHelper;
+import com.wxz.ebook.tool.sql.FileHelper;
 import com.wxz.ebook.view.ui.curlUI.CurlPage;
 import com.wxz.ebook.view.ui.curlUI.CurlView;
 import com.wxz.ebook.tool.readFactory.ReadFactory;
@@ -46,8 +44,6 @@ import com.wxz.ebook.view.view.ChapterListView;
 import com.wxz.ebook.view.view.CoverView;
 import com.wxz.ebook.view.view.ReadPageSetView;
 import com.wxz.ebook.view.view.ReadPageTextView;
-
-import java.util.Date;
 
 public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask.ReadInterface ,OnlineBookListener{
 
@@ -577,7 +573,6 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
                 if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
                     battery = intent.getIntExtra("level", 0);
                     setBattery(battery);
-                    curlView.updateCurl();
                 } else if (Intent.ACTION_TIME_TICK.equals(intent.getAction())) {
                     curlView.updateCurl();
                 }

@@ -22,6 +22,7 @@ import com.wxz.ebook.bean.HotWord;
 import com.wxz.ebook.bean.SearchBean;
 import com.wxz.ebook.cache.CacheProviders;
 import com.wxz.ebook.tool.sql.SearchHotHelper;
+import com.wxz.ebook.tool.utils.AppUtils;
 import com.wxz.ebook.tool.utils.DateUtil;
 
 import java.util.List;
@@ -45,7 +46,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        hotHelper = new SearchHotHelper(this);
+        AppUtils.init(getApplicationContext());
+
+        hotHelper = new SearchHotHelper(AppUtils.getAppContext());
         List<SearchBean> beans = hotHelper.getAll(null,null);
         if (beans!=null){
             if(beans.size() > 0 ){

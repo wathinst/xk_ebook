@@ -74,8 +74,7 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
             getWindow().setNavigationBarColor(Color.BLACK);
         }
         setContentView(R.layout.activity_read_page);
-        AppUtils.init(this);
-        SharedPreferencesUtil.init(this,"xkEBookRead",Context.MODE_PRIVATE);
+        SharedPreferencesUtil.init(AppUtils.getAppContext(),"xkEBookRead",Context.MODE_PRIVATE);
         intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
         intentFilter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(receiver,intentFilter);
@@ -86,7 +85,7 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
 
         Intent intent =getIntent();
         ResolveAsyncTask asyncTask = new ResolveAsyncTask(this);
-        helper =new FileHelper(this);
+        helper =new FileHelper(AppUtils.getAppContext());
         DocBean docBean= (DocBean) intent.getSerializableExtra("docBean");
         BookInfoBean mBookInfoBean = (BookInfoBean) intent.getSerializableExtra("bookInfoBean");
 
@@ -105,7 +104,7 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
         }
 
 
-        curlView.setPageProvider(new PageProvider(this));
+        curlView.setPageProvider(new PageProvider(AppUtils.getAppContext()));
         curlView.setSizeChangedObserver(new SizeChangedObserver());
         curlView.setCurrentIndex(0);
         curlView.setBackgroundColor(0xFF202830);
@@ -191,25 +190,23 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     }
 
     private void initFactory(){
-        readFactory = new ReadFactory(this);
-        nextFactory = new ReadFactory(this);
-        lastFactory = new ReadFactory(this);
+        readFactory = new ReadFactory();
+        nextFactory = new ReadFactory();
+        lastFactory = new ReadFactory();
         float size = readFactory.getFontSize();
-        int progress = ((int)DensityUtil.px2sp(this,size)-10)/2;
+        int progress = ((int)DensityUtil.px2sp(AppUtils.getAppContext(),size)-10)/2;
         readPageTextView.setProgress(progress);
     }
 
     private void setReadTextSize(int textSize){
-        AppUtils.init(this);
-        SharedPreferencesUtil.init(this,"xkEBookRead",Context.MODE_PRIVATE);
+        SharedPreferencesUtil.init(AppUtils.getAppContext(),"xkEBookRead",Context.MODE_PRIVATE);
         readFactory.setFontSize(textSize);
         nextFactory.setFontSize(textSize);
         lastFactory.setFontSize(textSize);
     }
 
     private void setPageTheme(int pageTheme){
-        AppUtils.init(this);
-        SharedPreferencesUtil.init(this,"xkEBookRead",Context.MODE_PRIVATE);
+        SharedPreferencesUtil.init(AppUtils.getAppContext(),"xkEBookRead",Context.MODE_PRIVATE);
         readFactory.setPageTheme(pageTheme);
         nextFactory.setPageTheme(pageTheme);
         lastFactory.setPageTheme(pageTheme);
@@ -255,7 +252,11 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     }
 
     private void setDateReadFactory(){
-        readFactory = new ReadFactory(this);
+        if(readFactory!=null){
+            readFactory.recycle();
+            readFactory = null;
+        }
+        readFactory = new ReadFactory();
         readFactory.setBookName(book.getThisChapterName());
         if (book.getBookType()==0){
             readFactory.setChapterStr(book.getThisChapterText());
@@ -267,7 +268,11 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     }
 
     private void setDateLastFactory(){
-        lastFactory = new ReadFactory(this);
+        if(lastFactory!=null){
+            lastFactory.recycle();
+            lastFactory = null;
+        }
+        lastFactory = new ReadFactory();
         lastFactory.setBookName(book.getLastChapterName());
         if (book.getBookType()==0){
             lastFactory.setChapterStr(book.getLastChapterText());
@@ -279,7 +284,11 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
     }
 
     private void setDateNextFactory(){
-        nextFactory = new ReadFactory(this);
+        if(nextFactory!=null){
+            nextFactory.recycle();
+            nextFactory = null;
+        }
+        nextFactory = new ReadFactory();
         nextFactory.setBookName(book.getMextChapterName());
         if (book.getBookType()==0){
             nextFactory.setChapterStr(book.getMextChapterText());

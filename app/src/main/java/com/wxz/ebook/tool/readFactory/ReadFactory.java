@@ -19,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ReadFactory {
-    private Context context;
     private Bitmap frontBitmap,backBitmap;//纸张前面图像，纸张背面图像
     private Canvas frontCanvas,backCanvas;//纸张前面画布，纸张背面画布
     private int phoneWidth, phoneHeight;//屏幕宽度，屏幕高度
@@ -48,8 +47,7 @@ public class ReadFactory {
 
 
     @SuppressLint("SimpleDateFormat")
-    public ReadFactory(Context context) {
-        this.context = context;
+    public ReadFactory() {
         readPageConfig = new ReadPageConfig();
         textSize = readPageConfig.textSize;
         readPageConfig.setModeIndex(readPageConfig.pageTheme);
@@ -76,8 +74,8 @@ public class ReadFactory {
         bookBean.bookName="";
         readViewTool = new ReadViewTool();
         matrix = new Matrix();
-        setPadding(DensityUtil.dp2px(context,20),DensityUtil.dp2px(context,16),
-                DensityUtil.dp2px(context,30), DensityUtil.dp2px(context,30));
+        setPadding(DensityUtil.dp2px(AppUtils.getAppContext(),20),DensityUtil.dp2px(AppUtils.getAppContext(),16),
+                DensityUtil.dp2px(AppUtils.getAppContext(),30), DensityUtil.dp2px(AppUtils.getAppContext(),30));
         setChapterStr("");
         setBattery(battery);
     }
@@ -94,11 +92,11 @@ public class ReadFactory {
         backPaint.setColor(setColorAlpha(textColor));
 
         frontTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        frontTitlePaint.setTextSize(DensityUtil.sp2px(context,12));
+        frontTitlePaint.setTextSize(DensityUtil.sp2px(AppUtils.getAppContext(),12));
         frontTitlePaint.setColor(Color.parseColor("#444444"));
 
         backTitlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        backTitlePaint.setTextSize(DensityUtil.sp2px(context,12));
+        backTitlePaint.setTextSize(DensityUtil.sp2px(AppUtils.getAppContext(),12));
         backTitlePaint.setColor(setColorAlpha(Color.parseColor("#444444")));
     }
 

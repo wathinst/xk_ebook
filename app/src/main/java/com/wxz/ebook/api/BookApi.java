@@ -1,12 +1,15 @@
 package com.wxz.ebook.api;
 
 import com.wxz.ebook.bean.AutoComplete;
+import com.wxz.ebook.bean.BookChapter;
 import com.wxz.ebook.bean.BookDetail;
 import com.wxz.ebook.bean.BookListDetail;
 import com.wxz.ebook.bean.BookListTags;
 import com.wxz.ebook.bean.BookLists;
 import com.wxz.ebook.bean.BookMixAToc;
 import com.wxz.ebook.bean.BookSource;
+import com.wxz.ebook.bean.BookSummary;
+import com.wxz.ebook.bean.BookUpdated;
 import com.wxz.ebook.bean.BooksByCats;
 import com.wxz.ebook.bean.BooksByTag;
 import com.wxz.ebook.bean.CategoryList;
@@ -59,6 +62,10 @@ public class BookApi {
 
     public Observable<BookMixAToc> getBookMixAToc(String bookId, String view) {
         return service.getBookMixAToc(bookId, view);
+    }
+
+    public Observable<BookChapter> getBookChapter(String bookId) {
+        return service.getBookChapter(bookId,"chapters");
     }
 
     public synchronized Observable<ChapterRead> getChapterRead(String url) {
@@ -143,4 +150,14 @@ public class BookApi {
     public Observable<HotWord> getHotWord() {
         return service.getHotWord();
     }
+
+    //获取推荐书单
+    public Observable<List<BookUpdated.Updated>> getBookUpdated(String bookId){
+        return service.getBookUpdated("updated",bookId);
+    };
+
+    //获取推荐书单
+    public Observable<List<BookSummary.SummaryBean>> getBookSummary(String bookId){
+        return service.getBookSummary("summary",bookId);
+    };
 }

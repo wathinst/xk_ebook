@@ -1,6 +1,5 @@
 package com.wxz.ebook.view.fragment;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -9,20 +8,33 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.wxz.ebook.R;
+import com.wxz.ebook.api.BookApi;
 import com.wxz.ebook.bean.BookInfoBean;
+import com.wxz.ebook.bean.BookUpdated;
+import com.wxz.ebook.cache.CacheProviders;
 import com.wxz.ebook.tool.ComparatorBookInfo;
 import com.wxz.ebook.tool.sql.FileHelper;
+import com.wxz.ebook.tool.utils.DateUtil;
 import com.wxz.ebook.view.activity.ReadPageActivity;
 import com.wxz.ebook.view.adapter.BookCaseAdapter;
-
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import io.rx_cache2.DynamicKey;
+import io.rx_cache2.EvictDynamicKey;
+import okhttp3.OkHttpClient;
 
 public class BookShelfFragment extends Fragment {
     FileHelper helper;
@@ -54,9 +66,12 @@ public class BookShelfFragment extends Fragment {
         bookCase.setLayoutManager(manager);
 
         helper =new FileHelper(context);
-        bookInfoBeans = helper.getAll(null,"date DESC");//DESC,ASC
+
+        bookInfoBeans = new ArrayList<>();
         adapter = new BookCaseAdapter(bookInfoBeans);
         bookCase.setAdapter(adapter);
+
+        getBookData();
 
         adapter.setOnItemClickListener(new BookCaseAdapter.OnItemClickListener() {
             @Override
@@ -75,26 +90,70 @@ public class BookShelfFragment extends Fragment {
         });
     }
 
+    private void getBookData(){
+        bookInfoBeans.clear();
+        bookInfoBeans.addAll(helper.getAll(null,"date DESC"));//DESC,ASC
+        if(bookInfoBeans!=null && bookInfoBeans.size()>0){
+            checkUpdated();
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public void checkUpdated(){
+        String bookIds = "";
+        for (int i = 0; i< bookInfoBeans.size();i++){
+            if (i == bookInfoBeans.size()-1){
+                bookIds = bookIds + bookInfoBeans.get(i).bookId;
+            }else {
+                bookIds = bookIds + bookInfoBeans.get(i).bookId + ",";
+            }
+        }
+        String titleName = "XKRead_checkUpdated" + bookIds;
+        Observable<List<BookUpdated.Updated>> bookUpdatedObservable = BookApi.getInstance(new OkHttpClient()).getBookUpdated(bookIds);
+        CacheProviders.getUserCache(getContext()).getBookUpdated(bookUpdatedObservable,new DynamicKey(titleName),new EvictDynamicKey(true))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<BookUpdated.Updated>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) { }
+                    @Override
+                    public void onNext(List<BookUpdated.Updated> updateds) {
+                        for (int i = 0; i< updateds.size();i++){
+                            for (int j = 0; j< bookInfoBeans.size();j++) {
+                                if (updateds.get(i)._id.equals(bookInfoBeans.get(j).bookId)){
+                                    if (updateds.get(i).chaptersCount
+                                            > bookInfoBeans.get(j).chaptersCount){
+                                        bookInfoBeans.get(j).isUpdatad = 1;
+                                        bookInfoBeans.get(j).chaptersCount = updateds.get(i).chaptersCount;
+                                        try {
+                                            bookInfoBeans.get(j).updated = new DateUtil().dateToStamp1(updateds.get(i).updated);
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                        helper.update(bookInfoBeans.get(j));
+                                    }
+                                }
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("checkUpdated",e.getMessage());
+                    }
+                    @Override
+                    public void onComplete() { }
+                });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 2){
-            BookInfoBean book = (BookInfoBean) data.getSerializableExtra("rBookInfoBean");
-            for (int i=0;i<bookInfoBeans.size();i++){
-                if(bookInfoBeans.get(i).id.equals(book.id)){
-                    bookInfoBeans.set(i,book);
-                }
-            }
-            ComparatorBookInfo comparatorBookInfo = new ComparatorBookInfo();
-            Collections.sort(bookInfoBeans,comparatorBookInfo);
-            adapter.notifyDataSetChanged();
+            getBookData();
         }
         if(requestCode == 1){
-            BookInfoBean book = (BookInfoBean) data.getSerializableExtra("rBookInfoBean");
-            bookInfoBeans.add(book);
-            ComparatorBookInfo comparatorBookInfo = new ComparatorBookInfo();
-            Collections.sort(bookInfoBeans,comparatorBookInfo);
-            adapter.notifyDataSetChanged();
+            getBookData();
         }
     }
 }

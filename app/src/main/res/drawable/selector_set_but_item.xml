@@ -6,5 +6,4 @@
     <item android:drawable="@drawable/shape_read_set_but_dn"
         android:state_pressed="true"/>
 
-
 </selector>

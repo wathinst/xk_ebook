@@ -81,6 +81,10 @@ public class FileHelper extends SQLiteOpenHelper {
         cv.put("bookId", bookInfoBean.bookId);
         cv.put("imgPath", bookInfoBean.imgPath);
         cv.put("pageSize", bookInfoBean.pageSize);
+        cv.put("updated", bookInfoBean.updated);
+        cv.put("chaptersCount", bookInfoBean.chaptersCount);
+        cv.put("bookSummaryId", bookInfoBean.bookSummaryId);
+        cv.put("isUpdatad", bookInfoBean.isUpdatad);
 
         long id = getWritableDatabase().insert("xkBookInfo", "name", cv);
         bookInfoBean.id = String.valueOf(id);
@@ -102,6 +106,10 @@ public class FileHelper extends SQLiteOpenHelper {
         cv.put("bookId", bookInfoBean.bookId);
         cv.put("imgPath", bookInfoBean.imgPath);
         cv.put("pageSize", bookInfoBean.pageSize);
+        cv.put("updated", bookInfoBean.updated);
+        cv.put("chaptersCount", bookInfoBean.chaptersCount);
+        cv.put("bookSummaryId", bookInfoBean.bookSummaryId);
+        cv.put("isUpdatad", bookInfoBean.isUpdatad);
 
         getWritableDatabase().update("xkBookInfo", cv, "_id=?", args);
     }
@@ -128,6 +136,9 @@ public class FileHelper extends SQLiteOpenHelper {
                 int bookIdIndex = cursor.getColumnIndex("bookId");
                 int imgPathIndex = cursor.getColumnIndex("imgPath");
                 int pageSizeIndex = cursor.getColumnIndex("pageSize");
+                int updatedIndex = cursor.getColumnIndex("updated");
+                int chaptersCountIndex = cursor.getColumnIndex("chaptersCount");
+                int bookSummaryIdIndex = cursor.getColumnIndex("isUpdatad");
                 do {
                     BookInfoBean bookInfoBean = new BookInfoBean();
                     bookInfoBean.id = cursor.getString(idIndex);
@@ -141,6 +152,10 @@ public class FileHelper extends SQLiteOpenHelper {
                     bookInfoBean.bookId = cursor.getString(bookIdIndex);
                     bookInfoBean.imgPath = cursor.getString(imgPathIndex);
                     bookInfoBean.pageSize = cursor.getInt(pageSizeIndex);
+                    bookInfoBean.updated = cursor.getLong(updatedIndex);
+                    bookInfoBean.chaptersCount = cursor.getInt(chaptersCountIndex);
+                    bookInfoBean.bookSummaryId = cursor.getString(bookSummaryIdIndex);
+                    bookInfoBean.isUpdatad = cursor.getInt(bookSummaryIdIndex);
                     bookInfoBeans.add(bookInfoBean);
                 } while (cursor.moveToNext());
             }

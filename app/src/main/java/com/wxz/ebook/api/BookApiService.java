@@ -1,6 +1,7 @@
 package com.wxz.ebook.api;
 
 import com.wxz.ebook.bean.AutoComplete;
+import com.wxz.ebook.bean.BookChapter;
 import com.wxz.ebook.bean.BookDetail;
 import com.wxz.ebook.bean.BookListDetail;
 import com.wxz.ebook.bean.BookListTags;
@@ -8,6 +9,8 @@ import com.wxz.ebook.bean.BookLists;
 import com.wxz.ebook.bean.BookMixAToc;
 import com.wxz.ebook.bean.BookRead;
 import com.wxz.ebook.bean.BookSource;
+import com.wxz.ebook.bean.BookSummary;
+import com.wxz.ebook.bean.BookUpdated;
 import com.wxz.ebook.bean.BooksByCats;
 import com.wxz.ebook.bean.BooksByTag;
 import com.wxz.ebook.bean.CategoryList;
@@ -41,6 +44,9 @@ public interface BookApiService {
      * @param book
      * @return
      */
+    @GET("/toc/{bookId}")
+    Observable<BookChapter> getBookChapter(@Path("bookId") String bookId, @Query("view") String view);
+
     @GET("/atoc")
     Observable<List<BookSource>> getABookSource(@Query("view") String view, @Query("book") String book);
 
@@ -197,6 +203,12 @@ public interface BookApiService {
 
     @GET("/book/hot-word")
     Observable<HotWord> getHotWord();
+
+    @GET("/book")
+    Observable<List<BookUpdated.Updated>> getBookUpdated(@Query("view") String view, @Query("id") String id);
+
+    @GET("/toc")
+    Observable<List<BookSummary.SummaryBean>> getBookSummary(@Query("view") String view, @Query("book") String book);
 
     @GET("/{imgUrl}")
     Observable<ResponseBody> getImg(@Path("imgUrl") String imgUrl);

@@ -5,6 +5,7 @@ import android.util.Log;
 import com.wxz.ebook.api.BookApi;
 import com.wxz.ebook.bean.BookInfoBean;
 import com.wxz.ebook.bean.BookMixAToc;
+import com.wxz.ebook.bean.BookSummary;
 import com.wxz.ebook.bean.ChapterListBean;
 import com.wxz.ebook.bean.ChapterRead;
 import com.wxz.ebook.cache.CacheProviders;
@@ -30,6 +31,50 @@ public class OnlineBook extends Book {
     public void init(Context context,BookInfoBean bookInfoBean) {
         this.context = context;
         this.bookInfoBean = bookInfoBean;
+        this.bookInfoBean.isUpdatad = 0;
+        if (bookInfoBean.bookSummaryId != null){
+            if( bookInfoBean.bookSummaryId.isEmpty()){
+                getSummary();
+            }else {
+                Log.e("bookSummaryId",bookInfoBean.bookSummaryId);
+                getBookMixAToc();
+            }
+        }else{
+            getSummary();
+        }
+
+    }
+
+    private void getSummary(){
+        String titleName = "bookSummary" + bookInfoBean.bookId;
+        Observable<List<BookSummary.SummaryBean>> bookSummaryObservable = BookApi.getInstance(new OkHttpClient())
+                .getBookSummary(bookInfoBean.bookId);
+        CacheProviders.getUserCache(context)
+                .getBookSummary(bookSummaryObservable,new DynamicKey(titleName),new EvictDynamicKey(false))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<BookSummary.SummaryBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) { }
+                    @Override
+                    public void onNext(List<BookSummary.SummaryBean> summaryBeans) {
+                        Log.e("bookSummaryId","1");
+                        if (summaryBeans!=null && summaryBeans.size()>0){
+                            Log.e("bookSummaryId","2");
+                            bookInfoBean.bookSummaryId = summaryBeans.get(0)._id;
+                            getBookMixAToc();
+                        }
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("bookSummaryId",e.getMessage());
+                    }
+                    @Override
+                    public void onComplete() { }
+                });
+    }
+
+    private void getBookMixAToc(){
         String titleName = "bookDetailsList" + bookInfoBean.bookId;
         Observable<BookMixAToc> bookMixATocObservable = BookApi.getInstance(new OkHttpClient())
                 .getBookMixAToc(bookInfoBean.bookId,"chapter");

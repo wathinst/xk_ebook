@@ -107,7 +107,8 @@ public class SearchHistoryHelper extends SQLiteOpenHelper {
     }
 
     public void deletaAll(){
-
+        String[] args={"*"};
+        getWritableDatabase().delete("xkSearchHistory","_id=?", args);
     }
 
     private List<SearchBean> getSearchHistoryBeans(Cursor cursor){

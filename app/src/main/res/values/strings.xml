@@ -7,7 +7,8 @@
     <string name="imported">已导入</string>
     <string name="chap_pattern">(^[0123456789零一二三四五六七八九十第])([0123456789零一二三四五六七八九十百千万]{1,9})([章节卷集部篇回])(.*)</string>
     <string name="fileCreateSql">CREATE TABLE xkBookInfo (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, readIndex INTEGER,
-        pageIndex INTEGER, path TEXT, date DATE, bookTybe INTEGER, fileTybe INTEGER, bookId TEXT,imgPath TEXT,pageSize INTEGER);</string>
+        pageIndex INTEGER, path TEXT, date DATE, bookTybe INTEGER, fileTybe INTEGER, bookId TEXT,imgPath TEXT,
+        pageSize INTEGER, updated DATE, chaptersCount INTEGER, bookSummaryId TEXT, isUpdatad INTEGER);</string>
     <string name="fileUpV2Sql">ALTER TABLE xkBookInfo ADD pageSize INTEGER;</string>
     <string name="fileSelectStr">SELECT * FROM xkBookInfo </string>
     <string name="fileSelectAllStr">SELECT * FROM xkBookInfo</string>

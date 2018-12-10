@@ -56,7 +56,7 @@
         <activity
             android:name=".view.activity.BookSearchActivity"
             android:label="@string/title_activity_book_search"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

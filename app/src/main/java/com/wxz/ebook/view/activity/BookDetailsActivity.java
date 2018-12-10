@@ -150,6 +150,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             bean.bookTybe = 1;
             bean.fileTybe = 5;
             bean.path = "";
+            bean.isUpdatad = 1;
             helper.insert(bean);
             add_shelf.setText("已加入书架");
             add_shelf.setEnabled(false);

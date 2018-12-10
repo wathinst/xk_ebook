@@ -116,8 +116,8 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
             @Override
             public void setListOnClick(View v) {
                 readPageSetView.disShow();
-                getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
-                        WindowManager.LayoutParams. FLAG_FULLSCREEN);//去掉Activity上面的状态栏
+                //getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
+                        //WindowManager.LayoutParams. FLAG_FULLSCREEN);//去掉Activity上面的状态栏
                 chapterListView.show();
                 coverView.show();
             }
@@ -125,8 +125,8 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
             @Override
             public void setSizeOnClick(View v) {
                 readPageSetView.disShow();
-                getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
-                        WindowManager.LayoutParams. FLAG_FULLSCREEN);//去掉Activity上面的状态栏
+                //getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
+                        //WindowManager.LayoutParams. FLAG_FULLSCREEN);//去掉Activity上面的状态栏
                 readPageTextView.show();
             }
 
@@ -354,14 +354,14 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
             @Override
             public void setOnClick() {
                 readPageSetView.show();
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//显示Activity上面的状态栏
+                //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//显示Activity上面的状态栏
             }
 
             @Override
             public void setOnSettingClick() {
                 readPageSetView.disShow();
-                getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
-                        WindowManager.LayoutParams. FLAG_FULLSCREEN);//去掉Activity上面的状态栏
+                //getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
+                       // WindowManager.LayoutParams. FLAG_FULLSCREEN);//去掉Activity上面的状态栏
                 readPageTextView.disShow();
             }
         });

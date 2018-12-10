@@ -78,8 +78,8 @@ public class BookSearchActivity extends AppCompatActivity {
             }
         });
         initView();
-        initData();
-        setOnClick();
+        //initData();
+        //setOnClick();
     }
 
     private void initView(){

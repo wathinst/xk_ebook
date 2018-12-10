@@ -49,6 +49,11 @@ public class BookCaseAdapter extends RecyclerView.Adapter<BookCaseAdapter.ViewHo
                 if (bitmap!=null){
                     holder.bookImg.setImageBitmap(bitmap);
                     holder.bookUpdata.setVisibility(View.INVISIBLE);
+                    if (bookInfoBeans.get(position).isUpdatad == 1){
+                        holder.bookUpdata.setVisibility(View.VISIBLE);
+                    }else {
+                        holder.bookUpdata.setVisibility(View.GONE);
+                    }
                 }
             }else {
                 holder.bookTitle.setText(bookInfoBeans.get(position).name);

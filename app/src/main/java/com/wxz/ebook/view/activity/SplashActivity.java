@@ -74,7 +74,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void getHotWordData(){
-        //String titleName = String.valueOf((Math.random()*9+1)*100000);
+        hotHelper.deleteAll();
         String titleName = "XKRead_hotWord";
         Observable<HotWord> hotWordObservable = BookApi.getInstance(new OkHttpClient()).getHotWord();
         CacheProviders.getUserCache(getBaseContext()).getHotWord(hotWordObservable,new DynamicKey(titleName),new EvictDynamicKey(true))

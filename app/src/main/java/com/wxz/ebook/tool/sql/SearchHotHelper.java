@@ -97,6 +97,10 @@ public class SearchHotHelper extends SQLiteOpenHelper {
         getWritableDatabase().delete("xkSearchHot","id=?", args);
     }
 
+    public void deleteAll() {
+        getWritableDatabase().execSQL("delete from xkSearchHot");
+    }
+
     private List<SearchBean> getSearchHistoryBeans(Cursor cursor){
         List<SearchBean> beans = new ArrayList<>();
         if (cursor != null) {

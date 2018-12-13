@@ -106,9 +106,7 @@ public class BookMarketClassView extends FrameLayout {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BooksByCats>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
+                    public void onSubscribe(Disposable d) { }
 
                     @Override
                     public void onNext(BooksByCats booksByCats) {
@@ -117,14 +115,10 @@ public class BookMarketClassView extends FrameLayout {
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-
-                    }
+                    public void onError(Throwable e) { }
 
                     @Override
-                    public void onComplete() {
-
-                    }
+                    public void onComplete() { }
                 });
     }
 }

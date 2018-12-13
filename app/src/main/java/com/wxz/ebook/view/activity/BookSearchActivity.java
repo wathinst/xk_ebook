@@ -78,8 +78,8 @@ public class BookSearchActivity extends AppCompatActivity {
             }
         });
         initView();
-        //initData();
-        //setOnClick();
+        initData();
+        setOnClick();
     }
 
     private void initView(){
@@ -142,6 +142,8 @@ public class BookSearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 historyHelper.deletaAll();
+                getHistoryData();
+                historyAdapter.notifyDataSetChanged();
             }
         });
         hotTagAdapter.setOnItemClickListener(new BookSearchHotTagAdapter.OnItemClickListener() {

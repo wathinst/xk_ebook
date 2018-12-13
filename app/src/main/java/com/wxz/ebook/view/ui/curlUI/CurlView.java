@@ -553,9 +553,10 @@ public class CurlView extends GLSurfaceView implements View.OnTouchListener,
     }
 
 	public void updateCurl() {
-		mCurlState = CURL_NONE;
-		updatePages();
-		requestRender();
+		if(mCurlState == CURL_NONE){
+			updatePages();
+			requestRender();
+		};
 	}
 
 	/**

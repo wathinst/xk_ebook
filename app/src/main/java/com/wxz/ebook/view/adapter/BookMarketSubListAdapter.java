@@ -50,7 +50,7 @@ public class BookMarketSubListAdapter extends RecyclerView.Adapter<BookMarketSub
 
     @Override
     public void onBindViewHolder(@NonNull final MyHolder holder, @SuppressLint("RecyclerView") final int position) {
-        if(booksBeans!=null){
+        if(booksBeans!=null  && booksBeans.size() > 0){
             holder.item_title.setText(booksBeans.get(position).title);
             String titleName = "BookImage"+ booksBeans.get(position)._id;
             Observable<ResponseBody> bookImg = BookImgApi.getInstance(new OkHttpClient()).getImg(booksBeans.get(position).cover);
@@ -82,7 +82,7 @@ public class BookMarketSubListAdapter extends RecyclerView.Adapter<BookMarketSub
 
     @Override
     public int getItemCount() {
-        if (booksBeans==null){
+        if (booksBeans==null  || booksBeans.size() == 0){
             return 10;
         }else {
             return booksBeans.size();

@@ -1,11 +1,14 @@
 package com.wxz.ebook.view.fragment;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -99,6 +102,28 @@ public class BookShelfFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    private void sendManager(String title,String contentText){
+        // 获取通知服务对象NotificationManager
+        NotificationManager notiManager = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            notiManager = (NotificationManager) Objects.requireNonNull(getActivity()).
+                    getSystemService(getContext().NOTIFICATION_SERVICE);
+        }
+        // 创建Notification对象
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext());
+        builder.setContentTitle(title)    // 通知标题
+                .setContentText(contentText)  // 通知内容
+                .setSmallIcon(R.mipmap.ic_xk_read);    // 通知小图标
+
+        builder.setDefaults(Notification.DEFAULT_SOUND);    // 设置声音/震动等
+        Notification notification = builder.build();
+        // 设置通知的点击行为：自动取消/跳转等
+        builder.setAutoCancel(true);
+        // 通过NotificationManager发送通知
+        assert notiManager != null;
+        notiManager.notify(1001, notification);
+    }
+
     public void checkUpdated(){
         String bookIds = "";
         for (int i = 0; i< bookInfoBeans.size();i++){
@@ -123,6 +148,7 @@ public class BookShelfFragment extends Fragment {
                                 if (updateds.get(i)._id.equals(bookInfoBeans.get(j).bookId)){
                                     if (updateds.get(i).chaptersCount
                                             > bookInfoBeans.get(j).chaptersCount){
+                                        sendManager(bookInfoBeans.get(j).name + "有更新",updateds.get(i).lastChapter);
                                         bookInfoBeans.get(j).isUpdatad = 1;
                                         bookInfoBeans.get(j).chaptersCount = updateds.get(i).chaptersCount;
                                         try {

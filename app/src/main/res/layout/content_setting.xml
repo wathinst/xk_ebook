@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".view.activity.SettingActivity"
+    tools:showIn="@layout/activity_setting">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:id="@+id/setting_switch_unit"
+        android:text="选项开关"
+        android:textColor="@color/blue1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/setting_switch_unit"
+        android:padding="16dp"
+        android:id="@+id/setting_genuine_title"
+        android:text="正版源"
+        android:textColor="@color/fontBlack" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/setting_switch_unit"
+        android:padding="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/setting_genuine_switch"/>
+
+    <View
+        android:id="@+id/setting_activity_line1"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:layout_constraintTop_toBottomOf="@+id/setting_genuine_title"
+        android:background="@color/colorReadDetailsWhile"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/setting_activity_line1"
+        android:padding="16dp"
+        android:id="@+id/setting_select_unit"
+        android:text="选项开关"
+        android:textColor="@color/blue1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/setting_select_unit"
+        android:padding="16dp"
+        android:id="@+id/setting_source_title"
+        android:text="换源"
+        android:textColor="@color/fontBlack" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/setting_source_title"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:id="@+id/setting_source_name"
+        android:text="追书VIP"/>
+
+</android.support.constraint.ConstraintLayout>

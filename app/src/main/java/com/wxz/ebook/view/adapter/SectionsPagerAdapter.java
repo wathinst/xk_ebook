@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.wxz.ebook.bean.BookDetail;
 import com.wxz.ebook.view.fragment.BookDetailsListFragment;
 import com.wxz.ebook.view.fragment.BookDetailsSummaryFragment;
-import com.wxz.ebook.view.fragment.TabFragment;
 
 import java.util.ArrayList;
 import java.util.List;

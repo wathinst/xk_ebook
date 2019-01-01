@@ -20,14 +20,12 @@ import com.wxz.ebook.api.BookApi;
 import com.wxz.ebook.bean.BookInfoBean;
 import com.wxz.ebook.bean.BookUpdated;
 import com.wxz.ebook.cache.CacheProviders;
-import com.wxz.ebook.tool.ComparatorBookInfo;
 import com.wxz.ebook.tool.sql.FileHelper;
 import com.wxz.ebook.tool.utils.DateUtil;
 import com.wxz.ebook.view.activity.ReadPageActivity;
 import com.wxz.ebook.view.adapter.BookCaseAdapter;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import io.reactivex.Observable;
@@ -40,17 +38,17 @@ import io.rx_cache2.EvictDynamicKey;
 import okhttp3.OkHttpClient;
 
 public class BookShelfFragment extends Fragment {
-    FileHelper helper;
-    List<BookInfoBean> bookInfoBeans;
-    RecyclerView bookCase;
-    BookCaseAdapter adapter;
-    Context context;
+    private FileHelper helper;
+    private List<BookInfoBean> bookInfoBeans;
+    private RecyclerView bookCase;
+    private BookCaseAdapter adapter;
+    private Context context;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
-        View view=inflater.inflate(R.layout.content_book_shelf,container,false);
+        View view=inflater.inflate(R.layout.fragment_book_shelf,container,false);
         context = view.getContext();
         return view;
     }
@@ -121,7 +119,7 @@ public class BookShelfFragment extends Fragment {
         builder.setAutoCancel(true);
         // 通过NotificationManager发送通知
         assert notiManager != null;
-        notiManager.notify(1001, notification);
+        notiManager.notify(1, notification);
     }
 
     public void checkUpdated(){

@@ -23,7 +23,9 @@
         android:paddingTop="24dp"
         android:paddingStart="16dp"
         android:paddingEnd="0dp"
-        android:textColor="@color/orange800"/>
+        android:textColor="@color/orange800"
+        android:paddingLeft="16dp"
+        android:paddingRight="0dp" />
 
     <TextView
         android:id="@+id/item_book_details_user_lv_lable"
@@ -35,6 +37,8 @@
         android:paddingTop="24dp"
         android:paddingStart="8dp"
         android:paddingEnd="0dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="0dp"
         android:textColor="@color/orange800"/>
 
     <TextView
@@ -47,7 +51,9 @@
         android:paddingStart="0dp"
         android:paddingEnd="8dp"
         android:text="你好"
-        android:textColor="@color/orange800"/>
+        android:textColor="@color/orange800"
+        android:paddingLeft="0dp"
+        android:paddingRight="8dp" />
 
     <RatingBar
         android:id="@+id/item_book_details_user_rating"
@@ -55,7 +61,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/item_book_details_user_lv"
-        android:paddingTop="24dp"
+        android:paddingTop="27.5dp"
         style="@style/roomRatingBar_1"
         android:isIndicator="false"
         android:numStars="5"
@@ -72,6 +78,8 @@
         android:paddingTop="8dp"
         android:paddingStart="16dp"
         android:paddingEnd="0dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="0dp"
         android:textColor="@color/fontBlack" />
 
     <TextView
@@ -86,7 +94,9 @@
         android:lines="2"
         android:paddingTop="8dp"
         android:paddingStart="16dp"
-        android:paddingEnd="0dp"/>
+        android:paddingEnd="0dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="0dp" />
 
     <ImageView
         android:layout_width="20dp"
@@ -97,7 +107,9 @@
         app:srcCompat="@drawable/ic_thumb_up_grey_400_24dp"
         android:paddingTop="10dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="0dp"/>
+        android:layout_marginEnd="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="0dp" />
 
     <TextView
         android:id="@+id/item_book_details_user_total"
@@ -109,6 +121,8 @@
         android:paddingTop="8dp"
         android:paddingStart="4dp"
         android:paddingEnd="0dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="0dp"
         android:paddingBottom="24dp"/>
 
     <View
@@ -117,6 +131,7 @@
         app:layout_constraintTop_toBottomOf="@+id/item_book_details_user_total"
         app:layout_constraintLeft_toRightOf="@id/item_book_details_user_img"
         android:background="@color/colorReadDetailsWhile"
-        android:layout_marginStart="16dp"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="0dp" />
 
 </android.support.constraint.ConstraintLayout>

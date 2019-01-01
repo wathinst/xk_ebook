@@ -17,5 +17,6 @@ public class BookInfoBean implements Serializable {
     public long updated; //在线书籍更新日期
     public int chaptersCount; //在线书籍章节数
     public String bookSummaryId; //在线书籍源编号
+    public String bookSummaryName; //在线书籍源名称
     public int isUpdatad;  //是否有更新
 }

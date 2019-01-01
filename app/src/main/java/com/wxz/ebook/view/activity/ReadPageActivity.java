@@ -131,6 +131,13 @@ public class ReadPageActivity extends AppCompatActivity implements ReadAsyncTask
             }
 
             @Override
+            public void setSettingOnClick(View v) {
+                readPageSetView.disShow();
+                Intent intent = new Intent(ReadPageActivity.this, SettingActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
             public void setShowed() {
                 curlView.setOnTouchSettingFlag(true);
             }

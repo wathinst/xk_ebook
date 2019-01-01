@@ -45,6 +45,7 @@ public class BookMarketFragment extends Fragment {
         initData();
         LinearLayoutManager manager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(manager);
+        recyclerView.setNestedScrollingEnabled(false);
         adapter = new BookMarketClassAdapter(context,stringList);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new BookMarketClassAdapter.OnItemClickListener() {

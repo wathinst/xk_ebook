@@ -17,10 +17,9 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:largeHeap="true"
-
         android:icon="@mipmap/ic_xk_read"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -56,6 +55,14 @@
         <activity
             android:name=".view.activity.BookSearchActivity"
             android:label="@string/title_activity_book_search"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.AboutActivity"
+            android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

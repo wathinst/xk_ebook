@@ -90,7 +90,6 @@ public class BookDetailsSummaryFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext(),HORIZONTAL,false);
         tagRecyclerView.setLayoutManager(manager);
         tagRecyclerView.setAdapter(tagAdapter);
-        tagRecyclerView.setNestedScrollingEnabled(false);
 
         reviewsList = new ArrayList<>();
         reviewAdapter = new BookDetailsReviewAdapter(reviewsList);
@@ -102,7 +101,6 @@ public class BookDetailsSummaryFragment extends Fragment {
         recommendAdapter = new BookDetailsRecommendAdapter(recommendBooksList);
         recommendRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));//new GridLayoutManager(getContext(),3)
         recommendRecyclerView.setAdapter(recommendAdapter);
-        recommendRecyclerView.setNestedScrollingEnabled(false);
 
         initData();
     }

@@ -138,7 +138,8 @@ public class FileHelper extends SQLiteOpenHelper {
                 int pageSizeIndex = cursor.getColumnIndex("pageSize");
                 int updatedIndex = cursor.getColumnIndex("updated");
                 int chaptersCountIndex = cursor.getColumnIndex("chaptersCount");
-                int bookSummaryIdIndex = cursor.getColumnIndex("isUpdatad");
+                int bookSummaryIdIndex = cursor.getColumnIndex("bookSummaryId");
+                int isUpdatadIndex = cursor.getColumnIndex("isUpdatad");
                 do {
                     BookInfoBean bookInfoBean = new BookInfoBean();
                     bookInfoBean.id = cursor.getString(idIndex);
@@ -155,7 +156,7 @@ public class FileHelper extends SQLiteOpenHelper {
                     bookInfoBean.updated = cursor.getLong(updatedIndex);
                     bookInfoBean.chaptersCount = cursor.getInt(chaptersCountIndex);
                     bookInfoBean.bookSummaryId = cursor.getString(bookSummaryIdIndex);
-                    bookInfoBean.isUpdatad = cursor.getInt(bookSummaryIdIndex);
+                    bookInfoBean.isUpdatad = cursor.getInt(isUpdatadIndex);
                     bookInfoBeans.add(bookInfoBean);
                 } while (cursor.moveToNext());
             }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/item_book_mine_icon"
+        android:layout_width="64dp"
+        android:layout_height="56dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="24dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_my_books"
+        android:contentDescription="@string/list_icon"/>
+
+    <TextView
+        android:id="@+id/item_book_mine_title"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        app:layout_constraintLeft_toRightOf="@id/item_book_mine_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/fontBlack"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="16dp"
+        android:textSize="16sp"
+        android:paddingStart="0dp"
+        android:paddingEnd="16dp"
+        android:text="我的书籍"
+        android:gravity="center"/>
+
+    <View
+        android:id="@+id/item_book_mine_line"
+        android:layout_width="wrap_content"
+        android:layout_height="0.5dp"
+        app:layout_constraintTop_toBottomOf="@+id/item_book_mine_title"
+        app:layout_constraintLeft_toRightOf="@id/item_book_mine_icon"
+        android:background="@color/colorReadDetailsWhile"/>
+
+</android.support.constraint.ConstraintLayout>

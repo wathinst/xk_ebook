@@ -1,6 +1,7 @@
 package com.wxz.ebook.api;
 
 import com.wxz.ebook.bean.AutoComplete;
+import com.wxz.ebook.bean.BookBToc;
 import com.wxz.ebook.bean.BookChapter;
 import com.wxz.ebook.bean.BookDetail;
 import com.wxz.ebook.bean.BookListDetail;
@@ -67,7 +68,7 @@ public interface BookApiService {
     Observable<BookRead> getBookRead(@Path("bookId") String bookId);
 
     @GET("/btoc/{bookId}")
-    Observable<BookMixAToc> getBookBToc(@Path("bookId") String bookId, @Query("view") String view);
+    Observable<BookBToc> getBookBToc(@Path("bookId") String bookId, @Query("view") String view);
 
     @GET("http://chapter2.zhuishushenqi.com/chapter/{url}")
     Observable<ChapterRead> getChapterRead(@Path("url") String url);

@@ -1,6 +1,7 @@
 package com.wxz.ebook.api;
 
 import com.wxz.ebook.bean.AutoComplete;
+import com.wxz.ebook.bean.BookBToc;
 import com.wxz.ebook.bean.BookChapter;
 import com.wxz.ebook.bean.BookDetail;
 import com.wxz.ebook.bean.BookListDetail;
@@ -62,6 +63,10 @@ public class BookApi {
 
     public Observable<BookMixAToc> getBookMixAToc(String bookId, String view) {
         return service.getBookMixAToc(bookId, view);
+    }
+
+    public Observable<BookBToc> getBookBToc(String bookId, String view) {
+        return service.getBookBToc(bookId, view);
     }
 
     public Observable<BookChapter> getBookChapter(String bookId) {

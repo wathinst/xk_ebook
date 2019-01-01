@@ -1,6 +1,7 @@
 package com.wxz.ebook.cache;
 
 import com.wxz.ebook.bean.AutoComplete;
+import com.wxz.ebook.bean.BookBToc;
 import com.wxz.ebook.bean.BookChapter;
 import com.wxz.ebook.bean.BookDetail;
 import com.wxz.ebook.bean.BookMixAToc;
@@ -31,6 +32,9 @@ public interface CacheProvidersService {
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     Observable<BookMixAToc> getBookMixAToc(Observable<BookMixAToc> bookMixATocObservable, DynamicKey userName, EvictDynamicKey evictDynamicKey);
+
+    @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
+    Observable<BookBToc> getBookBToc(Observable<BookBToc> bookBTocObservable, DynamicKey userName, EvictDynamicKey evictDynamicKey);
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     Observable<HotReview> getHotReview(Observable<HotReview> hotReviewObservable, DynamicKey userName, EvictDynamicKey evictDynamicKey);

@@ -86,10 +86,10 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="backgroundColor" value="4fa1ff" />
                                       <entry key="cropped" value="true" />
-                                      <entry key="imageAsset" value="C:\Users\wxz\Desktop\xk_ebook1.png" />
-                                      <entry key="outputName" value="ic_xk_read" />
+                                      <entry key="iconShape" value="NONE" />
+                                      <entry key="imageAsset" value="C:\Users\wxz\Desktop\icon_8ge5js23ctc\youxiang.png" />
+                                      <entry key="outputName" value="ic_my_mail" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -125,7 +125,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/D:/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_search_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/D:/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_account_box_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -135,8 +135,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="888888" />
-                            <entry key="outputName" value="ic_search_black_24dp" />
+                            <entry key="outputName" value="ic_account_box_black_24dp" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="D:\文件\文档\xk_read.svg" />
                           </map>

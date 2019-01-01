@@ -5,17 +5,20 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wxz.ebook.R;
 import com.wxz.ebook.api.BookImgApi;
 import com.wxz.ebook.bean.BooksByCats;
 import com.wxz.ebook.cache.CacheProviders;
+import com.wxz.ebook.tool.utils.ScreenUtils;
 
 import java.io.InputStream;
 import java.util.List;
@@ -50,6 +53,15 @@ public class BookMarketSubListAdapter extends RecyclerView.Adapter<BookMarketSub
 
     @Override
     public void onBindViewHolder(@NonNull final MyHolder holder, @SuppressLint("RecyclerView") final int position) {
+        if(position == 0){
+            CardView.LayoutParams lp = new CardView.LayoutParams(holder.itemView.getLayoutParams());
+            lp.setMargins(ScreenUtils.dpToPxInt(16),0,ScreenUtils.dpToPxInt(4),0);
+            holder.itemView.setLayoutParams(lp);
+        }else if(position == 9){
+            CardView.LayoutParams lp = new CardView.LayoutParams(holder.itemView.getLayoutParams());
+            lp.setMargins(ScreenUtils.dpToPxInt(4),0,ScreenUtils.dpToPxInt(16),0);
+            holder.itemView.setLayoutParams(lp);
+        }
         if(booksBeans!=null  && booksBeans.size() > 0){
             holder.item_title.setText(booksBeans.get(position).title);
             String titleName = "BookImage"+ booksBeans.get(position)._id;
@@ -95,8 +107,8 @@ public class BookMarketSubListAdapter extends RecyclerView.Adapter<BookMarketSub
         ImageView item_image;
         public MyHolder(View itemView) {
             super(itemView);
-            item_title = itemView.findViewById(R.id.item_book_search_result_title);
-            item_image = itemView.findViewById(R.id.item_book_search_result_image);
+            item_title = itemView.findViewById(R.id.item_book_market_class_sub_title);
+            item_image = itemView.findViewById(R.id.item_book_market_class_sub_image);
         }
     }
 

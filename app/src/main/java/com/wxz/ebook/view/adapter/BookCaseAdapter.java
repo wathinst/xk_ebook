@@ -48,6 +48,8 @@ public class BookCaseAdapter extends RecyclerView.Adapter<BookCaseAdapter.ViewHo
                 Bitmap bitmap  = BitmapFactory.decodeStream(fis);
                 if (bitmap!=null){
                     holder.bookImg.setImageBitmap(bitmap);
+                    holder.bookTitle.setText("");
+                    holder.bookType.setText("");
                     holder.bookUpdata.setVisibility(View.INVISIBLE);
                     if (bookInfoBeans.get(position).isUpdatad == 1){
                         holder.bookUpdata.setVisibility(View.VISIBLE);
@@ -56,6 +58,7 @@ public class BookCaseAdapter extends RecyclerView.Adapter<BookCaseAdapter.ViewHo
                     }
                 }
             }else {
+                holder.bookImg.setImageResource(R.drawable.cover_default_new);
                 holder.bookTitle.setText(bookInfoBeans.get(position).name);
                 holder.bookType.setText(fileTypeStr[bookInfoBeans.get(position).fileTybe]);
                 holder.bookUpdata.setVisibility(View.INVISIBLE);

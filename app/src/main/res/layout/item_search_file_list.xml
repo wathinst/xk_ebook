@@ -1,102 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/selector_read_list_item"
-    android:padding="16dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <data>
+
+        <import type="com.wxz.ebook.mvvm.modle.SearchFileModle" />
+
+        <variable
+            name="file"
+            type="SearchFileModle" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:id="@+id/search_file_list_item">
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/file_type_txt"
-            android:contentDescription="@string/file_type"
-            android:id="@+id/search_file_list_item_img"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp">
-
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="24dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/fontBlack"
-                android:id="@+id/search_file_list_item_name"
-                android:singleLine="true"
-                android:ellipsize="end"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="24dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:gravity="center_vertical"
-                    android:id="@+id/search_file_list_item_size"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:gravity="center_vertical"
-                    android:id="@+id/search_file_list_item_date"/>
-            </LinearLayout>
-
-        </LinearLayout>
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_read_list_item"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
+            android:layout_height="48dp"
+            android:id="@+id/search_file_list_item">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/file_type_txt"
+                android:contentDescription="@string/file_type"
+                android:id="@+id/search_file_list_item_img" />
 
-            <CheckBox
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:gravity="center"
-                android:id="@+id/search_file_list_item_import"/>
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:text="@string/imported"
-                android:visibility="gone"
-                android:id="@+id/search_file_list_item_imported"/>
+                android:paddingRight="8dp">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="24dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/fontBlack"
+                    android:id="@+id/search_file_list_item_name"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:text="@{file.name}"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/search_file_list_item_size"
+                        android:text="@{file.size}"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/search_file_list_item_date"
+                        android:text="@{file.date}"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <CheckBox
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:gravity="center"
+                    android:id="@+id/search_file_list_item_import" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="@string/imported"
+                    android:visibility="gone"
+                    android:id="@+id/search_file_list_item_imported" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/search_file_list_item_text"
-        android:gravity="center"
-        android:padding="16dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/search_file_list_item_text"
+            android:gravity="center"
+            android:padding="16dp" />
 
 
-
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</layout>

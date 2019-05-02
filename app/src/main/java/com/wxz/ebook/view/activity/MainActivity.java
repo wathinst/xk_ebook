@@ -20,6 +20,28 @@ import com.wxz.ebook.view.fragment.BookMarketFragment;
 import com.wxz.ebook.view.fragment.BookMineFragment;
 import com.wxz.ebook.view.fragment.BookShelfFragment;
 
+/*********************************************************************************
+ *                    The 996ICU License (996ICU)
+ *                      Version 0.1, March 2019
+ *
+ *   PACKAGE is distributed under LICENSE with the following restriction:
+ *
+ *   The above license is only granted to entities that act in concordance
+ *   with local labor laws. In addition, the following requirements must be
+ *   observed:
+ *
+ *   * The licensee must not, explicitly or implicitly, request or schedule
+ *     their employees to work more than 45 hours in any single week.
+ *   * The licensee must not, explicitly or implicitly, request or schedule
+ *     their employees to be at work consecutively for 10 hours.
+ *   *********************************************************************************
+ *                             类信息
+ *
+ *   描述：    提供书架、书页、我的三个子布局
+ *   开发者：  韦行志
+ *   日期：    2018年07月19日
+ *   *********************************************************************************/
+
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;

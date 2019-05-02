@@ -56,4 +56,5 @@
     <string name="search_history_tab">历史搜索</string>
     <string name="title_activity_setting">设置中心</string>
     <string name="title_activity_about">关于校咖</string>
+    <string name="title_activity_join">加入我们</string>
 </resources>

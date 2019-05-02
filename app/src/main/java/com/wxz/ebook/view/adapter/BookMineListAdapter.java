@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.wxz.ebook.R;
 import com.wxz.ebook.tool.utils.AppUtils;
 import com.wxz.ebook.view.activity.AboutActivity;
+import com.wxz.ebook.view.activity.JoinActivity;
 import com.wxz.ebook.view.activity.ReadPageActivity;
 import com.wxz.ebook.view.activity.SettingActivity;
 
@@ -62,6 +63,9 @@ public class BookMineListAdapter extends RecyclerView.Adapter<BookMineListAdapte
                     holder.itemView.getContext().startActivity(intent);
                 }else if(position  == 3){
                     Intent intent = new Intent(holder.itemView.getContext(), AboutActivity.class);
+                    holder.itemView.getContext().startActivity(intent);
+                }else if(position  == 5){
+                    Intent intent = new Intent(holder.itemView.getContext(), JoinActivity.class);
                     holder.itemView.getContext().startActivity(intent);
                 }
             }
